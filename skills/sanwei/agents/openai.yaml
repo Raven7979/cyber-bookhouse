@@ -1,0 +1,4 @@
+interface:
+  display_name: "赛博三味书屋"
+  short_description: "逐步连接桌面 Agent、手机入口和 Obsidian"
+  default_prompt: "Use $sanwei to guide me through setup one step at a time. Let me choose Codex or WorkBuddy and desktop-only, Feishu, or WeChat, then verify every selected input writes to Obsidian."

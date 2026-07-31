@@ -1,0 +1,11 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+.env
+.env.*
+*.log
+*.sqlite*
+dist/
+build/
+*.zip
+.codex-verification/
