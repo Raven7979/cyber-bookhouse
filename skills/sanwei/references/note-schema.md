@@ -16,6 +16,7 @@ content_status: full_text
 media_status: not_requested
 transcript_status: unavailable
 status: captured
+visual_assets: []
 destinations:
   - obsidian
 tags:
@@ -71,3 +72,14 @@ If only metadata was accessible, keep the note useful with the title, creator,
 platform, source link, duration or publish time when visible, and an explicit
 access limitation. Do not populate summary sections as if the full source had
 been read.
+
+When a structured diagram was genuinely useful, record its relative SVG path:
+
+```yaml
+visual_assets:
+  - ../_assets/20260731-a1b2c3d4/sop-flow.svg
+```
+
+Embed the SVG near the paragraph it explains and add a short text explanation
+after it. Do not list an HTML or image path until the file exists and has been
+opened successfully.

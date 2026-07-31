@@ -156,18 +156,22 @@ For each source:
    mode is `distilled` or `detailed`, read
    [references/distillation.md](references/distillation.md) and enforce its
    evidence gate.
-8. Read [references/note-schema.md](references/note-schema.md).
-9. Write one Markdown note under
+8. Read [references/visualizations.md](references/visualizations.md). When the
+   evidence contains a real SOP, branching decision, framework, or narrative
+   timeline, create only the useful diagrams allowed for the selected mode by
+   using `scripts/render_diagram.py`. Do not add decorative diagrams.
+9. Read [references/note-schema.md](references/note-schema.md).
+10. Write one Markdown note under
    `<vault>/链接采集/YYYY-MM-DD/` and meaningful local assets under
    `<vault>/链接采集/_assets/<capture-id>/`.
-10. If `status` reports `destination: obsidian-feishu`, read
+11. If `status` reports `destination: obsidian-feishu`, read
    [references/feishu-docs.md](references/feishu-docs.md), create a Feishu Doc
    copy, and read it back. Do not mark the Feishu destination when creation or
    readback fails.
-11. Preserve source URL, author when known, capture time, access limits, and
+12. Preserve source URL, author when known, capture time, access limits, and
    uncertainty. Do not invent inaccessible content or transcripts.
-12. Open the note in Obsidian and verify visible text and assets.
-13. Return the local note path, selected mode, content status, acquisition
+13. Open the note in Obsidian and verify visible text, diagrams, and assets.
+14. Return the local note path, selected mode, content status, acquisition
     method, any limitation, and the verified Feishu Doc URL when one was
     created.
 

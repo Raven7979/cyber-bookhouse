@@ -1,0 +1,19 @@
+{
+  "title": "一条内容怎么收进书屋",
+  "subtitle": "只有正文、逐字稿或画面证据真实存在时，才继续总结和分析",
+  "type": "flow",
+  "nodes": [
+    {"id": "source", "title": "收到链接", "description": "识别视频、图文、播客或文件"},
+    {"id": "evidence", "title": "取得证据", "description": "正文、字幕、逐字稿或真实画面"},
+    {"id": "mode", "title": "按模式处理", "description": "同步笔记、蒸馏笔记或详细拆解"},
+    {"id": "note", "title": "写入笔记", "description": "保留来源、状态、时间点和访问限制"},
+    {"id": "verify", "title": "打开验收", "description": "在 Obsidian 里回读文字、图片和本地资产"}
+  ],
+  "edges": [
+    {"from": "source", "to": "evidence"},
+    {"from": "evidence", "to": "mode"},
+    {"from": "mode", "to": "note"},
+    {"from": "note", "to": "verify"}
+  ],
+  "footer": "拿不到的内容明确标记，不用标题和简介补写。"
+}

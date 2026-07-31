@@ -16,12 +16,15 @@ class SkillBundleTests(unittest.TestCase):
             "scripts/youtube_capture.py",
             "scripts/web_capture.py",
             "scripts/media_capture.py",
+            "scripts/render_diagram.py",
             "references/capabilities.md",
             "references/youtube.md",
             "references/web.md",
             "references/media.md",
+            "references/visualizations.md",
             "references/distillation.md",
             "references/note-schema.md",
+            "examples/structured-sop.json",
         )
         missing = [name for name in required if not (ROOT / name).is_file()]
         self.assertEqual(missing, [])
@@ -32,10 +35,12 @@ class SkillBundleTests(unittest.TestCase):
             "references/capabilities.md",
             "references/youtube.md",
             "references/distillation.md",
+            "references/visualizations.md",
             "scripts/dependency_doctor.py",
             "scripts/youtube_capture.py",
             "scripts/web_capture.py",
             "scripts/media_capture.py",
+            "scripts/render_diagram.py",
         ):
             self.assertIn(target, text)
             self.assertTrue((ROOT / target).is_file())
