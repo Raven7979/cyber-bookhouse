@@ -1,91 +1,81 @@
-# Content platform matrix
+# 内容平台说明
 
-“Supported” means the workflow can accept a link or file and preserve whatever
-the current Agent can legitimately access. It never guarantees media download,
-full text, subtitles, or transcript.
+这里说的“支持”，意思是书屋能接住一个链接或文件，并把当前确实能读到
+的内容保存下来。它不代表所有平台都能下载视频、拿到全文、字幕或逐字稿。
 
-## Acquisition order
+## 我们按什么顺序取内容
 
-Use the first method that can satisfy the request:
+优先用最简单、最不打扰账号的方式：
 
-1. User-provided local file or platform export.
-2. Public page, official transcript, subtitles, or RSS.
-3. User-authorized browser session for content the user can access.
-4. Metadata-only note with the source link and limitation.
+1. 你直接提供的本地文件或平台导出文件；
+2. 公开页面、官方字幕、节目简介或 RSS；
+3. 你已经登录并明确授权使用的浏览器页面；
+4. 如果仍然拿不到正文，就保存来源和限制，不猜内容。
 
-Do not bypass login, CAPTCHA, paywalls, DRM, tokenized media controls, rate
-limits, robots restrictions, or platform permissions. Do not read browser
-cookies or copy private session data into notes, logs, or setup evidence.
+不会绕过登录、验证码、付费墙、DRM、媒体令牌、访问频率或平台权限，
+也不会读取浏览器 Cookie 填进笔记或日志。
 
-## Articles and documents
+## 文章和文档
 
-| Platform or format | Default handling | Common limitation |
+| 来源 | 通常怎么处理 | 常见情况 |
 | --- | --- | --- |
-| Public websites, blogs, news pages | Public-page text and images | Dynamic or blocked pages |
-| WeChat public articles | Public page when accessible | Login or anti-automation |
-| Zhihu | Public page or authorized browser | Login and folded content |
-| Xiaohongshu notes | Authorized browser or user export | Login and dynamic rendering |
-| Toutiao, Baijiahao, Sohu | Public page when accessible | Dynamic rendering |
-| Weibo posts and articles | Public page or authorized browser | Login and incomplete threads |
-| Feishu documents | Authorized user access or official export | Document permission |
-| Public Notion pages | Public page or official export | Private workspace permission |
-| PDF, Word, Markdown, TXT, PPT | User-provided file | Scans may require OCR |
+| 普通网页、博客、新闻页 | 保存公开正文和图片 | 动态页面可能拿不全 |
+| 微信公众号 | 页面公开时保存正文 | 登录或反自动化可能拦截 |
+| 知乎 | 公开页面或授权浏览器 | 登录后内容、折叠内容 |
+| 小红书图文 | 授权浏览器或用户导出 | 登录和动态渲染 |
+| 今日头条、百家号、搜狐号 | 页面公开时保存正文 | 动态渲染 |
+| 微博 | 公开页面或授权浏览器 | 登录、长线程不完整 |
+| 飞书文档 | 用户已有权限或官方导出 | 文档权限 |
+| 公开 Notion | 公开页面或官方导出 | 私有空间权限 |
+| PDF、Word、Markdown、TXT、PPT | 用户提供文件 | 扫描件可能需要 OCR |
 
-For a private Feishu or Notion document, process only content the user has
-explicitly opened or exported. Never broaden sharing permissions.
+私人飞书或 Notion 文档，只处理你已经打开或主动导出的内容，不会替你
+扩大分享范围。
 
-## Video
+## 视频
 
-| Platform | Default handling | Transcript rule |
+| 来源 | 通常怎么处理 | 转写怎么来 |
 | --- | --- | --- |
-| Bilibili | Public metadata, shownotes, visible subtitles, or user file | Use visible subtitles or actual local ASR |
-| YouTube | Public metadata, chapters, official subtitles, or user file | Record subtitle language and source |
-| Douyin | Share page, authorized browser, or user file | Do not promise direct download |
-| WeChat Channels | Share link or user-provided video | Link alone may be metadata-only |
-| Xiaohongshu video | Authorized browser or user file | Do not infer speech from caption |
-| Kuaishou | Share page, authorized browser, or user file | Do not promise direct download |
-| Weibo video | Public post or user file | Separate post text from video speech |
-| Local MP4, MOV, MKV, WebM | User-provided file | Local ASR is allowed when requested |
+| B站 | 公开信息、简介、可见字幕或用户文件 | 可见字幕或真实本地转写 |
+| YouTube | 公开信息、章节、官方字幕或用户文件 | 记录字幕语言和来源 |
+| 抖音 | 分享页、授权浏览器或用户文件 | 不承诺直接下载 |
+| 微信视频号 | 分享链接或用户提供视频 | 只有链接时可能只保存来源 |
+| 小红书视频 | 授权浏览器或用户文件 | 不用配文猜视频对白 |
+| 快手 | 分享页、授权浏览器或用户文件 | 不承诺直接下载 |
+| 微博视频 | 公开微博或用户文件 | 微博正文和视频对白分开记录 |
+| 本地 MP4、MOV、MKV、WebM | 用户提供文件 | 用户需要时做本地转写 |
 
-When only a title, caption, or cover is accessible, set `content_status` to
-`metadata_only`. Never summarize unseen video content.
+只看到标题、配文或封面时，笔记会标成 `metadata_only`。没有真正看见或
+听见视频，就不会替它写内容总结。
 
-## Podcasts and audio
+## 播客和音频
 
-| Platform | Default handling | Transcript rule |
+| 来源 | 通常怎么处理 | 转写怎么来 |
 | --- | --- | --- |
-| 小宇宙 | Public episode page plus accessible shownotes and timepoints | Use an exposed official transcript, user file, or actual local ASR |
-| Apple Podcasts | Public episode metadata, publisher link, or user file | Prefer publisher transcript or user file |
-| Spotify podcasts | Public metadata or user file | Login and media access may limit processing |
-| Public podcast RSS | RSS metadata and lawful enclosure access | Preserve feed and episode URLs |
-| Local MP3, M4A, WAV, FLAC | User-provided file | Local ASR is allowed when requested |
+| 小宇宙 | 公开节目页、简介和时间点 | 官方逐字稿、用户文件或真实本地转写 |
+| Apple Podcasts | 公开节目资料、发布者页面或用户文件 | 优先使用发布者逐字稿 |
+| Spotify 播客 | 公开信息或用户文件 | 登录和媒体权限可能限制处理 |
+| 公开播客 RSS | RSS 信息和合规可访问的音频 | 保留节目和单集链接 |
+| 本地 MP3、M4A、WAV、FLAC | 用户提供文件 | 用户需要时做本地转写 |
 
-### 小宇宙
+### 小宇宙会保存什么
 
-For an accessible episode page, preserve:
+节目页能正常打开时，至少保留：
 
-- episode title and source URL;
-- podcast name;
-- host or guests only when shown;
-- publish time and duration when shown;
-- shownotes, chapters, and timepoints actually present on the page.
+- 单集标题、播客名称和原链接；
+- 页面上确实显示的主播、嘉宾、发布时间和时长；
+- 节目简介、章节和时间点。
 
-Create a transcript only when one of these is true:
+只有在页面公开了逐字稿、你提供了音频，或当前 Agent 合规拿到音频并且
+你明确要求转写时，才会生成逐字稿。音频拿不到，就保存节目资料并说明
+原因，不去寻找隐藏媒体地址。
 
-1. The official page exposes a transcript.
-2. The user provides the audio or an authorized export.
-3. The current Agent can lawfully access the audio, the user requests
-   transcription, and processing stays within the declared privacy boundary.
+## 怎样才算处理完成
 
-Do not discover or download hidden media URLs by bypassing tokenized controls.
-If audio is unavailable, create a `metadata_only` note instead of guessing.
+一条内容完成前要检查：
 
-## Acceptance
-
-Before describing a platform as fully handled for a specific source, verify:
-
-1. The source URL or file is preserved.
-2. The note distinguishes page text, subtitle text, and ASR text.
-3. Any transcript has real evidence and a recorded status.
-4. Obsidian displays the note and any local asset.
-5. Access limitations are visible to the reader.
+1. 原链接或原文件还在；
+2. 正文、字幕和语音转写没有混成一类；
+3. 逐字稿有真实来源，并写明状态；
+4. Obsidian 里能正常看到文字和本地图片；
+5. 哪些内容没拿到，读者一眼能看见。

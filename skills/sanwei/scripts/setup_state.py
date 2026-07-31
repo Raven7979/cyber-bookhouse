@@ -32,12 +32,16 @@ STEPS = (
     "vault_created",
     "vault_registered",
     "desktop_test",
+    "mobile_connected",
+    "mobile_test",
     "channel_connected",
     "channel_test",
 )
 MARKABLE_STEPS = (
     "vault_registered",
     "desktop_test",
+    "mobile_connected",
+    "mobile_test",
     "channel_connected",
     "channel_test",
 )
@@ -196,9 +200,9 @@ def welcome_text() -> str:
         (
             "# 欢迎来到赛博三味书屋",
             "",
-            "这里是桌面 Agent、飞书和 Obsidian 共用的本地知识库。",
+            "这里是电脑、手机和 Obsidian 共用的本地知识库。",
             "",
-            "试着对桌面 Agent 或飞书说：",
+            "试着对 Codex、ChatGPT 手机端或 WorkBuddy 说：",
             "",
             "> 收进书屋：https://example.com",
             "",
@@ -292,12 +296,12 @@ def command_init(args: argparse.Namespace) -> int:
     if args.channel == "desktop":
         state["steps"]["channel_connected"] = {
             "status": "complete",
-            "evidence": "desktop-only route; no remote channel requested",
+            "evidence": "no additional Feishu or WeChat connector requested",
             "updated_at": now(),
         }
         state["steps"]["channel_test"] = {
             "status": "complete",
-            "evidence": "desktop-only route; desktop_test is the acceptance test",
+            "evidence": "no additional Feishu or WeChat connector requested",
             "updated_at": now(),
         }
     state = normalize_state(state)

@@ -1,63 +1,73 @@
 # 赛博三味书屋
 
-把桌面 Agent、飞书或微信里的链接和文件，沉淀进同一个本地
-Obsidian 知识库。
+刷到一段好视频、听到一期播客、看到一篇长文，当时觉得有用，过几天却
+怎么也找不到了。
+
+赛博三味书屋想解决的就是这件小事：把链接发给你平时用的 ChatGPT 或
+WorkBuddy，电脑把能读到的内容整理好，连同来源、摘要、截图和转写一起
+放进 Obsidian。以后想找，不必再翻聊天记录和收藏夹。
 
 ![赛博三味书屋项目总览](assets/screenshots/01-overview.png)
 
-完全没接触过 Skill 的用户，从[第一次安装](INSTALL.md)开始。
+它不是一个新的笔记软件，也不是在线内容平台。它是一套可以交给桌面
+Agent 安装的 Skill；笔记仍放在你自己的 Obsidian 里。
 
-首版安装包从
-[GitHub Releases](https://github.com/Raven7979/cyber-sanwei/releases/latest)
-下载。第三方软件不包含在安装包内，请使用本文提供的官方链接安装。
+## 先选你已经在用的那个
 
-## 先选一条路线
-
-| 路线 | 电脑端 | 手机端 | 本地知识库 |
+| 你平时用什么 | 电脑上 | 手机上 | 还可以接 |
 | --- | --- | --- | --- |
-| A | Codex | 不接手机 | Obsidian |
-| B | Codex | 飞书 | Obsidian |
-| C | WorkBuddy | 不接手机、飞书或微信三选一 | Obsidian |
+| ChatGPT / Codex | Codex | ChatGPT 手机端 | 飞书 |
+| WorkBuddy | WorkBuddy | WorkBuddy 手机端 | 飞书、微信 |
 
-Codex 接飞书使用开源的 Lark Channel Bridge。微信入口目前只走
-WorkBuddy 官方的微信助理，不宣称 Codex 原生支持微信。
+已经在用 ChatGPT，就走 Codex 这条路；已经在用 WorkBuddy，就走
+WorkBuddy。不用为了这套书屋把两边都装一遍。
 
-![三条安装路线示意](assets/screenshots/02-install-routes.png)
+Codex 可以从 ChatGPT 手机端查看和继续电脑上的任务；WorkBuddy 也有自己
+的移动端远程入口。飞书和微信是额外入口，不是手机使用的前提。具体可看
+[OpenAI 的 Codex 手机端说明](https://openai.com/index/work-with-codex-from-anywhere/)
+和
+[WorkBuddy 的移动端远程说明](https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Practice-Cases/Practice-Six)。
 
-## 普通用户怎么开始
+![两种桌面与手机使用路线](assets/screenshots/02-install-routes.png)
+
+## 第一次怎么装
 
 1. 安装 [Obsidian](https://obsidian.md/download)。
-2. 选择并安装 [WorkBuddy](https://www.codebuddy.cn/work/) 或带 Codex
-   模式的 [ChatGPT 桌面应用](https://chatgpt.com/download/)。
-3. 下载本项目发布的 `sanwei` Skill：
-   - WorkBuddy：进入「技能」，点「添加技能」→「上传技能」。
-   - Codex：把 `sanwei` 文件夹交给 Codex，让它安装为本地 Skill。
-4. 对桌面 Agent 说：
+2. 安装你选择的桌面工具：
+   [Codex / ChatGPT](https://chatgpt.com/download/) 或
+   [WorkBuddy](https://www.codebuddy.cn/work/)。
+3. 从 [Releases](https://github.com/Raven7979/cyber-sanwei/releases/latest)
+   下载 `sanwei.zip`。
+4. 按[第一次安装](INSTALL.md)把 Skill 交给 Codex 或 WorkBuddy。
+5. 对它说：
 
-> 请使用 sanwei Skill，一步一步帮我搭好赛博三味书屋。先让我选择
-> Codex 或 WorkBuddy，再选择只用桌面、接飞书或接微信。每次只告诉我
-> 一个操作，最后要真实测试笔记进入 Obsidian。
+> 请用 sanwei Skill 帮我搭好赛博三味书屋。先问我使用 Codex 还是
+> WorkBuddy，再一步一步带我安装。每次只说一个操作，最后请用真实测试
+> 确认手机和电脑都能把笔记写进 Obsidian。
 
-向导会逐项检查软件、创建或选择知识库、连接所选手机渠道、配置后台
-运行，并完成真实测试。第三方软件均从官方来源安装，本项目不打包其
-安装程序。
+软件安装程序都从各自官网下载安装，这个仓库不重新打包。
 
-安装完成后，在桌面 Agent 或飞书里发送：
+第一次安装时，它会帮你选好 Obsidian 文件夹、接通手机入口，再用一个
+示例链接做测试。看到测试笔记真的出现在 Obsidian 里，才算装完。
+
+## 平时怎么用
+
+在 ChatGPT、Codex、WorkBuddy、飞书或微信中，把链接或文件发出去，并说：
 
 > 收进书屋：https://example.com
 
-下图是脱敏后的操作示意，不是真实用户账户或产品官方截图：
+下面是用演示数据做的流程图，不包含真实账号或私人笔记：
 
 ![从手机消息到本地笔记的处理过程](assets/screenshots/03-capture-example.png)
 
-处理完成后，笔记在 Obsidian 中保留来源、采集方式、内容状态和转写
-状态。拿不到的内容会明确标记，不会用标题或封面冒充正文。
+整理完成后，Obsidian 里的笔记会保留来源、采集时间、正文状态和转写
+状态。哪部分没有拿到，会直接写明白，不会拿标题和封面凑一篇“完整总结”。
 
 ![Obsidian 入库结果示意](assets/screenshots/04-obsidian-result.png)
 
-## 支持的内容来源
+## 能整理哪些内容
 
-| 内容类型 | 平台 |
+| 内容类型 | 常见来源 |
 | --- | --- |
 | 播客、音频 | 小宇宙、Apple Podcasts、Spotify、公开 RSS、本地音频 |
 | 长视频 | B站、YouTube、本地视频 |
@@ -65,32 +75,34 @@ WorkBuddy 官方的微信助理，不宣称 Codex 原生支持微信。
 | 图文 | 微信公众号、知乎、小红书、今日头条、百家号、搜狐号、微博、普通网页 |
 | 文档 | 飞书文档、公开 Notion、PDF、Word、Markdown、TXT、PPT |
 
-这里的“支持”表示能接收链接或文件，并按照实际访问能力沉淀笔记，
-不表示无条件下载平台媒体。公开正文或用户提供的文件可以直接处理；
-需要登录、没有字幕或受到平台限制时，向导会改用用户授权浏览器、
-官方导出、用户提供文件或仅保存来源信息。详细边界写在
-[`content-platforms.md`](skills/sanwei/references/content-platforms.md)。
+这里的“能整理”不等于“任何链接都能完整下载”。公开页面和你自己提供的
+文件通常可以直接处理；遇到登录、付费内容、没有字幕或平台限制时，它会
+告诉你缺了什么，并让你选择授权浏览器、官方导出或自己提供文件。更细的
+边界写在[内容平台说明](skills/sanwei/references/content-platforms.md)里。
 
-## 完成标准
+## 什么样才算真的装好了
 
-- 桌面 Agent 能创建一篇笔记。
-- 如果选择了飞书或微信，手机端能收到处理回复。
-- 所有已选择入口的笔记进入同一个 Obsidian vault。
-- 在 Obsidian 中能看到正文和本地素材。
-- 电脑重新登录后，所选远程连接能恢复。
+- 电脑端发一个测试链接，Obsidian 里出现可读的笔记。
+- 手机端也能继续同一个工作，并收到处理结果。
+- 如果另外接了飞书或微信，它们写入的是同一个 Obsidian 书屋。
+- 笔记里的来源、正文、图片或视频截图能够正常打开。
+- 电脑重新登录后，不需要重新从头配置。
 
-电脑关机、深度睡眠或离线时，飞书和微信都无法调用本机 Agent。
+手机远程入口依赖电脑在线。电脑关机、深度睡眠或断网时，本机 Agent
+无法继续处理新内容。
 
-## 平台边界
+## 有几件事先说清楚
 
-第一版安装向导先支持 macOS。桥接工具和部分应用也支持 Windows 或
-Linux，但在向导完成跨平台实测前，不把它们标成已支持。
+- 第一版安装向导先按 macOS 做了完整测试。
+- 不绕过登录、验证码、付费墙、DRM、访问频率限制或平台权限。
+- 不要求你把密码、Token、Cookie、私人文档或 Obsidian 库交给项目维护者。
+- 只能拿到标题和链接时，就只保存标题和链接，不假装已经看过正文或视频。
 
-内容采集不绕过登录、验证码、付费墙、DRM、访问频率限制或平台权限，
-也不把“只有标题和链接”冒充成完整内容。
+隐私细节见 [PRIVACY.md](PRIVACY.md)，安全问题见
+[SECURITY.md](SECURITY.md)。
 
-## 当前状态
+## 现在做到哪一步
 
-`v0.1.0` 是首个公开预览版：完成了 macOS 安装向导、Codex /
-WorkBuddy 路线、飞书 / 微信入口选择、Obsidian 入库规范和内容平台
-边界。各内容平台仍需继续逐个完成真实样本验收。
+`v0.1.0` 是第一个公开预览版。macOS 安装向导、Codex / WorkBuddy、
+手机入口、飞书 / 微信选项、Obsidian 笔记格式和内容边界已经放进仓库。
+不同内容平台仍需要继续拿真实样本逐个测试。

@@ -1,6 +1,6 @@
 ---
 name: sanwei
-description: Set up and use 赛博三味书屋 as a local knowledge-capture workflow connecting Codex or WorkBuddy, optional Feishu or WeChat input, and Obsidian; capture articles, videos, podcasts such as 小宇宙, and local files with explicit access limits. Use when the user asks to install, configure, repair, verify, or use 赛博三味书屋; says “收进书屋”, “笔记同步”, “链接转笔记”, or “整理进 Obsidian”; or wants desktop-agent and mobile messages to write into one local Obsidian vault.
+description: Set up and use 赛博三味书屋 as a local knowledge-capture workflow connecting Codex with ChatGPT mobile, or WorkBuddy with its mobile client, plus optional Feishu or WeChat input and Obsidian; capture articles, videos, podcasts such as 小宇宙, and local files with explicit access limits. Use when the user asks to install, configure, repair, verify, or use 赛博三味书屋; says “收进书屋”, “笔记同步”, “链接转笔记”, or “整理进 Obsidian”; or wants desktop and mobile messages to write into one local Obsidian vault.
 ---
 
 # 赛博三味书屋
@@ -26,9 +26,11 @@ Skill directory. Replace `<skill-dir>` in every command below with that path.
   claim successful automatic setup on that system.
 - Detect installed software before asking the user to choose.
 - If both Codex and WorkBuddy exist, ask which one should own this setup.
-- Ask which input route to enable: desktop only, Feishu, or WeChat.
-- Do not offer WeChat with Codex. WeChat is verified only through WorkBuddy's
-  official Assistant integration.
+- Pair the matching phone client before discussing optional connectors:
+  ChatGPT mobile for Codex, or WorkBuddy mobile for WorkBuddy.
+- Then ask whether to add another input route. For Codex, offer Feishu. For
+  WorkBuddy, offer Feishu or WeChat. Use `desktop` when no extra connector is
+  requested.
 - Read only the matching guide:
   - Codex: [references/codex.md](references/codex.md)
   - WorkBuddy: [references/workbuddy.md](references/workbuddy.md)
@@ -57,14 +59,20 @@ note in the app before marking `vault_registered`.
 Setup is complete only after the required tests pass:
 
 1. A desktop-agent request creates a readable note in Obsidian.
-2. If Feishu or WeChat was selected, that channel creates a readable note in
-   the same vault and receives a reply.
+2. The matching phone client creates a readable note in the same vault and
+   receives a reply.
+3. If Feishu or WeChat was selected, that connector also creates a readable
+   note in the same vault and receives a reply.
 
 Record evidence after each test:
 
 ```bash
 python3 "<skill-dir>/scripts/setup_state.py" mark \
   --step desktop_test --status complete --evidence "NOTE_PATH"
+python3 "<skill-dir>/scripts/setup_state.py" mark \
+  --step mobile_connected --status complete --evidence "PHONE_CLIENT_STATUS"
+python3 "<skill-dir>/scripts/setup_state.py" mark \
+  --step mobile_test --status complete --evidence "NOTE_PATH_AND_REPLY"
 python3 "<skill-dir>/scripts/setup_state.py" mark \
   --step channel_connected --status complete --evidence "ROUTE_AND_STATUS"
 python3 "<skill-dir>/scripts/setup_state.py" mark \

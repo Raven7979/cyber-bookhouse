@@ -96,7 +96,7 @@ class SetupStateTests(unittest.TestCase):
             "vault": {"registered_in_obsidian": False},
         }
 
-    def test_desktop_route_skips_remote_acceptance_steps(self) -> None:
+    def test_desktop_route_still_requires_mobile_acceptance(self) -> None:
         args = self.init_args("codex", "desktop")
         with mock.patch.object(
             MODULE, "detected", return_value=self.fake_detection("codex")
@@ -106,6 +106,8 @@ class SetupStateTests(unittest.TestCase):
         self.assertEqual(state["steps"]["channel_connected"]["status"], "complete")
         self.assertEqual(state["steps"]["channel_test"]["status"], "complete")
         self.assertEqual(state["steps"]["desktop_test"]["status"], "pending")
+        self.assertEqual(state["steps"]["mobile_connected"]["status"], "pending")
+        self.assertEqual(state["steps"]["mobile_test"]["status"], "pending")
 
     def test_wechat_route_requires_connection_and_channel_test(self) -> None:
         args = self.init_args("workbuddy", "wechat")
@@ -116,6 +118,8 @@ class SetupStateTests(unittest.TestCase):
         state = MODULE.read_json(MODULE.state_path())
         self.assertEqual(state["steps"]["channel_connected"]["status"], "pending")
         self.assertEqual(state["steps"]["channel_test"]["status"], "pending")
+        self.assertEqual(state["steps"]["mobile_connected"]["status"], "pending")
+        self.assertEqual(state["steps"]["mobile_test"]["status"], "pending")
 
     def test_changing_route_resets_old_acceptance_evidence(self) -> None:
         desktop = self.init_args("workbuddy", "desktop")
