@@ -7,7 +7,10 @@ Obsidian。
 
 Codex 用户如果愿意授权，还可以同时生成一份飞书文档副本。
 
-![赛博三味书屋项目总览](assets/screenshots/01-overview.png)
+![8 秒看懂赛博三味书屋：公开内容进入本机 Agent，最后写入真实 Obsidian 演示库](assets/demo/quick-demo.gif)
+
+> 动图由真实公开页面和单独建立的 Obsidian 脱敏演示库录制。
+> [观看 42 秒完整演示（VoiceBox 雷厉旁白）](assets/demo/cyber-sanwei-demo.mp4)。
 
 ## 30 秒看懂
 
@@ -23,6 +26,20 @@ Obsidian 本地原件 → 可选的飞书文档副本
 
 它不是新的笔记软件，也不是在线内容平台。它是一套交给桌面 Agent
 安装的 Skill，笔记原件仍然在你的电脑上。
+
+![赛博三味书屋项目总览](assets/screenshots/01-overview.png)
+
+## 最后会得到什么
+
+![从收藏链接到真实 Obsidian 知识库的前后对比](assets/demo/before-after.png)
+
+笔记里会留下原始链接、采集时间、内容状态、摘要、逐字稿或翻译，
+以及实际取得的页面截图。拿不到的部分会标明，不用标题和封面补出正文。
+
+![真实 Obsidian 窗口中的脱敏演示笔记](assets/demo/real-obsidian-result.png)
+
+上图是真实 Obsidian 窗口，并非仿造界面。它来自一个专门建立的
+`demo-vault`，不包含个人账号、本机路径或私人知识库内容。
 
 ## 能整理哪些内容
 

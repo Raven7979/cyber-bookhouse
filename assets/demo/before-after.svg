@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M 48 0 L 0 0 0 48" fill="none" stroke="#1D1B18" stroke-opacity="0.045" stroke-width="1"/>
+    </pattern>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#34271A" flood-opacity="0.13"/>
+    </filter>
+    <clipPath id="screen-clip">
+      <rect x="872" y="316" width="620" height="484" rx="8"/>
+    </clipPath>
+  </defs>
+
+  <rect width="1600" height="900" fill="#F4F0E7"/>
+  <rect width="1600" height="900" fill="url(#grid)"/>
+  <rect x="20" y="20" width="1560" height="860" fill="none" stroke="#1D1B18" stroke-opacity="0.16"/>
+
+  <rect x="64" y="52" width="50" height="50" fill="#C84B31"/>
+  <text x="89" y="88" text-anchor="middle" fill="#FFFDF8" font-family="Songti SC, Noto Serif SC, serif" font-size="31" font-weight="800">三</text>
+  <text x="134" y="86" fill="#1D1B18" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="25" font-weight="700">赛博三味书屋</text>
+  <text x="64" y="168" fill="#1D1B18" font-family="Songti SC, Noto Serif SC, serif" font-size="57" font-weight="800">从收藏链接，到留下知识</text>
+  <text x="66" y="211" fill="#71695F" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="22">同一条内容，整理前后是什么区别</text>
+
+  <g filter="url(#shadow)">
+    <rect x="64" y="252" width="650" height="550" rx="14" fill="#FFFDF8" stroke="#CDC1AF"/>
+    <rect x="64" y="252" width="650" height="6" rx="3" fill="#C84B31"/>
+  </g>
+  <text x="104" y="318" fill="#C84B31" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="25" font-weight="700">之前</text>
+  <text x="104" y="400" fill="#1D1B18" font-family="Songti SC, Noto Serif SC, serif" font-size="49" font-weight="800">40 分钟视频</text>
+  <text x="104" y="458" fill="#71695F" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="25">一个链接，躺在收藏夹里</text>
+  <text x="104" y="545" fill="#8E2E20" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="27">×　过几天想不起重点</text>
+  <text x="104" y="607" fill="#8E2E20" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="27">×　找不到原来的观点</text>
+  <text x="104" y="669" fill="#8E2E20" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="27">×　无法搜索和关联</text>
+  <line x1="104" y1="721" x2="674" y2="721" stroke="#CDC1AF"/>
+  <text x="104" y="762" fill="#71695F" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="600">收藏 ≠ 学会</text>
+
+  <circle cx="770" cy="525" r="38" fill="#C84B31"/>
+  <path d="M752 525h33m-12-12 12 12-12 12" fill="none" stroke="#FFFDF8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <g filter="url(#shadow)">
+    <rect x="826" y="252" width="710" height="550" rx="14" fill="#FFFDF8" stroke="#CDC1AF"/>
+    <rect x="826" y="252" width="710" height="6" rx="3" fill="#2F675A"/>
+  </g>
+  <text x="866" y="301" fill="#2F675A" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="25" font-weight="700">之后</text>
+  <image href="real-obsidian-result.png" x="872" y="316" width="620" height="484" preserveAspectRatio="xMidYMid slice" clip-path="url(#screen-clip)"/>
+  <rect x="872" y="754" width="620" height="46" fill="#FFFDF8" fill-opacity="0.94"/>
+  <text x="1182" y="784" text-anchor="middle" fill="#2F675A" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="20" font-weight="700">摘要　·　逐字稿　·　结构图　·　可搜索</text>
+
+  <text x="64" y="851" fill="#71695F" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="16">视频 · 图文 · 播客 · 文档</text>
+  <text x="1536" y="851" text-anchor="end" fill="#71695F" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="16">真实 Obsidian 脱敏演示库</text>
+</svg>
