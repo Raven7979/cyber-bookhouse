@@ -32,11 +32,15 @@ Codex 可以从 ChatGPT 手机端查看和继续电脑上的任务；WorkBuddy �
 
 ![WorkBuddy 电脑端、手机端、飞书和微信进入 Obsidian 书屋的路线](assets/screenshots/03-workbuddy-route.png)
 
+手机也可以作为单独入口：
+
+![从 ChatGPT 或 WorkBuddy 手机端发送内容链接，经电脑 Agent 写入 Obsidian](assets/screenshots/06-mobile-route.png)
+
 如果还要增加常用入口，飞书和微信分别走下面两条路：
 
-![从飞书发送内容链接，经 Codex 或 WorkBuddy 写入 Obsidian](assets/screenshots/06-feishu-route.png)
+![从飞书发送内容链接，经 Codex 或 WorkBuddy 写入 Obsidian](assets/screenshots/07-feishu-route.png)
 
-![从微信发送内容链接，经 WorkBuddy 写入 Obsidian](assets/screenshots/07-wechat-route.png)
+![从微信发送内容链接，经 WorkBuddy 写入 Obsidian](assets/screenshots/08-wechat-route.png)
 
 ## 第一次怎么装
 
@@ -90,8 +94,8 @@ Codex 可以从 ChatGPT 手机端查看和继续电脑上的任务；WorkBuddy �
 | --- | --- |
 | 播客、音频 | 小宇宙、Apple Podcasts、Spotify、公开 RSS、本地音频 |
 | 长视频 | B站、YouTube、本地视频 |
-| 短视频 | 抖音、视频号、小红书、快手、微博视频 |
-| 图文 | 微信公众号、知乎、小红书、今日头条、百家号、搜狐号、微博、普通网页 |
+| 短视频 | 抖音、视频号、小红书、快手、微博视频、X 视频 |
+| 图文 | 微信公众号、知乎、小红书、今日头条、百家号、搜狐号、微博、X、普通网页 |
 | 文档 | 飞书文档、公开 Notion、PDF、Word、Markdown、TXT、PPT |
 
 这里的“能整理”不等于“任何链接都能完整下载”。公开页面和你自己提供的
