@@ -20,6 +20,8 @@ DEFAULT_DATA = Path.home() / ".local" / "share" / "cyber-sanwei"
 VAULT_DISPLAY_NAME = "赛博三味书屋"
 DEFAULT_VAULT_DIRNAME = "cyber-sanwei"
 DEFAULT_NOTES = Path.home() / "Documents" / DEFAULT_VAULT_DIRNAME
+DEFAULT_DESTINATION = "obsidian"
+DESTINATIONS = ("obsidian", "obsidian-feishu")
 OBSIDIAN_APP = Path("/Applications/Obsidian.app")
 WORKBUDDY_APP = Path("/Applications/WorkBuddy.app")
 CHATGPT_APP = Path("/Applications/ChatGPT.app")
@@ -283,11 +285,17 @@ def command_init(args: argparse.Namespace) -> int:
         or previous_state.get("channel") != args.channel
         or previous_config.get("notes_root") != str(notes_root.resolve())
     )
+    destination = (
+        DEFAULT_DESTINATION
+        if route_changed
+        else str(previous_config.get("destination") or DEFAULT_DESTINATION)
+    )
 
     config = {
         "version": 1,
         "agent": args.agent,
         "channel": args.channel,
+        "destination": destination,
         "vault_display_name": VAULT_DISPLAY_NAME,
         "notes_root": str(notes_root.resolve()),
         "created_at": now(),
@@ -306,6 +314,7 @@ def command_init(args: argparse.Namespace) -> int:
             "version": 1,
             "agent": args.agent,
             "channel": args.channel,
+            "destination": destination,
             "created_at": previous_state.get("created_at") or now(),
             "updated_at": now(),
         }
@@ -372,6 +381,48 @@ def command_set_channel(args: argparse.Namespace) -> int:
     return 0
 
 
+def command_set_destination(args: argparse.Namespace) -> int:
+    config = read_json(config_path())
+    state = normalize_state(read_json(state_path()))
+    agent = str(state.get("agent") or config.get("agent") or "")
+    if not agent:
+        raise RuntimeError("Run init before selecting an output destination.")
+    if args.destination == "obsidian-feishu" and agent != "codex":
+        raise ValueError(
+            "Feishu Docs output is documented for Codex only in this release."
+        )
+
+    incomplete = [
+        step
+        for step in CORE_STEPS
+        if state["steps"][step]["status"] != "complete"
+    ]
+    if incomplete:
+        raise RuntimeError(
+            "Finish core setup before selecting an output destination. "
+            f"Incomplete steps: {', '.join(incomplete)}"
+        )
+    if args.destination == "obsidian-feishu" and not args.evidence.strip():
+        raise ValueError(
+            "Feishu Docs output requires evidence from a created and read-back test document."
+        )
+
+    evidence = args.evidence.strip() or "local Obsidian only"
+    config["agent"] = agent
+    config["destination"] = args.destination
+    config["destination_evidence"] = evidence
+    config["updated_at"] = now()
+    atomic_json(config_path(), config)
+
+    state["destination"] = args.destination
+    state["destination_evidence"] = evidence
+    state["updated_at"] = now()
+    state = normalize_state(state)
+    atomic_json(state_path(), state)
+    print(json.dumps(state, ensure_ascii=False, indent=2))
+    return 0
+
+
 def command_mark(args: argparse.Namespace) -> int:
     state = normalize_state(read_json(state_path()))
     if not state.get("agent"):
@@ -407,6 +458,12 @@ def command_status(_: argparse.Namespace) -> int:
         "complete": bool(state.get("complete")),
         "agent": state.get("agent"),
         "channel": state.get("channel"),
+        "destination": state.get("destination")
+        or read_json(config_path()).get("destination")
+        or DEFAULT_DESTINATION,
+        "destination_evidence": state.get("destination_evidence")
+        or read_json(config_path()).get("destination_evidence")
+        or "",
         "notes_root": report["paths"]["notes_root"],
         "steps": state.get("steps", default_steps()),
         "next_step": next(
@@ -445,6 +502,16 @@ def parser() -> argparse.ArgumentParser:
         "--channel", choices=("desktop", "feishu", "wechat"), required=True
     )
     set_channel.set_defaults(func=command_set_channel)
+
+    set_destination = subcommands.add_parser(
+        "set-destination",
+        help="Select the output destination after core setup is complete.",
+    )
+    set_destination.add_argument(
+        "--destination", choices=DESTINATIONS, required=True
+    )
+    set_destination.add_argument("--evidence", default="")
+    set_destination.set_defaults(func=command_set_destination)
 
     mark = subcommands.add_parser("mark", help="Record verified onboarding evidence.")
     mark.add_argument("--step", choices=MARKABLE_STEPS, required=True)

@@ -16,11 +16,26 @@ content_status: full_text
 media_status: not_requested
 transcript_status: unavailable
 status: captured
+destinations:
+  - obsidian
 tags:
   - content/article
   - status/captured
 ---
 ```
+
+`destinations` always includes `obsidian`. Only after a Feishu Doc was created
+and read back successfully, append `feishu_doc` and add its URL:
+
+```yaml
+destinations:
+  - obsidian
+  - feishu_doc
+feishu_doc_url: https://example.feishu.cn/docx/verified-document
+```
+
+If Feishu creation or readback fails, keep `destinations` as `obsidian` only
+and describe the failure in the note. Never record an unverified document URL.
 
 Use this body:
 

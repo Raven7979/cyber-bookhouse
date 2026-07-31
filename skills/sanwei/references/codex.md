@@ -1,7 +1,8 @@
 # Codex 安装路线
 
 用户选择 Codex 时，按下面顺序完成。基础路线由电脑上的 Codex 和手机上的
-ChatGPT 组成；飞书是可选的额外入口。
+ChatGPT 组成；飞书可以是额外入口，飞书文档也可以是授权后的额外输出。
+本地 Obsidian 始终保留一份可迁移的 Markdown 原件。
 
 ## 安装顺序
 
@@ -37,10 +38,11 @@ https://openai.com/index/work-with-codex-from-anywhere/
 只有 `vault_registered`、`desktop_test`、`mobile_connected` 和
 `mobile_test` 都完成后，才问：
 
-> 基础书屋已经装好。你要只用 Codex，还是再接飞书？
+> 基础书屋已经装好。你要只用 Codex，还是再接飞书入口、飞书文档，或者
+> 两者都接？
 
 根据回答运行 `setup_state.py set-channel --channel desktop|feishu`。不要在
-安装开始时提这个问题。
+安装开始时提这个问题。只选择飞书文档时，输入通道仍是 `desktop`。
 
 ## 如果用户选择飞书
 
@@ -57,9 +59,25 @@ https://openai.com/index/work-with-codex-from-anywhere/
 8. 确认飞书收到回复，而且笔记进入同一个 Obsidian 书屋，再标记
    `channel_test`。
 
+## 如果用户选择飞书文档
+
+输入入口测试完成后，再按 [feishu-docs.md](feishu-docs.md) 配置飞书文档。
+必须先在 Obsidian 留下本地原件，再创建飞书文档副本，并把副本读回来验收。
+创建成功但无法读回，不算接通。
+
+验收通过后运行：
+
+```bash
+python3 "<skill-dir>/scripts/setup_state.py" set-destination \
+  --destination obsidian-feishu \
+  --evidence "CREATED_AND_READ_BACK_TEST_DOC_URL"
+```
+
+没有选择飞书文档时，运行 `set-destination --destination obsidian`。
+
 最后运行 `status`。全部完成后读取 [commands.md](commands.md)，把三种笔记
 命令直接发给用户。
 
-电脑关机、深度睡眠或断网时，手机和飞书都无法继续调用这台电脑上的
-Codex。接了飞书时，后台桥接必须能在电脑重新登录后恢复，不能要求用户
-一直开着终端窗口。
+电脑关机、深度睡眠或断网时，手机、飞书入口和飞书文档写入都无法继续
+调用这台电脑上的 Codex。接了飞书入口时，后台桥接必须能在电脑重新登录
+后恢复，不能要求用户一直开着终端窗口。

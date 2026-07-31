@@ -5,18 +5,19 @@
 
 赛博三味书屋想解决的就是这件小事：把链接发给你平时用的 ChatGPT 或
 WorkBuddy，电脑把能读到的内容整理好，连同来源、摘要、截图和转写一起
-放进 Obsidian。以后想找，不必再翻聊天记录和收藏夹。
+放进 Obsidian。Codex 用户如果愿意授权，也可以再生成一份飞书文档。
+以后想找，不必再翻聊天记录和收藏夹。
 
 ![赛博三味书屋项目总览](assets/screenshots/01-overview.png)
 
 它不是一个新的笔记软件，也不是在线内容平台。它是一套可以交给桌面
-Agent 安装的 Skill；笔记仍放在你自己的 Obsidian 里。
+Agent 安装的 Skill；本地原件仍放在你自己的 Obsidian 里。
 
 ## 先选你已经在用的那个
 
 | 你平时用什么 | 电脑上 | 手机上 | 还可以接 |
 | --- | --- | --- | --- |
-| ChatGPT / Codex | Codex | ChatGPT 手机端 | 飞书 |
+| ChatGPT / Codex | Codex | ChatGPT 手机端 | 飞书入口、飞书文档 |
 | WorkBuddy | WorkBuddy | WorkBuddy 手机端 | 飞书、微信 |
 
 已经在用 ChatGPT，就走 Codex 这条路；已经在用 WorkBuddy，就走
@@ -28,7 +29,13 @@ Codex 可以从 ChatGPT 手机端查看和继续电脑上的任务；WorkBuddy �
 和
 [WorkBuddy 的移动端远程说明](https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Practice-Cases/Practice-Six)。
 
-![Codex、ChatGPT 手机端和飞书进入 Obsidian 书屋的路线](assets/screenshots/02-codex-route.png)
+![Codex 从电脑、手机或飞书接收内容，再写入 Obsidian 或飞书文档](assets/screenshots/02-codex-route.png)
+
+Codex 默认把 Markdown 原件写入本地 Obsidian；完成飞书官方授权和真实
+读回测试后，也可以同时生成飞书文档副本。飞书入口和飞书文档是两件事：
+前者负责“从哪里发”，后者负责“整理后放到哪里”。
+飞书文档能力使用[飞书官方 Lark / Feishu CLI](https://github.com/larksuite/cli)，
+本项目不打包该工具。
 
 ![WorkBuddy 电脑端、手机端、飞书和微信进入 Obsidian 书屋的路线](assets/screenshots/03-workbuddy-route.png)
 
@@ -55,8 +62,9 @@ Codex 可以从 ChatGPT 手机端查看和继续电脑上的任务；WorkBuddy �
 
 > 请用 sanwei Skill 帮我搭好赛博三味书屋。请识别我当前使用的是 Codex
 > 还是 WorkBuddy，先完成软件、Obsidian 和手机测试，之后再问我要不要增加
-> 飞书或微信。每次只说一个操作，最后请用真实测试确认手机和电脑都能把
-> 笔记写进 Obsidian。
+> 飞书入口、微信或飞书文档。每次只说一个操作，最后请用真实测试确认手机
+> 和电脑都能把笔记写进 Obsidian；如果我选择飞书文档，也要创建并读回一份
+> 测试文档。
 
 软件安装程序都从各自官网下载安装，这个仓库不重新打包。
 
@@ -65,8 +73,8 @@ Codex 可以从 ChatGPT 手机端查看和继续电脑上的任务；WorkBuddy �
 `~/Documents/cyber-sanwei`，在欢迎页和操作提示中仍称为“赛博三味书屋”。
 看到测试笔记真的出现在 Obsidian 里，才算装完。
 
-向导会先把基础书屋和手机端完整测通，之后才问是否增加飞书或微信，不会
-在安装开始时用路线选择打断流程。
+向导会先把基础书屋和手机端完整测通，之后才问是否增加飞书入口、微信或
+飞书文档，不会在安装开始时用路线选择打断流程。
 
 ## 平时怎么用
 
@@ -84,7 +92,8 @@ Codex 可以从 ChatGPT 手机端查看和继续电脑上的任务；WorkBuddy �
 ![同一条内容链接可选择同步笔记、蒸馏笔记或详细拆解](assets/screenshots/05-note-modes.png)
 
 整理完成后，Obsidian 里的笔记会保留来源、采集时间、正文状态和转写
-状态。哪部分没有拿到，会直接写明白，不会拿标题和封面凑一篇“完整总结”。
+状态。选择飞书文档的 Codex 用户还会得到一份经过读回验收的飞书副本。
+哪部分没有拿到，会直接写明白，不会拿标题和封面凑一篇“完整总结”。
 
 ## 能整理哪些内容
 
@@ -110,6 +119,7 @@ Codex 可以从 ChatGPT 手机端查看和继续电脑上的任务；WorkBuddy �
 - 电脑端发一个测试链接，Obsidian 里出现可读的笔记。
 - 手机端也能继续同一个工作，并收到处理结果。
 - 如果另外接了飞书或微信，它们写入的是同一个 Obsidian 书屋。
+- 如果选择了飞书文档，测试文档能创建、能读回，链接能由用户打开。
 - 笔记里的来源、正文、图片或视频截图能够正常打开。
 - 电脑重新登录后，不需要重新从头配置。
 
@@ -129,5 +139,6 @@ Codex 可以从 ChatGPT 手机端查看和继续电脑上的任务；WorkBuddy �
 ## 现在做到哪一步
 
 `v0.1.2` 是第一个公开版本。macOS 安装向导、Codex / WorkBuddy、
-手机入口、飞书 / 微信选项、Obsidian 笔记格式和内容边界已经放进仓库。
+手机入口、飞书 / 微信选项、Codex 的飞书文档输出、Obsidian 笔记格式和
+内容边界已经放进仓库。
 不同内容平台仍需要继续拿真实样本逐个测试。

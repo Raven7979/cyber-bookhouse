@@ -229,6 +229,69 @@ class SetupStateTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "only through WorkBuddy"):
             MODULE.command_set_channel(selection)
 
+    def test_feishu_docs_destination_requires_core_setup(self) -> None:
+        args = self.init_args("codex", "desktop")
+        with mock.patch.object(
+            MODULE, "detected", return_value=self.fake_detection("codex")
+        ):
+            MODULE.command_init(args)
+        selection = type(
+            "Args",
+            (),
+            {"destination": "obsidian-feishu", "evidence": "test doc read back"},
+        )()
+        with self.assertRaisesRegex(RuntimeError, "Finish core setup"):
+            MODULE.command_set_destination(selection)
+
+    def test_feishu_docs_destination_requires_readback_evidence(self) -> None:
+        args = self.init_args("codex", "desktop")
+        with mock.patch.object(
+            MODULE, "detected", return_value=self.fake_detection("codex")
+        ):
+            MODULE.command_init(args)
+        self.complete_core_steps()
+        selection = type(
+            "Args", (), {"destination": "obsidian-feishu", "evidence": ""}
+        )()
+        with self.assertRaisesRegex(ValueError, "created and read-back"):
+            MODULE.command_set_destination(selection)
+
+    def test_feishu_docs_destination_is_persisted_after_readback(self) -> None:
+        args = self.init_args("codex", "desktop")
+        with mock.patch.object(
+            MODULE, "detected", return_value=self.fake_detection("codex")
+        ):
+            MODULE.command_init(args)
+        self.complete_core_steps()
+        selection = type(
+            "Args",
+            (),
+            {
+                "destination": "obsidian-feishu",
+                "evidence": "https://example.feishu.cn/docx/test",
+            },
+        )()
+        MODULE.command_set_destination(selection)
+        config = MODULE.read_json(MODULE.config_path())
+        state = MODULE.read_json(MODULE.state_path())
+        self.assertEqual(config["destination"], "obsidian-feishu")
+        self.assertEqual(state["destination"], "obsidian-feishu")
+
+    def test_workbuddy_cannot_claim_feishu_docs_destination(self) -> None:
+        args = self.init_args("workbuddy", "desktop")
+        with mock.patch.object(
+            MODULE, "detected", return_value=self.fake_detection("workbuddy")
+        ):
+            MODULE.command_init(args)
+        self.complete_core_steps()
+        selection = type(
+            "Args",
+            (),
+            {"destination": "obsidian-feishu", "evidence": "test doc read back"},
+        )()
+        with self.assertRaisesRegex(ValueError, "Codex only"):
+            MODULE.command_set_destination(selection)
+
 
 if __name__ == "__main__":
     unittest.main()

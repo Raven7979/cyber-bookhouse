@@ -15,6 +15,7 @@ Use these sources. Do not bundle third-party installers in the project.
 | Feishu | https://www.feishu.cn/download | Feishu input |
 | Node.js 20.12.0+ | https://nodejs.org/en/download | Codex-to-Feishu bridge |
 | Lark Channel Bridge | https://github.com/zarazhangrui/lark-coding-agent-bridge | Codex-to-Feishu bridge |
+| Lark / Feishu CLI | https://github.com/larksuite/cli | Optional Codex-to-Feishu-Docs output |
 
 When a required application is missing:
 
