@@ -29,7 +29,7 @@
 运行下面的检查，不要凭文件名猜是否可用：
 
 ```bash
-python3 "<skill-dir>/scripts/dependency_doctor.py"
+<python-command> "<skill-dir>/scripts/dependency_doctor.py"
 ```
 
 按任务只处理对应的缺项。下载地址统一读取
@@ -46,6 +46,13 @@ python3 "<skill-dir>/scripts/dependency_doctor.py"
 对外说“支持平台”时，同时说明支持等级。不要把 `metadata` 说成完整正文、
 视频或逐字稿支持。
 
+## 系统支持
+
+- macOS：`stable`，安装向导和核心路线已完成真机测试。
+- Windows 10 / 11：`beta`，路径、检测和脚本已适配，必须按
+  [windows.md](windows.md) 在当前电脑做完桌面、手机和 Obsidian 真实测试。
+- Linux：本版不提供自动安装向导，不宣称完整支持。
+
 ## 发布前空白机器验收
 
 1. 解压包后，所有 `SKILL.md` 引用的脚本和参考文件都存在。
@@ -57,3 +64,5 @@ python3 "<skill-dir>/scripts/dependency_doctor.py"
 6. 蒸馏模式只使用已取得的正文或逐字稿，不从标题、简介和封面推演全文。
 7. 四种结构图能在无额外第三方包时生成 SVG 和 HTML，并且节点关系可回到原文复核。
 8. 解压后的整个目录通过隐私词、绝对路径、密钥字段和内部名称扫描。
+9. Windows 模拟测试通过不等于真机验收；发布说明必须保留
+   `beta` 和“需当前 Windows 电脑实测”的边界。

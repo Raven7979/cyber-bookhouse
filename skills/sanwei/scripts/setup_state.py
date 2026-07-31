@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import ntpath
 import os
 import platform
 import shutil
@@ -15,20 +16,10 @@ from pathlib import Path
 from typing import Any
 
 
-DEFAULT_CONFIG = Path.home() / ".config" / "cyber-sanwei" / "config.json"
-DEFAULT_DATA = Path.home() / ".local" / "share" / "cyber-sanwei"
 VAULT_DISPLAY_NAME = "赛博三味书屋"
 DEFAULT_VAULT_DIRNAME = "cyber-sanwei"
-DEFAULT_NOTES = Path.home() / "Documents" / DEFAULT_VAULT_DIRNAME
 DEFAULT_DESTINATION = "obsidian"
 DESTINATIONS = ("obsidian", "obsidian-feishu")
-OBSIDIAN_APP = Path("/Applications/Obsidian.app")
-WORKBUDDY_APP = Path("/Applications/WorkBuddy.app")
-CHATGPT_APP = Path("/Applications/ChatGPT.app")
-CODEX_APP = Path("/Applications/Codex.app")
-OBSIDIAN_REGISTRY = (
-    Path.home() / "Library" / "Application Support" / "obsidian" / "obsidian.json"
-)
 STEPS = (
     "agent_selected",
     "channel_selected",
@@ -41,6 +32,91 @@ STEPS = (
     "channel_connected",
     "channel_test",
 )
+
+
+def host_system() -> str:
+    return platform.system()
+
+
+def joined(system: str, root: str | Path, *parts: str) -> Path:
+    if system == "Windows":
+        return Path(ntpath.join(str(root), *parts))
+    return Path(root).joinpath(*parts)
+
+
+def platform_locations(
+    system: str | None = None,
+    environment: dict[str, str] | os._Environ[str] | None = None,
+    home: str | Path | None = None,
+) -> dict[str, Any]:
+    system = system or host_system()
+    environment = os.environ if environment is None else environment
+    home = Path(home) if home is not None else Path.home()
+    if system == "Windows":
+        user_profile = environment.get("USERPROFILE") or str(home)
+        local = environment.get("LOCALAPPDATA") or ntpath.join(
+            user_profile, "AppData", "Local"
+        )
+        roaming = environment.get("APPDATA") or ntpath.join(
+            user_profile, "AppData", "Roaming"
+        )
+        program_files = environment.get("ProgramFiles") or r"C:\Program Files"
+        windows_apps = ntpath.join(local, "Microsoft", "WindowsApps")
+        applications = {
+            "obsidian": (
+                joined(system, local, "Obsidian", "Obsidian.exe"),
+                joined(system, local, "Programs", "Obsidian", "Obsidian.exe"),
+                joined(system, program_files, "Obsidian", "Obsidian.exe"),
+            ),
+            "workbuddy": (
+                joined(system, local, "Programs", "WorkBuddy", "WorkBuddy.exe"),
+                joined(system, local, "WorkBuddy", "WorkBuddy.exe"),
+                joined(system, program_files, "WorkBuddy", "WorkBuddy.exe"),
+            ),
+            "chatgpt": (
+                joined(system, windows_apps, "ChatGPT.exe"),
+                joined(system, local, "Programs", "ChatGPT", "ChatGPT.exe"),
+            ),
+            "codex": (
+                joined(system, windows_apps, "Codex.exe"),
+                joined(system, local, "Programs", "Codex", "Codex.exe"),
+                joined(system, program_files, "Codex", "Codex.exe"),
+            ),
+        }
+        return {
+            "config": joined(system, local, "cyber-sanwei", "config.json"),
+            "data": joined(system, local, "cyber-sanwei", "data"),
+            "notes": joined(system, user_profile, "Documents", DEFAULT_VAULT_DIRNAME),
+            "obsidian_registry": joined(
+                system, roaming, "obsidian", "obsidian.json"
+            ),
+            "applications": applications,
+        }
+    applications = {
+        "obsidian": (Path("/Applications/Obsidian.app"),),
+        "workbuddy": (Path("/Applications/WorkBuddy.app"),),
+        "chatgpt": (Path("/Applications/ChatGPT.app"),),
+        "codex": (Path("/Applications/Codex.app"),),
+    }
+    return {
+        "config": home / ".config" / "cyber-sanwei" / "config.json",
+        "data": home / ".local" / "share" / "cyber-sanwei",
+        "notes": home / "Documents" / DEFAULT_VAULT_DIRNAME,
+        "obsidian_registry": home
+        / "Library"
+        / "Application Support"
+        / "obsidian"
+        / "obsidian.json",
+        "applications": applications,
+    }
+
+
+LOCATIONS = platform_locations()
+DEFAULT_CONFIG = LOCATIONS["config"]
+DEFAULT_DATA = LOCATIONS["data"]
+DEFAULT_NOTES = LOCATIONS["notes"]
+OBSIDIAN_REGISTRY = LOCATIONS["obsidian_registry"]
+APPLICATIONS = LOCATIONS["applications"]
 MARKABLE_STEPS = (
     "vault_registered",
     "desktop_test",
@@ -121,10 +197,18 @@ def read_json(path: Path) -> dict[str, Any]:
     return value
 
 
-def executable(name: str) -> str | None:
+def executable(name: str, system: str | None = None) -> str | None:
+    system = system or host_system()
     found = shutil.which(name)
     if found:
         return found
+    if system == "Windows" and not name.lower().endswith(".exe"):
+        found = shutil.which(f"{name}.exe")
+        if found:
+            return found
+        return None
+    if system != "Darwin":
+        return None
     for prefix in (Path("/opt/homebrew/bin"), Path("/usr/local/bin")):
         candidate = prefix / name
         if candidate.is_file():
@@ -132,14 +216,63 @@ def executable(name: str) -> str | None:
     return None
 
 
-def configured_notes_root() -> Path:
-    config = read_json(config_path())
+def platform_support(system: str | None = None) -> str:
+    system = system or host_system()
+    if system == "Darwin":
+        return "stable"
+    if system == "Windows":
+        return "beta"
+    return "unsupported"
+
+
+APPLICATION_ENV = {
+    "obsidian": "CYBER_SANWEI_OBSIDIAN_APP",
+    "workbuddy": "CYBER_SANWEI_WORKBUDDY_APP",
+    "chatgpt": "CYBER_SANWEI_CHATGPT_APP",
+    "codex": "CYBER_SANWEI_CODEX_APP",
+}
+
+
+def find_application(
+    name: str,
+    system: str | None = None,
+    environment: dict[str, str] | os._Environ[str] | None = None,
+    locations: dict[str, Any] | None = None,
+) -> str | None:
+    system = system or host_system()
+    environment = os.environ if environment is None else environment
+    override = environment.get(APPLICATION_ENV[name])
+    if override:
+        candidate = Path(override).expanduser()
+        if candidate.exists():
+            return str(candidate)
+    locations = locations or platform_locations(system, environment)
+    for candidate in locations["applications"][name]:
+        if candidate.exists():
+            return str(candidate)
+    if system == "Windows":
+        return executable(name, system)
+    return None
+
+
+def configured_notes_root(
+    fallback: Path = DEFAULT_NOTES,
+    environment: dict[str, str] | os._Environ[str] | None = None,
+    selected_config: Path | None = None,
+) -> Path:
+    environment = os.environ if environment is None else environment
+    selected_config = selected_config or Path(
+        environment.get("CYBER_SANWEI_CONFIG") or DEFAULT_CONFIG
+    )
+    config = read_json(selected_config)
     value = config.get("notes_root")
-    return Path(str(value)).expanduser() if value else DEFAULT_NOTES
+    return Path(str(value)).expanduser() if value else fallback
 
 
-def vault_registered(notes_root: Path) -> bool:
-    registry_path = resolve_path("CYBER_SANWEI_OBSIDIAN_REGISTRY", OBSIDIAN_REGISTRY)
+def vault_registered(notes_root: Path, registry_path: Path | None = None) -> bool:
+    registry_path = registry_path or resolve_path(
+        "CYBER_SANWEI_OBSIDIAN_REGISTRY", OBSIDIAN_REGISTRY
+    )
     try:
         registry = read_json(registry_path)
     except (OSError, ValueError, json.JSONDecodeError):
@@ -156,36 +289,55 @@ def vault_registered(notes_root: Path) -> bool:
     return False
 
 
-def detected() -> dict[str, Any]:
-    notes_root = configured_notes_root()
-    codex_cli = executable("codex")
-    codex_desktop = next(
-        (
-            str(application)
-            for application in (CHATGPT_APP, CODEX_APP)
-            if application.is_dir()
-        ),
-        None,
+def detected(
+    system: str | None = None,
+    environment: dict[str, str] | os._Environ[str] | None = None,
+    home: str | Path | None = None,
+) -> dict[str, Any]:
+    system = system or host_system()
+    environment = os.environ if environment is None else environment
+    locations = platform_locations(system, environment, home)
+    selected_config = Path(
+        environment.get("CYBER_SANWEI_CONFIG") or locations["config"]
+    ).expanduser()
+    selected_data = Path(
+        environment.get("CYBER_SANWEI_DATA") or locations["data"]
+    ).expanduser()
+    notes_root = configured_notes_root(
+        locations["notes"], environment, selected_config
     )
+    registry_path = Path(
+        environment.get("CYBER_SANWEI_OBSIDIAN_REGISTRY")
+        or locations["obsidian_registry"]
+    ).expanduser()
+    codex_cli = executable("codex", system)
+    chatgpt_app = find_application("chatgpt", system, environment, locations)
+    codex_app = find_application("codex", system, environment, locations)
+    codex_desktop = chatgpt_app or codex_app
+    obsidian_app = find_application("obsidian", system, environment, locations)
+    workbuddy_app = find_application("workbuddy", system, environment, locations)
     return {
         "platform": {
-            "system": platform.system(),
+            "system": system,
             "machine": platform.machine(),
             "python": platform.python_version(),
+            "support_level": platform_support(system),
+            "shell": "PowerShell" if system == "Windows" else "Terminal",
+            "host_verification_required": system == "Windows",
         },
         "software": {
-            "obsidian": str(OBSIDIAN_APP) if OBSIDIAN_APP.is_dir() else None,
+            "obsidian": obsidian_app,
             "codex": codex_desktop or codex_cli,
             "codex_desktop": codex_desktop,
             "codex_cli": codex_cli,
-            "workbuddy": str(WORKBUDDY_APP) if WORKBUDDY_APP.is_dir() else None,
-            "node": executable("node"),
-            "npm": executable("npm"),
-            "lark_channel_bridge": executable("lark-channel-bridge"),
+            "workbuddy": workbuddy_app,
+            "node": executable("node", system),
+            "npm": executable("npm", system),
+            "lark_channel_bridge": executable("lark-channel-bridge", system),
         },
         "paths": {
-            "config": str(config_path()),
-            "state": str(state_path()),
+            "config": str(selected_config),
+            "state": str(joined(system, selected_data, "setup.json")),
             "notes_root": str(notes_root),
         },
         "vault": {
@@ -193,7 +345,7 @@ def detected() -> dict[str, Any]:
             "directory_name": notes_root.name,
             "directory_exists": notes_root.is_dir(),
             "welcome_note_exists": (notes_root / "欢迎来到赛博三味书屋.md").is_file(),
-            "registered_in_obsidian": vault_registered(notes_root),
+            "registered_in_obsidian": vault_registered(notes_root, registry_path),
         },
     }
 

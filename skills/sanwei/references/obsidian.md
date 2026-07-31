@@ -3,14 +3,15 @@
 ## 新建仓库
 
 - 对用户始终称为“赛博三味书屋”。
-- 磁盘目录固定使用 `~/Documents/cyber-sanwei`，不要在注册后改回中文目录名。
+- macOS 磁盘目录使用 `~/Documents/cyber-sanwei`；Windows 使用
+  `%USERPROFILE%\Documents\cyber-sanwei`。不要在注册后改回中文目录名。
 - 已有 Obsidian 仓库不受此规则限制；用户选了已有仓库，就保留其原路径。
 
 按这个顺序操作：
 
 1. 运行 `setup_state.py init`，创建英文目录、`.obsidian` 和中文欢迎笔记。
 2. 打开 Obsidian 的仓库管理界面。
-3. 选择“打开文件夹作为仓库”，选中 `~/Documents/cyber-sanwei`。
+3. 选择“打开文件夹作为仓库”，选中当前系统对应的上述目录。
 4. 再运行 `setup_state.py doctor`。
 5. 只有 `registered_in_obsidian` 为 `true`，才打开欢迎笔记并记录
    `vault_registered`。

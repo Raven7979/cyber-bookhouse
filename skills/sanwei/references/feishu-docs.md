@@ -48,7 +48,7 @@ lark-cli docs +fetch --api-version v2 --as user --doc "CREATED_DOC_URL_OR_TOKEN"
 只有读回结果包含测试标题、来源和状态，才运行：
 
 ```bash
-python3 "<skill-dir>/scripts/setup_state.py" set-destination \
+<python-command> "<skill-dir>/scripts/setup_state.py" set-destination \
   --destination obsidian-feishu \
   --evidence "CREATED_AND_READ_BACK_TEST_DOC_URL"
 ```

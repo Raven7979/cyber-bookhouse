@@ -4,10 +4,13 @@ Use these sources. Do not bundle third-party installers in the project.
 
 | Software | Official source | Required for |
 | --- | --- | --- |
+| Python 3 | https://www.python.org/downloads/windows/ | Running the bundled scripts on Windows |
 | Obsidian | https://obsidian.md/download | Every route |
-| ChatGPT desktop with Codex | https://chatgpt.com/download/ | Codex desktop route |
+| Codex app | https://openai.com/index/introducing-the-codex-app/ | Codex desktop route on macOS or Windows |
+| ChatGPT | https://chatgpt.com/download/ | ChatGPT mobile connection |
 | Codex CLI | https://developers.openai.com/codex/cli | Codex-to-Feishu route |
 | WorkBuddy | https://www.codebuddy.cn/work/ | WorkBuddy route |
+| WorkBuddy Windows guide | https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Installation-Win-Guide | WorkBuddy on Windows 10+ |
 | WorkBuddy Skill help | https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Skills-Market | Installing this Skill in WorkBuddy |
 | WorkBuddy Assistant help | https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Assistant | WorkBuddy remote inputs |
 | WorkBuddy WeChat guide | https://www.codebuddy.cn/docs/workbuddy/WeixinBot-Guide | WorkBuddy-to-WeChat route |

@@ -53,6 +53,65 @@ class SetupStateTests(unittest.TestCase):
         self.assertTrue(MODULE.DEFAULT_VAULT_DIRNAME.isascii())
         self.assertEqual(MODULE.VAULT_DISPLAY_NAME, "赛博三味书屋")
 
+    def test_windows_locations_use_appdata_and_ascii_vault(self) -> None:
+        environment = {
+            "USERPROFILE": r"C:\Users\Demo",
+            "LOCALAPPDATA": r"C:\Users\Demo\AppData\Local",
+            "APPDATA": r"C:\Users\Demo\AppData\Roaming",
+            "ProgramFiles": r"C:\Program Files",
+        }
+        locations = MODULE.platform_locations(
+            "Windows", environment, r"C:\Users\Demo"
+        )
+        self.assertEqual(
+            str(locations["config"]),
+            r"C:\Users\Demo\AppData\Local\cyber-sanwei\config.json",
+        )
+        self.assertEqual(
+            str(locations["notes"]),
+            r"C:\Users\Demo\Documents\cyber-sanwei",
+        )
+        self.assertEqual(
+            str(locations["obsidian_registry"]),
+            r"C:\Users\Demo\AppData\Roaming\obsidian\obsidian.json",
+        )
+        self.assertTrue(
+            all(
+                str(path).lower().endswith(".exe")
+                for candidates in locations["applications"].values()
+                for path in candidates
+            )
+        )
+
+    def test_platform_support_is_explicit(self) -> None:
+        self.assertEqual(MODULE.platform_support("Darwin"), "stable")
+        self.assertEqual(MODULE.platform_support("Windows"), "beta")
+        self.assertEqual(MODULE.platform_support("Linux"), "unsupported")
+
+    def test_windows_detection_reports_powershell_and_native_state_path(self) -> None:
+        environment = {
+            "USERPROFILE": r"C:\Users\Demo",
+            "LOCALAPPDATA": r"C:\Users\Demo\AppData\Local",
+            "APPDATA": r"C:\Users\Demo\AppData\Roaming",
+            "ProgramFiles": r"C:\Program Files",
+        }
+        payload = MODULE.detected("Windows", environment, r"C:\Users\Demo")
+        self.assertEqual(payload["platform"]["shell"], "PowerShell")
+        self.assertTrue(payload["platform"]["host_verification_required"])
+        self.assertEqual(
+            payload["paths"]["state"],
+            r"C:\Users\Demo\AppData\Local\cyber-sanwei\data\setup.json",
+        )
+
+    def test_application_override_supports_non_default_install_path(self) -> None:
+        application = self.root / "Obsidian.exe"
+        application.write_bytes(b"")
+        environment = {"CYBER_SANWEI_OBSIDIAN_APP": str(application)}
+        self.assertEqual(
+            MODULE.find_application("obsidian", "Windows", environment),
+            str(application),
+        )
+
     def test_init_without_custom_path_uses_ascii_default(self) -> None:
         default_notes = self.root / MODULE.DEFAULT_VAULT_DIRNAME
         args = type(

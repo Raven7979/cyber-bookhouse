@@ -3,7 +3,7 @@
 先用包内脚本读取公开 HTML 中真实可见的文字：
 
 ```bash
-python3 "<skill-dir>/scripts/web_capture.py" "URL" \
+<python-command> "<skill-dir>/scripts/web_capture.py" "URL" \
   --output-dir "<vault>/链接采集/_assets/<capture-id>"
 ```
 
@@ -18,7 +18,7 @@ python3 "<skill-dir>/scripts/web_capture.py" "URL" \
 4. 不导出 Cookie、Local Storage、请求头或账号凭据。
 
 ```bash
-python3 "<skill-dir>/scripts/web_capture.py" "URL" \
+<python-command> "<skill-dir>/scripts/web_capture.py" "URL" \
   --staged-text "/path/to/visible-page.txt" \
   --title "页面标题" \
   --output-dir "<vault>/链接采集/_assets/<capture-id>"

@@ -18,6 +18,8 @@ class SkillBundleTests(unittest.TestCase):
             "scripts/media_capture.py",
             "scripts/render_diagram.py",
             "references/capabilities.md",
+            "references/windows.md",
+            "references/windows.md",
             "references/youtube.md",
             "references/web.md",
             "references/media.md",

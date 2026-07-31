@@ -34,7 +34,7 @@
 3. 运行包内生成器：
 
 ```bash
-python3 "<skill-dir>/scripts/render_diagram.py" "/path/to/spec.json" \
+<python-command> "<skill-dir>/scripts/render_diagram.py" "<path-to-spec.json>" \
   --output-dir "<vault>/链接采集/_assets/<capture-id>" \
   --name "sop-flow"
 ```

@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import platform
 import shutil
 import subprocess
 import sys
@@ -147,15 +148,27 @@ def transcription_command(
     return command, f"{source.stem}.vtt"
 
 
+def transcription_backend(system: str | None = None) -> str:
+    system = system or platform.system()
+    if system == "Darwin" and shutil.which("mlx_whisper"):
+        return "mlx_whisper"
+    return "whisper"
+
+
 def transcribe(path: Path, output: Path, language: str | None) -> tuple[str, str]:
-    backend = "mlx_whisper" if shutil.which("mlx_whisper") else "whisper"
+    backend = transcription_backend()
     executable = shutil.which(backend)
     if not executable:
-        raise RuntimeError(
+        message = (
             "No local transcription tool is available. Install Whisper from "
-            "https://github.com/openai/whisper or MLX Whisper from "
-            "https://github.com/ml-explore/mlx-examples/tree/main/whisper"
+            "https://github.com/openai/whisper"
         )
+        if platform.system() == "Darwin":
+            message += (
+                " or MLX Whisper from "
+                "https://github.com/ml-explore/mlx-examples/tree/main/whisper"
+            )
+        raise RuntimeError(message)
     command, expected = transcription_command(backend, executable, path, output, language)
     result = run(command)
     target = output / expected

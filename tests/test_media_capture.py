@@ -41,6 +41,10 @@ class MediaCaptureTests(unittest.TestCase):
         self.assertIn("zh", command)
         self.assertEqual(expected, "transcript.vtt")
 
+    def test_windows_uses_openai_whisper_even_if_mlx_is_on_path(self) -> None:
+        with mock.patch.object(MODULE.shutil, "which", return_value="available"):
+            self.assertEqual(MODULE.transcription_backend("Windows"), "whisper")
+
     def test_missing_ffprobe_returns_official_install_source(self) -> None:
         with mock.patch.object(MODULE.shutil, "which", return_value=None):
             with self.assertRaisesRegex(RuntimeError, "ffmpeg.org/download"):

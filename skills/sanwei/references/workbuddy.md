@@ -10,7 +10,8 @@
    状态。
 3. 运行 `setup_state.py init --agent workbuddy --channel desktop`。此时不要
    询问飞书或微信，也不要把 `desktop` 换成其他值。
-4. 新建书屋时使用 `~/Documents/cyber-sanwei`。按
+4. 新建书屋时，macOS 使用 `~/Documents/cyber-sanwei`，Windows
+   使用 `%USERPROFILE%\Documents\cyber-sanwei`。按
    [obsidian.md](obsidian.md) 在 Obsidian 中选择“打开文件夹作为仓库”；
    不要用 `obsidian://open?path=...` 注册新仓库。
 5. 打开 `欢迎来到赛博三味书屋.md`，确认文字在 Obsidian 里可见。

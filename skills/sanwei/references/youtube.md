@@ -6,7 +6,7 @@
 ## 第一步：检查依赖
 
 ```bash
-python3 "<skill-dir>/scripts/dependency_doctor.py" --require youtube
+<python-command> "<skill-dir>/scripts/dependency_doctor.py" --require youtube
 ```
 
 缺少 `yt-dlp` 时，给出 [software-links.md](software-links.md) 中的官方链接，
@@ -17,8 +17,8 @@ python3 "<skill-dir>/scripts/dependency_doctor.py" --require youtube
 为本次任务创建临时目录，然后运行包内脚本：
 
 ```bash
-python3 "<skill-dir>/scripts/youtube_capture.py" "YOUTUBE_URL" \
-  --output-dir "/tmp/sanwei-youtube-VIDEO_ID"
+<python-command> "<skill-dir>/scripts/youtube_capture.py" "YOUTUBE_URL" \
+  --output-dir "<temporary-dir>/sanwei-youtube-VIDEO_ID"
 ```
 
 根据 `receipt.json` 处理：
@@ -48,10 +48,12 @@ python3 "<skill-dir>/scripts/youtube_capture.py" "YOUTUBE_URL" \
 5. 把可见字幕交给包内脚本验收：
 
 ```bash
-python3 "<skill-dir>/scripts/youtube_capture.py" "YOUTUBE_URL" \
-  --output-dir "/tmp/sanwei-youtube-VIDEO_ID" \
-  --staged-transcript "/tmp/visible-youtube-transcript.txt"
+<python-command> "<skill-dir>/scripts/youtube_capture.py" "YOUTUBE_URL" \
+  --output-dir "<temporary-dir>/sanwei-youtube-VIDEO_ID" \
+  --staged-transcript "<temporary-dir>/visible-youtube-transcript.txt"
 ```
+
+macOS 可把 `<temporary-dir>` 设为 `/tmp`；Windows PowerShell 使用 `$env:TEMP`。
 
 如果当前 Agent 没有浏览器能力、页面没有字幕入口或用户不同意授权，就让
 用户选择复制字幕文字，或提供字幕/视频文件。不要继续解析初始页面源码；

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -41,6 +42,30 @@ class DependencyDoctorTests(unittest.TestCase):
                 continue
             sources = item.get("official_sources") or [item.get("official_source")]
             self.assertTrue(all(source.startswith("https://") for source in sources))
+
+    def test_windows_report_uses_powershell_and_requires_host_check(self) -> None:
+        payload = MODULE.report("Windows", {})
+        self.assertEqual(payload["platform"]["support_level"], "beta")
+        self.assertEqual(payload["platform"]["shell"], "PowerShell")
+        self.assertTrue(payload["platform"]["host_verification_required"])
+
+    def test_windows_asr_excludes_apple_only_mlx(self) -> None:
+        payload = MODULE.local_asr("Windows")
+        self.assertNotIn("mlx_whisper", payload["commands"])
+        self.assertNotIn("mlx_whisper", payload["modules"])
+        self.assertEqual(
+            payload["official_sources"], ["https://github.com/openai/whisper"]
+        )
+
+    def test_windows_obsidian_override_is_detected(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            application = Path(temporary) / "Obsidian.exe"
+            application.write_bytes(b"")
+            payload = MODULE.report(
+                "Windows", {"CYBER_SANWEI_OBSIDIAN_APP": str(application)}
+            )
+        self.assertEqual(payload["core"]["status"], "ready")
+        self.assertEqual(payload["core"]["obsidian"], str(application))
 
 
 if __name__ == "__main__":

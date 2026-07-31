@@ -12,21 +12,27 @@ Do not assume any other private or user-level Skill is installed.
 Before the first script call, resolve `SKILL_DIR` to the absolute directory
 containing this `SKILL.md`. Never assume the current working directory is the
 Skill directory. Replace `<skill-dir>` in every command below with that path.
+Resolve `<python-command>` once: use `python3` on macOS; on Windows PowerShell,
+prefer `py -3` and fall back to `python`. If neither command works, use the
+official Python link in `references/software-links.md`, wait for installation,
+and check again. On Windows, read [references/windows.md](references/windows.md)
+before onboarding or capture.
 
 ## Route
 
-1. Run `python3 "<skill-dir>/scripts/setup_state.py" doctor`.
+1. Run `<python-command> "<skill-dir>/scripts/setup_state.py" doctor`.
 2. If setup is incomplete, follow **Onboarding**.
-3. Run `python3 "<skill-dir>/scripts/dependency_doctor.py"` before the first
+3. Run `<python-command> "<skill-dir>/scripts/dependency_doctor.py"` before the first
    real capture and whenever a platform route fails.
 4. Otherwise, follow **Capture**.
 
 ## Onboarding
 
 - Ask at most one question per message.
-- If `doctor` reports a system other than macOS, explain that this first
-  onboarding release has not completed cross-platform verification. Do not
-  claim successful automatic setup on that system.
+- If `doctor` reports Windows, continue with the Windows guide and describe its
+  support level as beta until the real desktop, mobile, and Obsidian tests pass
+  on that computer. If it reports another non-macOS system, stop automatic
+  onboarding and do not claim support.
 - Use the desktop agent currently running this Skill. Do not ask the user to
   choose Codex or WorkBuddy at the beginning. Ask only if the current host
   cannot be determined.
@@ -52,13 +58,15 @@ Initialize the core route after the desktop agent and Obsidian are present.
 Always start with `desktop`; do not ask about optional routes yet:
 
 ```bash
-python3 "<skill-dir>/scripts/setup_state.py" init \
+<python-command> "<skill-dir>/scripts/setup_state.py" init \
   --agent codex --channel desktop
 # Or: --agent workbuddy --channel desktop
 ```
 
 The default new-vault directory is the ASCII-only path
-`~/Documents/cyber-sanwei`; call it “赛博三味书屋” in all user-facing text.
+`~/Documents/cyber-sanwei` on macOS or
+`%USERPROFILE%\Documents\cyber-sanwei` on Windows; call it “赛博三味书屋”
+in all user-facing text.
 Respect an existing vault if the user chooses it, even when its path contains
 Chinese characters. Keep a newly created English directory name unchanged
 after registration.
@@ -86,7 +94,7 @@ After the user answers the route question, record it without resetting the
 completed core tests:
 
 ```bash
-python3 "<skill-dir>/scripts/setup_state.py" set-channel --channel desktop
+<python-command> "<skill-dir>/scripts/setup_state.py" set-channel --channel desktop
 # WorkBuddy may instead select: feishu or wechat
 # Codex may instead select: feishu
 ```
@@ -95,7 +103,7 @@ After a successful Feishu Docs test, record the optional Codex destination.
 Never record it from installation or authorization alone:
 
 ```bash
-python3 "<skill-dir>/scripts/setup_state.py" set-destination \
+<python-command> "<skill-dir>/scripts/setup_state.py" set-destination \
   --destination obsidian-feishu \
   --evidence "CREATED_AND_READ_BACK_TEST_DOC_URL"
 ```
@@ -103,28 +111,28 @@ python3 "<skill-dir>/scripts/setup_state.py" set-destination \
 If the user does not select Feishu Docs, keep the default destination:
 
 ```bash
-python3 "<skill-dir>/scripts/setup_state.py" set-destination \
+<python-command> "<skill-dir>/scripts/setup_state.py" set-destination \
   --destination obsidian
 ```
 
 Record evidence after each test:
 
 ```bash
-python3 "<skill-dir>/scripts/setup_state.py" mark \
+<python-command> "<skill-dir>/scripts/setup_state.py" mark \
   --step desktop_test --status complete --evidence "NOTE_PATH"
-python3 "<skill-dir>/scripts/setup_state.py" mark \
+<python-command> "<skill-dir>/scripts/setup_state.py" mark \
   --step mobile_connected --status complete --evidence "PHONE_CLIENT_STATUS"
-python3 "<skill-dir>/scripts/setup_state.py" mark \
+<python-command> "<skill-dir>/scripts/setup_state.py" mark \
   --step mobile_test --status complete --evidence "NOTE_PATH_AND_REPLY"
-python3 "<skill-dir>/scripts/setup_state.py" mark \
+<python-command> "<skill-dir>/scripts/setup_state.py" mark \
   --step channel_connected --status complete --evidence "ROUTE_AND_STATUS"
-python3 "<skill-dir>/scripts/setup_state.py" mark \
+<python-command> "<skill-dir>/scripts/setup_state.py" mark \
   --step channel_test --status complete --evidence "NOTE_PATH_AND_REPLY"
 ```
 
-Run `python3 "<skill-dir>/scripts/setup_state.py" status` and report every
+Run `<python-command> "<skill-dir>/scripts/setup_state.py" status` and report every
 incomplete step. Never claim installation succeeded from file presence alone.
-Also run `python3 "<skill-dir>/scripts/dependency_doctor.py"` and report which
+Also run `<python-command> "<skill-dir>/scripts/dependency_doctor.py"` and report which
 optional capture capabilities are ready, missing, or require a host check.
 After status is complete, read [references/commands.md](references/commands.md)
 and give the user the ready-to-copy command list. Do not end with only
@@ -135,8 +143,8 @@ and give the user the ready-to-copy command list. Do not end with only
 For each source:
 
 1. Confirm setup with
-   `python3 "<skill-dir>/scripts/setup_state.py" status`.
-2. Run `python3 "<skill-dir>/scripts/dependency_doctor.py"` and use only the
+   `<python-command> "<skill-dir>/scripts/setup_state.py" status`.
+2. Run `<python-command> "<skill-dir>/scripts/dependency_doctor.py"` and use only the
    capability needed for this source. A binary being installed does not prove
    the current URL is accessible.
 3. Read [references/note-modes.md](references/note-modes.md) and select the mode
