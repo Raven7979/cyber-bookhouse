@@ -3,6 +3,8 @@
 把桌面 Agent、飞书或微信里的链接和文件，沉淀进同一个本地
 Obsidian 知识库。
 
+![赛博三味书屋项目总览](assets/screenshots/01-overview.png)
+
 完全没接触过 Skill 的用户，从[第一次安装](INSTALL.md)开始。
 
 首版安装包从
@@ -19,6 +21,8 @@ Obsidian 知识库。
 
 Codex 接飞书使用开源的 Lark Channel Bridge。微信入口目前只走
 WorkBuddy 官方的微信助理，不宣称 Codex 原生支持微信。
+
+![三条安装路线示意](assets/screenshots/02-install-routes.png)
 
 ## 普通用户怎么开始
 
@@ -41,6 +45,15 @@ WorkBuddy 官方的微信助理，不宣称 Codex 原生支持微信。
 安装完成后，在桌面 Agent 或飞书里发送：
 
 > 收进书屋：https://example.com
+
+下图是脱敏后的操作示意，不是真实用户账户或产品官方截图：
+
+![从手机消息到本地笔记的处理过程](assets/screenshots/03-capture-example.png)
+
+处理完成后，笔记在 Obsidian 中保留来源、采集方式、内容状态和转写
+状态。拿不到的内容会明确标记，不会用标题或封面冒充正文。
+
+![Obsidian 入库结果示意](assets/screenshots/04-obsidian-result.png)
 
 ## 支持的内容来源
 
