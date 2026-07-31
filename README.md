@@ -28,7 +28,15 @@ Codex 可以从 ChatGPT 手机端查看和继续电脑上的任务；WorkBuddy �
 和
 [WorkBuddy 的移动端远程说明](https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Practice-Cases/Practice-Six)。
 
-![两种桌面与手机使用路线](assets/screenshots/02-install-routes.png)
+![Codex、ChatGPT 手机端和飞书进入 Obsidian 书屋的路线](assets/screenshots/02-codex-route.png)
+
+![WorkBuddy 电脑端、手机端、飞书和微信进入 Obsidian 书屋的路线](assets/screenshots/03-workbuddy-route.png)
+
+如果还要增加常用入口，飞书和微信分别走下面两条路：
+
+![从飞书发送内容链接，经 Codex 或 WorkBuddy 写入 Obsidian](assets/screenshots/06-feishu-route.png)
+
+![从微信发送内容链接，经 WorkBuddy 写入 Obsidian](assets/screenshots/07-wechat-route.png)
 
 ## 第一次怎么装
 
@@ -69,16 +77,14 @@ Codex 可以从 ChatGPT 手机端查看和继续电脑上的任务；WorkBuddy �
 
 `收进书屋：链接` 仍然可以使用，等同于“同步笔记”。
 
-下面是用演示数据做的流程图，不包含真实账号或私人笔记：
-
-![从手机消息到本地笔记的处理过程](assets/screenshots/03-capture-example.png)
+![同一条内容链接可选择同步笔记、蒸馏笔记或详细拆解](assets/screenshots/05-note-modes.png)
 
 整理完成后，Obsidian 里的笔记会保留来源、采集时间、正文状态和转写
 状态。哪部分没有拿到，会直接写明白，不会拿标题和封面凑一篇“完整总结”。
 
-![Obsidian 入库结果示意](assets/screenshots/04-obsidian-result.png)
-
 ## 能整理哪些内容
+
+![支持的长视频、短视频、播客、图文和文档平台](assets/screenshots/04-platforms.png)
 
 | 内容类型 | 常见来源 |
 | --- | --- |
@@ -92,6 +98,8 @@ Codex 可以从 ChatGPT 手机端查看和继续电脑上的任务；WorkBuddy �
 文件通常可以直接处理；遇到登录、付费内容、没有字幕或平台限制时，它会
 告诉你缺了什么，并让你选择授权浏览器、官方导出或自己提供文件。更细的
 边界写在[内容平台说明](skills/sanwei/references/content-platforms.md)里。
+
+平台名称和 Logo 仅用于说明兼容入口，权利归各自持有人所有。
 
 ## 什么样才算真的装好了
 
@@ -116,6 +124,6 @@ Codex 可以从 ChatGPT 手机端查看和继续电脑上的任务；WorkBuddy �
 
 ## 现在做到哪一步
 
-`v0.1.0` 是第一个公开预览版。macOS 安装向导、Codex / WorkBuddy、
+`v0.1.2` 是第一个公开版本。macOS 安装向导、Codex / WorkBuddy、
 手机入口、飞书 / 微信选项、Obsidian 笔记格式和内容边界已经放进仓库。
 不同内容平台仍需要继续拿真实样本逐个测试。
