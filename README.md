@@ -54,7 +54,7 @@ Codex 可以从 ChatGPT 手机端查看和继续电脑上的任务；WorkBuddy �
 
 在 ChatGPT、Codex、WorkBuddy、飞书或微信中，把链接或文件发出去，并说：
 
-> 收进书屋：https://example.com
+> 收进书屋：`https://www.bilibili.com/video/BV1xxxxxxxxx`（这里可以放文章、视频或播客链接）
 
 下面是用演示数据做的流程图，不包含真实账号或私人笔记：
 
