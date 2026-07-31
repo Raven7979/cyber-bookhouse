@@ -1,0 +1,15 @@
+{
+  "title": "怎样释放 Agent 的能力富余",
+  "subtitle": "《Seeing like an Agent》的核心心智模型",
+  "type": "framework",
+  "nodes": [
+    {"id": "center", "title": "释放 Agent 能力", "description": "让实际表现接近模型可达到的上限"},
+    {"id": "goal", "title": "目标校准", "description": "先问清真正要推动的结果"},
+    {"id": "context", "title": "补足上下文", "description": "理解用户、任务世界与限制"},
+    {"id": "tools", "title": "给数据和工具", "description": "不让模型只靠记忆硬猜"},
+    {"id": "loop", "title": "保持人在环", "description": "探索、反馈、修正与共同生成"},
+    {"id": "visual", "title": "可视化未知", "description": "把抽象报告变成可操作理解"},
+    {"id": "prototype", "title": "尽早做原型", "description": "用低成本试作提前暴露错位"}
+  ],
+  "footer": "模型、工作环境、外部世界与用户共同决定最终表现。"
+}

@@ -1,0 +1,19 @@
+{
+  "title": "从黑盒生成到团队共创",
+  "subtitle": "Open Design Team 公开短片中的产品路径",
+  "type": "flow",
+  "nodes": [
+    {"id": "prompt", "title": "输入需求", "description": "旧方式只等待最终结果"},
+    {"id": "connect", "title": "接入工作区", "description": "Codex、MCP 与 Skills 连接设计画布"},
+    {"id": "observe", "title": "看见过程", "description": "设计生成过程实时可见"},
+    {"id": "intervene", "title": "随时介入", "description": "评论、微调或改变方向"},
+    {"id": "team", "title": "团队共创", "description": "审阅、编辑并共享设计资产"}
+  ],
+  "edges": [
+    {"from": "prompt", "to": "connect"},
+    {"from": "connect", "to": "observe"},
+    {"from": "observe", "to": "intervene"},
+    {"from": "intervene", "to": "team"}
+  ],
+  "footer": "图中关系来自公开短片的旁白与界面演示；权限、冲突和版本治理仍需验证。"
+}

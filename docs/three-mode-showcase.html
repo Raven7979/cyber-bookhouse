@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>赛博三味书屋 · 三种笔记模式</title>
+  <style>
+    :root {
+      --paper: #f4f0e8;
+      --card: #fffdf8;
+      --ink: #1d1913;
+      --muted: #71695f;
+      --line: #d7cfc3;
+      --red: #cf4b31;
+      --green: #2f7668;
+      --purple: #7552d6;
+      --blue: #335caa;
+    }
+    * { box-sizing: border-box; }
+    html, body { width: 1600px; height: 900px; margin: 0; overflow: hidden; }
+    body {
+      color: var(--ink);
+      background: #d7d0c5;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    [data-view] { display: none; }
+    body[data-mode="standard"] [data-view="standard"],
+    body[data-mode="distilled"] [data-view="distilled"],
+    body[data-mode="detailed"] [data-view="detailed"] { display: block; }
+    .page {
+      position: relative;
+      width: 1600px;
+      height: 900px;
+      padding: 30px 38px 34px;
+      background-color: var(--paper);
+      background-image:
+        linear-gradient(rgba(117, 105, 91, .12) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(117, 105, 91, .12) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+    .page::after {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border: 1px solid rgba(113, 105, 95, .30);
+      pointer-events: none;
+    }
+    .brand { display: flex; align-items: center; gap: 14px; font-weight: 760; font-size: 20px; }
+    .mark {
+      display: grid;
+      width: 46px;
+      height: 46px;
+      place-items: center;
+      color: white;
+      background: var(--red);
+      font-size: 28px;
+      font-weight: 900;
+      box-shadow: 8px 8px 0 rgba(207, 75, 49, .14);
+    }
+    .topbar { display: flex; align-items: center; justify-content: space-between; }
+    .mode { display: flex; align-items: center; gap: 10px; }
+    .chip {
+      border: 1px solid currentColor;
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 14px;
+      font-weight: 780;
+      letter-spacing: .08em;
+      background: rgba(255,255,255,.58);
+    }
+    .privacy { color: var(--muted); font-size: 13px; }
+    h1 { margin: 22px 0 8px; max-width: 1280px; font-family: "Songti SC", "STSong", serif; font-size: 42px; line-height: 1.12; letter-spacing: -.025em; }
+    .meta { color: var(--muted); font-size: 15px; }
+    .content { margin-top: 20px; }
+    .grid { display: grid; grid-template-columns: 1fr 1.18fr; gap: 22px; }
+    .grid.equal { grid-template-columns: 1fr 1fr; }
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255,253,248,.94);
+      box-shadow: 9px 11px 0 rgba(94, 82, 67, .09);
+      padding: 20px 22px;
+    }
+    .card h2 { margin: 0 0 12px; font-size: 19px; }
+    .card h3 { margin: 16px 0 8px; color: var(--muted); font-size: 14px; letter-spacing: .08em; text-transform: uppercase; }
+    .summary { border-left: 5px solid var(--green); font-size: 18px; line-height: 1.6; }
+    .distilled .summary { border-left-color: var(--red); }
+    .detailed .summary { border-left-color: var(--purple); }
+    ul { margin: 8px 0 0; padding-left: 1.2em; }
+    li { margin: 8px 0; font-size: 15px; line-height: 1.5; }
+    .diagram-card { padding: 12px; overflow: hidden; }
+    .diagram { display: block; width: 100%; height: 390px; object-fit: contain; border-radius: 12px; background: #f4f0e8; }
+    .transcript { margin-top: 20px; }
+    .line { display: grid; grid-template-columns: 70px 1fr; gap: 12px; padding: 8px 0; border-top: 1px solid #e4ddd3; font-size: 14px; line-height: 1.45; }
+    .time { color: var(--green); font-weight: 760; }
+    .distilled .time { color: var(--red); }
+    .section-label { margin-bottom: 8px; color: var(--muted); font-size: 13px; font-weight: 760; letter-spacing: .12em; }
+    .skeleton { display: grid; grid-template-columns: 80px 1fr; gap: 0 14px; }
+    .skeleton div { padding: 8px 0; border-top: 1px solid #e3dbd0; font-size: 14px; line-height: 1.35; }
+    .skeleton .stamp { color: var(--red); font-weight: 760; }
+    .method { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .method-item { border: 1px solid #e0d7cb; border-radius: 12px; padding: 11px 13px; background: #faf7f1; }
+    .method-item strong { display: block; margin-bottom: 4px; color: var(--red); }
+    .method-item span { color: var(--muted); font-size: 13px; line-height: 1.4; }
+    .warning { margin-top: 13px; padding: 12px 14px; border-radius: 12px; background: #f3e8df; color: #694536; font-size: 13px; line-height: 1.45; }
+    .split { display: grid; grid-template-columns: .88fr 1.12fr; gap: 22px; }
+    .mode-panel { position: relative; min-height: 270px; }
+    .mode-panel::before { content: attr(data-number); position: absolute; right: 18px; top: 10px; color: rgba(117,82,214,.12); font-size: 84px; font-weight: 900; }
+    .mode-panel h2 { font-size: 22px; }
+    .mini-tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+    .mini-tags span { border-radius: 999px; background: #ede7f8; color: #6040b8; padding: 6px 10px; font-size: 12px; font-weight: 700; }
+    .detailed .diagram { height: 355px; }
+    .footer { position: absolute; left: 42px; right: 42px; bottom: 14px; display: flex; justify-content: space-between; color: #7a7268; font-size: 12px; z-index: 2; }
+  </style>
+</head>
+<body>
+  <section class="page standard" data-view="standard">
+    <div class="topbar">
+      <div class="brand"><span class="mark">三</span><span>赛博三味书屋</span></div>
+      <div class="mode"><span class="chip" style="color:var(--green)">同步笔记</span><span class="privacy">基于真实公开内容的脱敏样式参考</span></div>
+    </div>
+    <h1>Open Design Team：让多个 Codex 在同一设计画布中实时协作</h1>
+    <div class="meta">视频 · 英文原声 · 48 秒 · 已生成中文逐字译稿</div>
+    <div class="content grid">
+      <div>
+        <div class="card summary"><strong>一句话摘要</strong><br>Open Design 把 Codex、MCP 和 Skills 接入实时设计工作区，让个人和团队能看见过程、随时介入，并在同一画布里审阅与编辑。</div>
+        <div class="card transcript">
+          <h2>核心内容</h2>
+          <ul>
+            <li>从“输入提示词后等待结果”的黑盒，转为可见的持续设计过程。</li>
+            <li>用户可以评论、微调或改变方向，Agent 继续推进。</li>
+            <li>多人协作价值成立之前，权限、冲突和版本历史仍需验证。</li>
+          </ul>
+          <h3>逐字稿 · 节选</h3>
+          <div class="line"><span class="time">00:12</span><span>你现在可以真正实时看到 Codex 进行设计。</span></div>
+          <div class="line"><span class="time">00:21</span><span>你可以随时介入、留下评论、微调设计，或者改变方向。</span></div>
+          <div class="line"><span class="time">00:31</span><span>团队可以在共享工作区里审阅、评论、编辑和共享资产。</span></div>
+        </div>
+      </div>
+      <div class="card diagram-card"><img class="diagram" src="../assets/examples/open-design-flow.svg" alt="从黑盒生成到团队共创流程图"></div>
+    </div>
+    <div class="footer"><span>同步笔记：简单总结 + 逐字稿 + 必要翻译</span><span>适合学习 · 记录 · 留档</span></div>
+  </section>
+
+  <section class="page distilled" data-view="distilled">
+    <div class="topbar">
+      <div class="brand"><span class="mark">三</span><span>赛博三味书屋</span></div>
+      <div class="mode"><span class="chip" style="color:var(--red)">蒸馏笔记</span><span class="privacy">基于真实公开内容的脱敏样式参考</span></div>
+    </div>
+    <h1>《Seeing like an Agent》：为 Claude 建立心智模型</h1>
+    <div class="meta">公开演讲 · 长视频 · 已取得完整逐字稿与画面证据</div>
+    <div class="content grid equal">
+      <div>
+        <div class="card summary"><strong>主旨与核心问题</strong><br>模型往往比表面表现更强。真正限制结果的，常常是目标、上下文、工具、表达形式与人的参与方式。</div>
+        <div class="card transcript">
+          <div class="section-label">内容骨架</div>
+          <div class="skeleton">
+            <div class="stamp">04:00</div><div>人—Agent 交互是一项长期高杠杆技能</div>
+            <div class="stamp">05:20</div><div>能力以尖峰方式出现，工作环境可能压住表现</div>
+            <div class="stamp">09:20</div><div>站在 Agent 的处境理解用户、任务与可用上下文</div>
+            <div class="stamp">12:05</div><div>端到端视频剪辑展示工具与共同生成</div>
+            <div class="stamp">16:50</div><div>可视化帮助识别并消除“未知的未知”</div>
+            <div class="stamp">25:20</div><div>用廉价原型尽早发现真正需求</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card diagram-card"><img class="diagram" src="../assets/examples/seeing-agent-framework.svg" alt="释放 Agent 能力富余框架图"></div>
+        <div class="card" style="margin-top:18px">
+          <div class="section-label">可复用方法</div>
+          <div class="method">
+            <div class="method-item"><strong>先给完整材料</strong><span>检索任务不要逼模型只靠权重记忆。</span></div>
+            <div class="method-item"><strong>把理解变可见</strong><span>图、原型和对照比“漂亮报告”更可操作。</span></div>
+            <div class="method-item"><strong>保持人在环</strong><span>探索、反馈和修正共同决定结果。</span></div>
+            <div class="method-item"><strong>提前暴露错位</strong><span>用低成本原型把需求发现前置。</span></div>
+          </div>
+          <div class="warning">边界：演讲中的个人案例能证明方法可行，但不能单独证明它对所有团队、任务和模型都稳定成立。</div>
+        </div>
+      </div>
+    </div>
+    <div class="footer"><span>蒸馏笔记：结构 · 表达 · 方法 · 反例 · 失效边界</span><span>重点适合短片拉片与深度学习</span></div>
+  </section>
+
+  <section class="page detailed" data-view="detailed">
+    <div class="topbar">
+      <div class="brand"><span class="mark">三</span><span>赛博三味书屋</span></div>
+      <div class="mode"><span class="chip" style="color:var(--purple)">详细拆解</span><span class="privacy">基于真实公开内容的脱敏样式参考</span></div>
+    </div>
+    <h1>《Seeing like an Agent》：从完整证据到可执行方法</h1>
+    <div class="meta">同一篇内容，同时保留“同步笔记”和“蒸馏笔记”的结果</div>
+    <div class="content split">
+      <div>
+        <div class="card mode-panel" data-number="01">
+          <h2>同步部分</h2>
+          <div class="mini-tags"><span>内容总结</span><span>时间码逐字稿</span><span>中英翻译</span><span>关键事实</span></div>
+          <p style="font-size:15px;line-height:1.6">演讲从“AI 尚未兑现足够现实价值”出发，依次讨论能力富余、正确工具、人在环、可视化理解与原型前置。</p>
+          <div class="line"><span class="time" style="color:var(--purple)">18:05</span><span>用可视化把调色从抽象报告变成可观察的像素变化。</span></div>
+          <div class="line"><span class="time" style="color:var(--purple)">25:20</span><span>先做廉价原型，提前发现“我真正想要什么”。</span></div>
+        </div>
+        <div class="card mode-panel" data-number="02" style="margin-top:18px; min-height:220px">
+          <h2>蒸馏部分</h2>
+          <ul>
+            <li><strong>核心方法：</strong>目标校准 → 补足上下文 → 提供工具 → 人在环验证。</li>
+            <li><strong>反例：</strong>只生成一份看起来很厉害的报告，会制造“理解了”的错觉。</li>
+            <li><strong>失败边界：</strong>案例经验不能自动外推为所有场景的稳定规律。</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card diagram-card"><img class="diagram" src="../assets/examples/seeing-agent-timeline.svg" alt="长内容详细拆解时间线"></div>
+    </div>
+    <div class="footer"><span>详细拆解 = 同步笔记 + 蒸馏笔记</span><span>不重复画图 · 每个判断可回到证据</span></div>
+  </section>
+  <script>
+    const allowed = new Set(["standard", "distilled", "detailed"]);
+    const requested = new URLSearchParams(location.search).get("mode") || "standard";
+    document.body.dataset.mode = allowed.has(requested) ? requested : "standard";
+  </script>
+</body>
+</html>

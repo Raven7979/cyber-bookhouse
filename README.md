@@ -98,7 +98,7 @@ Codex 默认把 Markdown 原件写入本地 Obsidian；完成飞书官方授权�
 全部安装完成后，向导会给出三种命令。在 ChatGPT、Codex、WorkBuddy、飞书
 或微信中，把链接或文件发出去，并说：
 
-> 同步笔记：`https://www.bilibili.com/video/BV1xxxxxxxxx`
+> 同步笔记：`https://www.youtube.com/watch?v=DEMO_VIDEO_ID`
 
 - `同步笔记`：视频做简单总结、逐字稿和必要的翻译；图文做正文总结。
   适合学习、记录和留档。
@@ -108,6 +108,24 @@ Codex 默认把 Markdown 原件写入本地 Obsidian；完成飞书官方授权�
 `收进书屋：链接` 仍然可以使用，等同于“同步笔记”。
 
 ![同一条内容链接可选择同步笔记、蒸馏笔记或详细拆解](assets/screenshots/05-note-modes.png)
+
+### 三种模式实际长什么样
+
+下面用两篇公开内容做脱敏示例：短片《Open Design Team：让多个 Codex
+在同一设计画布中实时协作》和演讲《Seeing like an Agent》。展示内容来自
+真实整理结果，但已经去掉账号、真实链接、本机路径、仓库信息和私人关联笔记。
+
+**同步笔记**保留简单总结、核心内容、带时间点的逐字稿和必要翻译：
+
+![同步笔记真实脱敏示例：Open Design Team](assets/screenshots/10-standard-note-example.png)
+
+**蒸馏笔记**重点展示内容骨架、方法、反例与失效边界：
+
+![蒸馏笔记真实脱敏示例：Seeing like an Agent](assets/screenshots/11-distilled-note-example.png)
+
+**详细拆解**把同步笔记和蒸馏笔记放在同一篇结果里，同时保留证据路径：
+
+![详细拆解真实脱敏示例：Seeing like an Agent](assets/screenshots/12-detailed-note-example.png)
 
 ### 有结构的内容，会适当配图
 
