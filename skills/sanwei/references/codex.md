@@ -15,7 +15,8 @@ ChatGPT 组成；飞书可以是额外入口，飞书文档也可以是授权后
    不要用 `obsidian://open?path=...` 注册新仓库。
 4. 打开 `欢迎来到赛博三味书屋.md`，确认文字在 Obsidian 里可见。
 5. 用书屋路径作为证据，标记 `vault_registered`。
-6. 在电脑上的 Codex 中发送 `收进书屋：https://example.com`。
+6. 在电脑上的 Codex 中发送
+   `同步笔记：<你自己的一条文章、视频或播客链接>`。
 7. 打开生成的笔记，确认原链接和正文可见，再标记 `desktop_test`。
 
 ## 接好 ChatGPT 手机端
@@ -26,7 +27,7 @@ ChatGPT 组成；飞书可以是额外入口，飞书文档也可以是授权后
    该功能可能仍处于逐步开放状态；不要编造用户当前版本里不存在的菜单。
 3. 手机端能看到电脑任务后，标记 `mobile_connected`，证据只写
    “ChatGPT mobile connected”，不要记录账号、设备名或会话 ID。
-4. 从手机发送 `收进书屋：https://example.com`。
+4. 从手机发送 `同步笔记：<你自己的一条内容链接>`。
 5. 确认手机收到回复，并在同一个 Obsidian 书屋里看到新笔记，再标记
    `mobile_test`。
 
@@ -55,7 +56,7 @@ https://openai.com/index/work-with-codex-from-anywhere/
    `lark-channel-bridge start --agent codex`。
 6. 确认 `lark-channel-bridge status` 显示后台服务正常，再标记
    `channel_connected`。
-7. 在飞书中发送 `收进书屋：https://example.com`。
+7. 在飞书中发送 `同步笔记：<你自己的一条内容链接>`。
 8. 确认飞书收到回复，而且笔记进入同一个 Obsidian 书屋，再标记
    `channel_test`。
 
@@ -76,7 +77,8 @@ python3 "<skill-dir>/scripts/setup_state.py" set-destination \
 没有选择飞书文档时，运行 `set-destination --destination obsidian`。
 
 最后运行 `status`。全部完成后读取 [commands.md](commands.md)，把三种笔记
-命令直接发给用户。
+命令直接发给用户。第一次真实采集前再运行 `dependency_doctor.py`，按
+[capabilities.md](capabilities.md) 报告当前电脑真正具备的能力。
 
 电脑关机、深度睡眠或断网时，手机、飞书入口和飞书文档写入都无法继续
 调用这台电脑上的 Codex。接了飞书入口时，后台桥接必须能在电脑重新登录

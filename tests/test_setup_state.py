@@ -105,6 +105,15 @@ class SetupStateTests(unittest.TestCase):
         state["steps"]["channel_test"]["status"] = "complete"
         self.assertTrue(MODULE.normalize_state(state)["complete"])
 
+    def test_ready_commands_explain_all_three_modes(self) -> None:
+        commands = {item["command"]: item["purpose"] for item in MODULE.READY_COMMANDS}
+        self.assertIn("同步笔记：<链接或文件>", commands)
+        self.assertIn("蒸馏笔记：<链接或文件>", commands)
+        self.assertIn("详细拆解：<链接或文件>", commands)
+        self.assertIn("逐字稿", commands["同步笔记：<链接或文件>"])
+        self.assertIn("拉片", commands["蒸馏笔记：<链接或文件>"])
+        self.assertIn("完整包含", commands["详细拆解：<链接或文件>"])
+
     def test_codex_rejects_wechat_route(self) -> None:
         args = type(
             "Args",

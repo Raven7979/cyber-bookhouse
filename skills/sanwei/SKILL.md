@@ -7,6 +7,7 @@ description: Set up and use 赛博三味书屋 as a local knowledge-capture work
 
 Guide setup one step at a time, then turn links or files into durable local
 Markdown notes. Keep third-party software external; use official sources only.
+Do not assume any other private or user-level Skill is installed.
 
 Before the first script call, resolve `SKILL_DIR` to the absolute directory
 containing this `SKILL.md`. Never assume the current working directory is the
@@ -16,7 +17,9 @@ Skill directory. Replace `<skill-dir>` in every command below with that path.
 
 1. Run `python3 "<skill-dir>/scripts/setup_state.py" doctor`.
 2. If setup is incomplete, follow **Onboarding**.
-3. Otherwise, follow **Capture**.
+3. Run `python3 "<skill-dir>/scripts/dependency_doctor.py"` before the first
+   real capture and whenever a platform route fails.
+4. Otherwise, follow **Capture**.
 
 ## Onboarding
 
@@ -36,6 +39,8 @@ Skill directory. Replace `<skill-dir>` in every command below with that path.
   - Codex: [references/codex.md](references/codex.md)
   - WorkBuddy: [references/workbuddy.md](references/workbuddy.md)
 - Use [references/software-links.md](references/software-links.md) for downloads.
+- Read [references/capabilities.md](references/capabilities.md) before claiming
+  a platform or output is supported on this computer.
 - Read [references/obsidian.md](references/obsidian.md) before creating or
   registering a new vault.
 - Do not bundle, mirror, or silently replace third-party applications.
@@ -119,6 +124,8 @@ python3 "<skill-dir>/scripts/setup_state.py" mark \
 
 Run `python3 "<skill-dir>/scripts/setup_state.py" status` and report every
 incomplete step. Never claim installation succeeded from file presence alone.
+Also run `python3 "<skill-dir>/scripts/dependency_doctor.py"` and report which
+optional capture capabilities are ready, missing, or require a host check.
 After status is complete, read [references/commands.md](references/commands.md)
 and give the user the ready-to-copy command list. Do not end with only
 “installation complete”.
@@ -129,25 +136,38 @@ For each source:
 
 1. Confirm setup with
    `python3 "<skill-dir>/scripts/setup_state.py" status`.
-2. Read [references/note-modes.md](references/note-modes.md) and select the mode
+2. Run `python3 "<skill-dir>/scripts/dependency_doctor.py"` and use only the
+   capability needed for this source. A binary being installed does not prove
+   the current URL is accessible.
+3. Read [references/note-modes.md](references/note-modes.md) and select the mode
    directly from the user's command. Do not ask again when the command is clear.
-3. Acquire only evidence the current agent can actually access.
 4. Read
    [references/content-platforms.md](references/content-platforms.md), classify
    the source, and select the least invasive acquisition method that can
    produce the requested result.
-5. Read [references/note-schema.md](references/note-schema.md).
-6. Write one Markdown note under
+5. For YouTube, read [references/youtube.md](references/youtube.md) and use the
+   bundled `scripts/youtube_capture.py`. Do not improvise repeated extractor
+   retries or parse the initial HTML for dynamically rendered subtitles.
+6. For ordinary public articles, read [references/web.md](references/web.md)
+   and use `scripts/web_capture.py`. For user-provided audio or video, read
+   [references/media.md](references/media.md) and use
+   `scripts/media_capture.py` when the required external tools are ready.
+7. Acquire only evidence the current agent can actually access. If the selected
+   mode is `distilled` or `detailed`, read
+   [references/distillation.md](references/distillation.md) and enforce its
+   evidence gate.
+8. Read [references/note-schema.md](references/note-schema.md).
+9. Write one Markdown note under
    `<vault>/链接采集/YYYY-MM-DD/` and meaningful local assets under
    `<vault>/链接采集/_assets/<capture-id>/`.
-7. If `status` reports `destination: obsidian-feishu`, read
+10. If `status` reports `destination: obsidian-feishu`, read
    [references/feishu-docs.md](references/feishu-docs.md), create a Feishu Doc
    copy, and read it back. Do not mark the Feishu destination when creation or
    readback fails.
-8. Preserve source URL, author when known, capture time, access limits, and
+11. Preserve source URL, author when known, capture time, access limits, and
    uncertainty. Do not invent inaccessible content or transcripts.
-9. Open the note in Obsidian and verify visible text and assets.
-10. Return the local note path, selected mode, content status, acquisition
+12. Open the note in Obsidian and verify visible text and assets.
+13. Return the local note path, selected mode, content status, acquisition
     method, any limitation, and the verified Feishu Doc URL when one was
     created.
 

@@ -16,6 +16,10 @@ Use these sources. Do not bundle third-party installers in the project.
 | Node.js 20.12.0+ | https://nodejs.org/en/download | Codex-to-Feishu bridge |
 | Lark Channel Bridge | https://github.com/zarazhangrui/lark-coding-agent-bridge | Codex-to-Feishu bridge |
 | Lark / Feishu CLI | https://github.com/larksuite/cli | Optional Codex-to-Feishu-Docs output |
+| yt-dlp | https://github.com/yt-dlp/yt-dlp#installation | YouTube public metadata and subtitles |
+| FFmpeg | https://ffmpeg.org/download.html | Local audio/video processing and validation |
+| Whisper | https://github.com/openai/whisper | Optional local speech transcription |
+| MLX Whisper | https://github.com/ml-explore/mlx-examples/tree/main/whisper | Optional local speech transcription on Apple silicon |
 
 When a required application is missing:
 

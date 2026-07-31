@@ -58,6 +58,21 @@ CORE_STEPS = (
     "mobile_connected",
     "mobile_test",
 )
+READY_COMMANDS = (
+    {
+        "command": "同步笔记：<链接或文件>",
+        "purpose": "视频总结、逐字稿和必要的翻译；图文总结，适合学习、记录和留档",
+    },
+    {
+        "command": "蒸馏笔记：<链接或文件>",
+        "purpose": "详细结构分析，重点适合短片拉片",
+    },
+    {
+        "command": "详细拆解：<链接或文件>",
+        "purpose": "完整包含同步笔记和蒸馏笔记",
+    },
+    {"command": "检查书屋", "purpose": "检查连接、依赖和本地笔记路径"},
+)
 
 
 def now() -> str:
@@ -219,7 +234,13 @@ def welcome_text() -> str:
             "",
             "试着对 Codex、ChatGPT 手机端或 WorkBuddy 说：",
             "",
-            "> 收进书屋：https://example.com",
+            "> 同步笔记：<文章、视频或播客链接>",
+            "",
+            "三种方式：",
+            "",
+            "- 同步笔记：总结、逐字稿、必要的翻译，适合学习和留档。",
+            "- 蒸馏笔记：详细结构分析，重点适合短片拉片。",
+            "- 详细拆解：同时包含前两种结果。",
             "",
             "Markdown 文件是原件；Obsidian 用于阅读、搜索和整理。",
             "",
@@ -474,6 +495,7 @@ def command_status(_: argparse.Namespace) -> int:
             ),
             None,
         ),
+        "ready_commands": list(READY_COMMANDS) if state.get("complete") else [],
     }
     print(json.dumps(output, ensure_ascii=False, indent=2))
     return 0 if output["complete"] else 2
