@@ -1,7 +1,7 @@
 # WorkBuddy 安装路线
 
 用户选择 WorkBuddy 时，按下面顺序完成。基础路线由电脑端和 WorkBuddy
-移动端组成；飞书、微信是可选的额外入口。
+移动端组成；飞书、微信助理是可选的额外入口。
 
 ## 安装顺序
 
@@ -9,7 +9,7 @@
 2. 确认「赛博三味书屋」已经出现在 WorkBuddy 的已安装技能中并处于启用
    状态。
 3. 运行 `setup_state.py init --agent workbuddy --channel desktop`。此时不要
-   询问飞书或微信，也不要把 `desktop` 换成其他值。
+   询问飞书或微信助理，也不要把 `desktop` 换成其他值。
 4. 新建书屋时，macOS 使用 `~/Documents/cyber-sanwei`，Windows
    使用 `%USERPROFILE%\Documents\cyber-sanwei`。按
    [obsidian.md](obsidian.md) 在 Obsidian 中选择“打开文件夹作为仓库”；
@@ -38,15 +38,16 @@ https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Practice-C
 只有 `vault_registered`、`desktop_test`、`mobile_connected` 和
 `mobile_test` 都完成后，才问：
 
-> 基础书屋已经装好。你要只用 WorkBuddy，还是再接飞书或微信？
+> 基础书屋已经装好。你要只用 WorkBuddy，还是再接飞书或微信助理？
 
 根据回答运行 `setup_state.py set-channel --channel desktop|feishu|wechat`。
 不要在安装开始时提这个问题。
 
-## 如果用户选择飞书或微信
+## 如果用户选择飞书或微信助理
 
-1. 打开 WorkBuddy 的助理设置，选择用户要用的入口。
-2. 微信按当前官方微信助理指南扫码绑定；飞书按当前官方指南完成授权。
+1. 微信助理读取 [wechat-assistant.md](wechat-assistant.md)，按当前官方指南
+   逐步扫码绑定；飞书按当前官方指南完成授权。
+2. 不要用普通微信 App 图标或“微信机器人”泛称替代产品里的“微信助理”。
 3. 登录、扫码和授权都由用户在官方界面中完成，不要求用户把凭据贴进
    对话。
 4. 打开 WorkBuddy 的登录时启动，并在重启 WorkBuddy 后确认连接仍然可用。

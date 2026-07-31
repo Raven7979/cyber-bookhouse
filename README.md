@@ -17,7 +17,7 @@ Codex 用户如果愿意授权，还可以同时生成一份飞书文档副本�
 ```text
 文章、视频、播客或本地文件
             ↓
-ChatGPT / Codex 或 WorkBuddy（电脑、手机、飞书、微信）
+ChatGPT / Codex 或 WorkBuddy（电脑、手机、飞书、微信助理）
             ↓
    同步笔记 / 蒸馏笔记 / 详细拆解
             ↓
@@ -74,9 +74,10 @@ Obsidian 本地原件 → 可选的飞书文档副本
 
 ### 三种模式实际长什么样
 
-下面用两篇公开内容做脱敏示例：《Open Design Team：让多个 Codex 在同一
-设计画布中实时协作》和《Seeing like an Agent》。真实链接、账号、本机路径和
-私人关联笔记已经去掉。
+下面用两篇公开内容做真实案例：《Open Design Team：让多个 Codex 在同一
+设计画布中实时协作》和《Seeing like an Agent》。三张图均为 Obsidian 1.13.4
+阅读视图实拍；公开来源链接保留，拍摄时关闭文件列表，个人账号、本机路径和
+私人关联笔记均未进入画面。
 
 **同步笔记**：总结、核心内容、带时间点的逐字稿和必要翻译。
 
@@ -111,25 +112,27 @@ Windows 10+ 安装指南。详细的 Windows 路径和验收见
 
 | 你平时用什么 | 电脑上 | 手机上 | 还可以接 |
 | --- | --- | --- | --- |
-| ChatGPT / Codex | Codex | ChatGPT 手机端 | 飞书入口、飞书文档 |
-| WorkBuddy | WorkBuddy | WorkBuddy 手机端 | 飞书、微信 |
+| ChatGPT / Codex | Codex | ChatGPT 手机端 | 飞书入口、微信助理（通过 WorkBuddy）、飞书文档 |
+| WorkBuddy | WorkBuddy | WorkBuddy 手机端 | 飞书、微信助理 |
 
 已经在用 ChatGPT，就走 Codex 这条路；已经在用 WorkBuddy，就走 WorkBuddy。
-不用为了这套书屋把两边都装一遍。手机远程入口依赖电脑保持在线。
+不选择微信助理时，不用为了书屋把两边都装一遍；Codex 用户主动选择微信
+助理后，Codex 会继续引导安装或打开 WorkBuddy，并让它写入同一个书屋。
+手机远程入口依赖电脑保持在线。
 
-![Codex 从电脑、手机或飞书接收内容，再写入 Obsidian 或飞书文档](assets/screenshots/02-codex-route.png)
+![Codex 从电脑、手机或飞书接收内容；选择微信助理时继续引导 WorkBuddy 接入同一个书屋](assets/screenshots/02-codex-route.png)
 
 Codex 默认把 Markdown 原件写入 Obsidian。完成飞书官方授权和真实读回测试后，
 也可以同时生成飞书文档副本。飞书入口负责“从哪里发”，飞书文档负责
 “整理后放到哪里”，是两件事。
 
-![WorkBuddy 电脑端、手机端、飞书和微信进入 Obsidian 书屋的路线](assets/screenshots/03-workbuddy-route.png)
+![WorkBuddy 电脑端、手机端、飞书和微信助理进入 Obsidian 书屋的路线](assets/screenshots/03-workbuddy-route.png)
 
 ![从 ChatGPT 或 WorkBuddy 手机端发送链接](assets/screenshots/06-mobile-route.png)
 
 ![从飞书发送链接，经 Codex 或 WorkBuddy 写入 Obsidian](assets/screenshots/07-feishu-route.png)
 
-![从微信发送链接，经 WorkBuddy 写入 Obsidian](assets/screenshots/08-wechat-route.png)
+![从微信助理发送链接，经 WorkBuddy 写入 Obsidian](assets/screenshots/08-wechat-route.png)
 
 ## 一分钟体验
 
@@ -153,14 +156,14 @@ Codex 默认把 Markdown 原件写入 Obsidian。完成飞书官方授权和真�
 
 > 请用 sanwei Skill 帮我搭好赛博三味书屋。请识别当前是 Codex 还是
 > WorkBuddy，先完成软件、Obsidian、电脑和手机真实测试，之后再问我
-> 要不要增加飞书入口、微信或飞书文档。每次只说一个操作，最后运行
+> 要不要增加飞书入口、微信助理或飞书文档。每次只说一个操作，最后运行
 > 包内能力检查，告诉我哪些内容能直接处理。
 
 新建书屋时，macOS 的默认目录是 `~/Documents/cyber-sanwei`，Windows 是
 `%USERPROFILE%\Documents\cyber-sanwei`。对你仍然称为“赛博三味书屋”。
 
 向导会先用 Obsidian 的“打开文件夹作为仓库”注册目录，再做电脑和手机
-真实写入测试。基础测试通过后，才会询问是否增加飞书、微信或飞书文档。
+真实写入测试。基础测试通过后，才会询问是否增加飞书、微信助理或飞书文档。
 
 ## 下载包里有什么
 
@@ -179,7 +182,7 @@ Codex 默认把 Markdown 原件写入 Obsidian。完成飞书官方授权和真�
 
 - 电脑端发一个测试链接，Obsidian 里出现可读笔记。
 - 手机端也能继续同一个工作，并收到处理结果。
-- 如果另外接了飞书或微信，它们写入的是同一个书屋。
+- 如果另外接了飞书或微信助理，它们写入的是同一个书屋。
 - 如果选了飞书文档，测试文档能创建、能读回、能由用户打开。
 - 包内能力检查已运行，缺少的外部工具和受限平台被如实报告。
 

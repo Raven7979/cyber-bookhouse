@@ -401,11 +401,10 @@ def welcome_text() -> str:
 
 
 def validate_agent_channel(agent: str, channel: str) -> None:
-    if agent == "codex" and channel == "wechat":
-        raise ValueError(
-            "WeChat is supported only through WorkBuddy in this release. "
-            "Choose desktop or feishu for Codex."
-        )
+    if agent not in {"codex", "workbuddy"}:
+        raise ValueError(f"Unsupported desktop agent: {agent}")
+    if channel not in {"desktop", "feishu", "wechat"}:
+        raise ValueError(f"Unsupported input channel: {channel}")
 
 
 def apply_channel_state(
@@ -418,7 +417,7 @@ def apply_channel_state(
         "updated_at": now(),
     }
     if channel == "desktop":
-        evidence = "no additional Feishu or WeChat connector requested"
+        evidence = "no additional Feishu or WeChat Assistant connector requested"
         for step in ("channel_connected", "channel_test"):
             state["steps"][step] = {
                 "status": "complete",
@@ -444,6 +443,11 @@ def command_doctor(_: argparse.Namespace) -> int:
 
 def command_init(args: argparse.Namespace) -> int:
     validate_agent_channel(args.agent, args.channel)
+    if args.channel != "desktop":
+        raise ValueError(
+            "Start with the desktop route. Select Feishu or WeChat Assistant "
+            "only after core setup is complete."
+        )
     notes_root = Path(args.notes_root).expanduser() if args.notes_root else DEFAULT_NOTES
     notes_root.mkdir(parents=True, exist_ok=True)
     (notes_root / ".obsidian").mkdir(exist_ok=True)
@@ -537,7 +541,7 @@ def command_set_channel(args: argparse.Namespace) -> int:
     ]
     if incomplete:
         raise RuntimeError(
-            "Finish core setup before selecting Feishu or WeChat. "
+            "Finish core setup before selecting Feishu or WeChat Assistant. "
             f"Incomplete steps: {', '.join(incomplete)}"
         )
 
@@ -662,9 +666,7 @@ def parser() -> argparse.ArgumentParser:
 
     init = subcommands.add_parser("init", help="Create config and local vault.")
     init.add_argument("--agent", choices=("codex", "workbuddy"), required=True)
-    init.add_argument(
-        "--channel", choices=("desktop", "feishu", "wechat"), required=True
-    )
+    init.add_argument("--channel", choices=("desktop",), required=True)
     init.add_argument("--notes-root")
     init.set_defaults(func=command_init)
 

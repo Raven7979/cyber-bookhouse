@@ -32,7 +32,7 @@ Windows 版会检查 `%LOCALAPPDATA%`、`%APPDATA%` 和常见应用目录。
 
 > 请使用 sanwei Skill，一步一步帮我搭好赛博三味书屋。每次只告诉我
 > 一个操作，做完再继续。最后请从手机发一个测试链接，并确认笔记进入
-> Obsidian。基础测试通过后，再问我要不要增加飞书入口或微信。最后运行
+> Obsidian。基础测试通过后，再问我要不要增加飞书入口或微信助理。最后运行
 > 包内能力检查，告诉我哪些内容可以直接处理。
 
 WorkBuddy 的官方说明：
@@ -40,6 +40,7 @@ WorkBuddy 的官方说明：
 - [Windows 10+ 安装指南](https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Installation-Win-Guide)
 - [安装 Skill](https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Skills-Market)
 - [在手机上远程使用 WorkBuddy](https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Practice-Cases/Practice-Six)
+- [绑定微信助理](https://www.codebuddy.cn/docs/workbuddy/WeixinBot-Guide)
 
 ## 用 Codex 安装
 
@@ -58,8 +59,10 @@ WorkBuddy 的官方说明：
 
 > 请使用 $sanwei，一步一步帮我搭好赛博三味书屋。每次只告诉我一个
 > 操作，做完再继续。最后请从 ChatGPT 手机端发一个测试链接，并确认
-> 笔记进入 Obsidian。基础测试通过后，再问我要不要增加飞书入口或飞书
-> 文档。最后运行包内能力检查，告诉我哪些内容可以直接处理。
+> 笔记进入 Obsidian。基础测试通过后，再问我要不要增加飞书入口、微信
+> 助理或飞书文档。如果我选择微信助理，请继续引导安装或打开 WorkBuddy，
+> 上传同一份 Skill，绑定到同一个书屋并做真实回测。最后运行包内能力检查，
+> 告诉我哪些内容可以直接处理。
 
 如果 Skill 没有马上出现，重启 Codex 后再看一次。
 
@@ -79,8 +82,8 @@ Windows 上如果 `py -3` 和 `python` 都不可用，向导会只给你
 2. 识别当前运行 Skill 的桌面 Agent 是 Codex 还是 WorkBuddy。
 3. 帮你接好 ChatGPT 或 WorkBuddy 手机端。
 4. 从电脑和手机各发一次测试链接。
-5. 基础测试完成后，再问你只用当前工具，还是增加飞书入口或微信；Codex
-   用户还可以选择飞书文档输出。
+5. 基础测试完成后，再问你只用当前工具，还是增加飞书入口或微信助理；
+   Codex 用户也能由 Codex 引导微信助理绑定，还可以选择飞书文档输出。
 6. 在 Obsidian 里打开结果给你看。
 7. 如果选择飞书文档，再创建并读回一份测试文档；只创建成功不算接通。
 8. 运行包内能力检查，区分可直接处理、需要浏览器和需要用户文件的内容。

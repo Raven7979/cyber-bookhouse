@@ -173,18 +173,12 @@ class SetupStateTests(unittest.TestCase):
         self.assertIn("拉片", commands["蒸馏笔记：<链接或文件>"])
         self.assertIn("完整包含", commands["详细拆解：<链接或文件>"])
 
-    def test_codex_rejects_wechat_route(self) -> None:
-        args = type(
-            "Args",
-            (),
-            {
-                "agent": "codex",
-                "channel": "wechat",
-                "notes_root": str(self.root / "notes"),
-            },
-        )()
-        with self.assertRaisesRegex(ValueError, "only through WorkBuddy"):
-            MODULE.command_init(args)
+    def test_optional_route_cannot_be_selected_during_init(self) -> None:
+        for agent in ("codex", "workbuddy"):
+            with self.subTest(agent=agent):
+                args = self.init_args(agent, "wechat")
+                with self.assertRaisesRegex(ValueError, "Start with the desktop route"):
+                    MODULE.command_init(args)
 
     def init_args(self, agent: str, channel: str, folder: str = "notes"):
         return type(
@@ -217,34 +211,39 @@ class SetupStateTests(unittest.TestCase):
         self.assertEqual(state["steps"]["mobile_test"]["status"], "pending")
 
     def test_wechat_route_requires_connection_and_channel_test(self) -> None:
-        args = self.init_args("workbuddy", "wechat")
+        args = self.init_args("workbuddy", "desktop")
         with mock.patch.object(
             MODULE, "detected", return_value=self.fake_detection("workbuddy")
         ):
             MODULE.command_init(args)
+        self.complete_core_steps()
+        MODULE.command_set_channel(type("Args", (), {"channel": "wechat"})())
         state = MODULE.read_json(MODULE.state_path())
         self.assertEqual(state["steps"]["channel_connected"]["status"], "pending")
         self.assertEqual(state["steps"]["channel_test"]["status"], "pending")
-        self.assertEqual(state["steps"]["mobile_connected"]["status"], "pending")
-        self.assertEqual(state["steps"]["mobile_test"]["status"], "pending")
+        self.assertEqual(state["steps"]["mobile_connected"]["status"], "complete")
+        self.assertEqual(state["steps"]["mobile_test"]["status"], "complete")
 
     def test_changing_route_resets_old_acceptance_evidence(self) -> None:
         desktop = self.init_args("workbuddy", "desktop")
-        remote = self.init_args("workbuddy", "wechat")
         with mock.patch.object(
             MODULE, "detected", return_value=self.fake_detection("workbuddy")
         ):
             MODULE.command_init(desktop)
-            state = MODULE.read_json(MODULE.state_path())
-            state["steps"]["desktop_test"] = {
+        self.complete_core_steps()
+        MODULE.command_set_channel(type("Args", (), {"channel": "feishu"})())
+        state = MODULE.read_json(MODULE.state_path())
+        for step in ("channel_connected", "channel_test"):
+            state["steps"][step] = {
                 "status": "complete",
-                "evidence": "old-note.md",
+                "evidence": f"old:{step}",
                 "updated_at": MODULE.now(),
             }
-            MODULE.atomic_json(MODULE.state_path(), state)
-            MODULE.command_init(remote)
+        MODULE.atomic_json(MODULE.state_path(), state)
+        MODULE.command_set_channel(type("Args", (), {"channel": "wechat"})())
         state = MODULE.read_json(MODULE.state_path())
-        self.assertEqual(state["steps"]["desktop_test"]["status"], "pending")
+        self.assertEqual(state["steps"]["desktop_test"]["status"], "complete")
+        self.assertEqual(state["steps"]["channel_connected"]["status"], "pending")
         self.assertEqual(state["steps"]["channel_test"]["status"], "pending")
 
     def complete_core_steps(self) -> None:
@@ -285,7 +284,7 @@ class SetupStateTests(unittest.TestCase):
         self.assertEqual(state["steps"]["channel_connected"]["status"], "pending")
         self.assertEqual(state["steps"]["channel_test"]["status"], "pending")
 
-    def test_codex_wechat_is_rejected_after_core_setup(self) -> None:
+    def test_codex_can_select_wechat_after_core_setup(self) -> None:
         args = self.init_args("codex", "desktop")
         with mock.patch.object(
             MODULE, "detected", return_value=self.fake_detection("codex")
@@ -294,8 +293,12 @@ class SetupStateTests(unittest.TestCase):
         self.complete_core_steps()
 
         selection = type("Args", (), {"channel": "wechat"})()
-        with self.assertRaisesRegex(ValueError, "only through WorkBuddy"):
-            MODULE.command_set_channel(selection)
+        MODULE.command_set_channel(selection)
+        state = MODULE.read_json(MODULE.state_path())
+        self.assertEqual(state["agent"], "codex")
+        self.assertEqual(state["channel"], "wechat")
+        self.assertEqual(state["steps"]["channel_connected"]["status"], "pending")
+        self.assertEqual(state["steps"]["channel_test"]["status"], "pending")
 
     def test_feishu_docs_destination_requires_core_setup(self) -> None:
         args = self.init_args("codex", "desktop")

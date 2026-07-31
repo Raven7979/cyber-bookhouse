@@ -19,7 +19,7 @@ class SkillBundleTests(unittest.TestCase):
             "scripts/render_diagram.py",
             "references/capabilities.md",
             "references/windows.md",
-            "references/windows.md",
+            "references/wechat-assistant.md",
             "references/youtube.md",
             "references/web.md",
             "references/media.md",

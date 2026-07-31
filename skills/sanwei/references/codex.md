@@ -2,6 +2,8 @@
 
 用户选择 Codex 时，按下面顺序完成。基础路线由电脑上的 Codex 和手机上的
 ChatGPT 组成；飞书可以是额外入口，飞书文档也可以是授权后的额外输出。
+用户主动选择微信时，Codex 也可以继续引导，但微信消息由 WorkBuddy 微信
+助理接收，二者写入同一个 Obsidian 书屋。
 本地 Obsidian 始终保留一份可迁移的 Markdown 原件。
 
 ## 安装顺序
@@ -40,11 +42,11 @@ https://openai.com/index/work-with-codex-from-anywhere/
 只有 `vault_registered`、`desktop_test`、`mobile_connected` 和
 `mobile_test` 都完成后，才问：
 
-> 基础书屋已经装好。你要只用 Codex，还是再接飞书入口、飞书文档，或者
-> 两者都接？
+> 基础书屋已经装好。你要只用 Codex，还是再接飞书入口、微信助理或飞书
+> 文档？
 
-根据回答运行 `setup_state.py set-channel --channel desktop|feishu`。不要在
-安装开始时提这个问题。只选择飞书文档时，输入通道仍是 `desktop`。
+根据回答运行 `setup_state.py set-channel --channel desktop|feishu|wechat`。
+不要在安装开始时提这个问题。只选择飞书文档时，输入通道仍是 `desktop`。
 
 ## 如果用户选择飞书
 
@@ -76,6 +78,19 @@ https://openai.com/index/work-with-codex-from-anywhere/
 ```
 
 没有选择飞书文档时，运行 `set-destination --destination obsidian`。
+
+## 如果用户选择微信助理
+
+读取 [wechat-assistant.md](wechat-assistant.md)，由 Codex 一步一步完成：
+
+1. 缺少 WorkBuddy 时从官方地址安装。
+2. 在 WorkBuddy 上传同一份 `sanwei.zip`，读取现有书屋路径，不重新建库。
+3. 打开“微信助理集成”，让用户在官方界面扫码，确认显示“已绑定”。
+4. 从微信发送真实测试链接，确认微信收到回复，而且笔记进入当前同一个
+   Obsidian 书屋。
+
+不要说成 Codex 直接接收微信消息。Codex 负责引导与现有书屋，WorkBuddy
+微信助理负责微信入口。
 
 最后运行 `status`。全部完成后读取 [commands.md](commands.md)，把三种笔记
 命令直接发给用户。第一次真实采集前再运行 `dependency_doctor.py`，按
