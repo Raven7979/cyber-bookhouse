@@ -17,7 +17,9 @@ from typing import Any
 
 DEFAULT_CONFIG = Path.home() / ".config" / "cyber-sanwei" / "config.json"
 DEFAULT_DATA = Path.home() / ".local" / "share" / "cyber-sanwei"
-DEFAULT_NOTES = Path.home() / "Documents" / "赛博三味书屋"
+VAULT_DISPLAY_NAME = "赛博三味书屋"
+DEFAULT_VAULT_DIRNAME = "cyber-sanwei"
+DEFAULT_NOTES = Path.home() / "Documents" / DEFAULT_VAULT_DIRNAME
 OBSIDIAN_APP = Path("/Applications/Obsidian.app")
 WORKBUDDY_APP = Path("/Applications/WorkBuddy.app")
 CHATGPT_APP = Path("/Applications/ChatGPT.app")
@@ -44,6 +46,15 @@ MARKABLE_STEPS = (
     "mobile_test",
     "channel_connected",
     "channel_test",
+)
+CORE_STEPS = (
+    "agent_selected",
+    "software",
+    "vault_created",
+    "vault_registered",
+    "desktop_test",
+    "mobile_connected",
+    "mobile_test",
 )
 
 
@@ -161,6 +172,8 @@ def detected() -> dict[str, Any]:
             "notes_root": str(notes_root),
         },
         "vault": {
+            "display_name": VAULT_DISPLAY_NAME,
+            "directory_name": notes_root.name,
             "directory_exists": notes_root.is_dir(),
             "welcome_note_exists": (notes_root / "欢迎来到赛博三味书屋.md").is_file(),
             "registered_in_obsidian": vault_registered(notes_root),
@@ -212,6 +225,41 @@ def welcome_text() -> str:
     )
 
 
+def validate_agent_channel(agent: str, channel: str) -> None:
+    if agent == "codex" and channel == "wechat":
+        raise ValueError(
+            "WeChat is supported only through WorkBuddy in this release. "
+            "Choose desktop or feishu for Codex."
+        )
+
+
+def apply_channel_state(
+    state: dict[str, Any], channel: str
+) -> dict[str, Any]:
+    state["channel"] = channel
+    state["steps"]["channel_selected"] = {
+        "status": "complete",
+        "evidence": channel,
+        "updated_at": now(),
+    }
+    if channel == "desktop":
+        evidence = "no additional Feishu or WeChat connector requested"
+        for step in ("channel_connected", "channel_test"):
+            state["steps"][step] = {
+                "status": "complete",
+                "evidence": evidence,
+                "updated_at": now(),
+            }
+    else:
+        for step in ("channel_connected", "channel_test"):
+            state["steps"][step] = {
+                "status": "pending",
+                "evidence": "",
+                "updated_at": "",
+            }
+    return state
+
+
 def command_doctor(_: argparse.Namespace) -> int:
     report = detected()
     report["setup"] = normalize_state(read_json(state_path())) if state_path().is_file() else {}
@@ -220,11 +268,7 @@ def command_doctor(_: argparse.Namespace) -> int:
 
 
 def command_init(args: argparse.Namespace) -> int:
-    if args.agent == "codex" and args.channel == "wechat":
-        raise ValueError(
-            "WeChat is supported only through WorkBuddy. "
-            "Choose --channel desktop or feishu for Codex."
-        )
+    validate_agent_channel(args.agent, args.channel)
     notes_root = Path(args.notes_root).expanduser() if args.notes_root else DEFAULT_NOTES
     notes_root.mkdir(parents=True, exist_ok=True)
     (notes_root / ".obsidian").mkdir(exist_ok=True)
@@ -244,6 +288,7 @@ def command_init(args: argparse.Namespace) -> int:
         "version": 1,
         "agent": args.agent,
         "channel": args.channel,
+        "vault_display_name": VAULT_DISPLAY_NAME,
         "notes_root": str(notes_root.resolve()),
         "created_at": now(),
     }
@@ -270,11 +315,7 @@ def command_init(args: argparse.Namespace) -> int:
         "evidence": args.agent,
         "updated_at": now(),
     }
-    state["steps"]["channel_selected"] = {
-        "status": "complete",
-        "evidence": args.channel,
-        "updated_at": now(),
-    }
+    state = apply_channel_state(state, args.channel)
     state["steps"]["software"] = {
         "status": "complete" if selected_present and bool(software["obsidian"]) else "pending",
         "evidence": "desktop agent and Obsidian detected"
@@ -293,17 +334,38 @@ def command_init(args: argparse.Namespace) -> int:
             "evidence": str(notes_root.resolve()),
             "updated_at": now(),
         }
-    if args.channel == "desktop":
-        state["steps"]["channel_connected"] = {
-            "status": "complete",
-            "evidence": "no additional Feishu or WeChat connector requested",
-            "updated_at": now(),
-        }
-        state["steps"]["channel_test"] = {
-            "status": "complete",
-            "evidence": "no additional Feishu or WeChat connector requested",
-            "updated_at": now(),
-        }
+    state = normalize_state(state)
+    atomic_json(state_path(), state)
+    print(json.dumps(state, ensure_ascii=False, indent=2))
+    return 0
+
+
+def command_set_channel(args: argparse.Namespace) -> int:
+    config = read_json(config_path())
+    state = normalize_state(read_json(state_path()))
+    agent = str(state.get("agent") or config.get("agent") or "")
+    if not agent:
+        raise RuntimeError("Run init before selecting an optional input route.")
+    validate_agent_channel(agent, args.channel)
+
+    incomplete = [
+        step
+        for step in CORE_STEPS
+        if state["steps"][step]["status"] != "complete"
+    ]
+    if incomplete:
+        raise RuntimeError(
+            "Finish core setup before selecting Feishu or WeChat. "
+            f"Incomplete steps: {', '.join(incomplete)}"
+        )
+
+    config["agent"] = agent
+    config["channel"] = args.channel
+    config["updated_at"] = now()
+    atomic_json(config_path(), config)
+
+    state = apply_channel_state(state, args.channel)
+    state["updated_at"] = now()
     state = normalize_state(state)
     atomic_json(state_path(), state)
     print(json.dumps(state, ensure_ascii=False, indent=2))
@@ -374,6 +436,15 @@ def parser() -> argparse.ArgumentParser:
     )
     init.add_argument("--notes-root")
     init.set_defaults(func=command_init)
+
+    set_channel = subcommands.add_parser(
+        "set-channel",
+        help="Select an optional input route after core setup is complete.",
+    )
+    set_channel.add_argument(
+        "--channel", choices=("desktop", "feishu", "wechat"), required=True
+    )
+    set_channel.set_defaults(func=command_set_channel)
 
     mark = subcommands.add_parser("mark", help="Record verified onboarding evidence.")
     mark.add_argument("--step", choices=MARKABLE_STEPS, required=True)

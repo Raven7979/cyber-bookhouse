@@ -7,9 +7,11 @@ ChatGPT 组成；飞书是可选的额外入口。
 
 1. 运行 `doctor`。只用电脑和手机时，Codex 桌面应用或 Codex CLI 均可。
    如果还要接飞书，需要已安装并登录 Codex CLI。
-2. 运行 `setup_state.py init --agent codex --channel desktop`。用户明确要接
-   飞书时，把 `desktop` 换成 `feishu`。
-3. 在 Obsidian 中打开配置好的笔记文件夹。
+2. 运行 `setup_state.py init --agent codex --channel desktop`。此时不要
+   询问飞书，也不要把 `desktop` 换成其他值。
+3. 新建书屋时使用 `~/Documents/cyber-sanwei`。按
+   [obsidian.md](obsidian.md) 在 Obsidian 中选择“打开文件夹作为仓库”；
+   不要用 `obsidian://open?path=...` 注册新仓库。
 4. 打开 `欢迎来到赛博三味书屋.md`，确认文字在 Obsidian 里可见。
 5. 用书屋路径作为证据，标记 `vault_registered`。
 6. 在电脑上的 Codex 中发送 `收进书屋：https://example.com`。
@@ -30,7 +32,17 @@ ChatGPT 组成；飞书是可选的额外入口。
 官方说明：
 https://openai.com/index/work-with-codex-from-anywhere/
 
-## 如果用户还要接飞书
+## 基础测试通过后再选择入口
+
+只有 `vault_registered`、`desktop_test`、`mobile_connected` 和
+`mobile_test` 都完成后，才问：
+
+> 基础书屋已经装好。你要只用 Codex，还是再接飞书？
+
+根据回答运行 `setup_state.py set-channel --channel desktop|feishu`。不要在
+安装开始时提这个问题。
+
+## 如果用户选择飞书
 
 1. 确认 Node.js 20.12.0 或更高版本已安装。
 2. 从官方包安装桥接工具：`npm install -g lark-channel-bridge`。
@@ -44,6 +56,9 @@ https://openai.com/index/work-with-codex-from-anywhere/
 7. 在飞书中发送 `收进书屋：https://example.com`。
 8. 确认飞书收到回复，而且笔记进入同一个 Obsidian 书屋，再标记
    `channel_test`。
+
+最后运行 `status`。全部完成后读取 [commands.md](commands.md)，把三种笔记
+命令直接发给用户。
 
 电脑关机、深度睡眠或断网时，手机和飞书都无法继续调用这台电脑上的
 Codex。接了飞书时，后台桥接必须能在电脑重新登录后恢复，不能要求用户

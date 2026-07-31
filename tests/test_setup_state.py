@@ -48,6 +48,45 @@ class SetupStateTests(unittest.TestCase):
         MODULE.atomic_json(target, {"name": "赛博三味书屋"})
         self.assertEqual(MODULE.read_json(target)["name"], "赛博三味书屋")
 
+    def test_default_new_vault_uses_ascii_directory_name(self) -> None:
+        self.assertEqual(MODULE.DEFAULT_VAULT_DIRNAME, "cyber-sanwei")
+        self.assertTrue(MODULE.DEFAULT_VAULT_DIRNAME.isascii())
+        self.assertEqual(MODULE.VAULT_DISPLAY_NAME, "赛博三味书屋")
+
+    def test_init_without_custom_path_uses_ascii_default(self) -> None:
+        default_notes = self.root / MODULE.DEFAULT_VAULT_DIRNAME
+        args = type(
+            "Args",
+            (),
+            {
+                "agent": "workbuddy",
+                "channel": "desktop",
+                "notes_root": None,
+            },
+        )()
+        with (
+            mock.patch.object(MODULE, "DEFAULT_NOTES", default_notes),
+            mock.patch.object(
+                MODULE, "detected", return_value=self.fake_detection("workbuddy")
+            ),
+        ):
+            MODULE.command_init(args)
+        config = MODULE.read_json(MODULE.config_path())
+        self.assertEqual(Path(config["notes_root"]), default_notes.resolve())
+        self.assertEqual(config["vault_display_name"], "赛博三味书屋")
+        self.assertTrue((default_notes / "欢迎来到赛博三味书屋.md").is_file())
+
+    def test_custom_existing_chinese_vault_path_is_preserved(self) -> None:
+        args = self.init_args("workbuddy", "desktop", "已有中文仓库")
+        with mock.patch.object(
+            MODULE, "detected", return_value=self.fake_detection("workbuddy")
+        ):
+            MODULE.command_init(args)
+        config = MODULE.read_json(MODULE.config_path())
+        self.assertEqual(
+            Path(config["notes_root"]), (self.root / "已有中文仓库").resolve()
+        )
+
     def test_vault_registration_matches_resolved_path(self) -> None:
         notes = self.root / "notes"
         notes.mkdir()
@@ -139,6 +178,56 @@ class SetupStateTests(unittest.TestCase):
         state = MODULE.read_json(MODULE.state_path())
         self.assertEqual(state["steps"]["desktop_test"]["status"], "pending")
         self.assertEqual(state["steps"]["channel_test"]["status"], "pending")
+
+    def complete_core_steps(self) -> None:
+        state = MODULE.read_json(MODULE.state_path())
+        for step in MODULE.CORE_STEPS:
+            state["steps"][step] = {
+                "status": "complete",
+                "evidence": f"verified:{step}",
+                "updated_at": MODULE.now(),
+            }
+        MODULE.atomic_json(MODULE.state_path(), MODULE.normalize_state(state))
+
+    def test_optional_channel_cannot_be_selected_before_core_setup(self) -> None:
+        args = self.init_args("workbuddy", "desktop")
+        with mock.patch.object(
+            MODULE, "detected", return_value=self.fake_detection("workbuddy")
+        ):
+            MODULE.command_init(args)
+        selection = type("Args", (), {"channel": "wechat"})()
+        with self.assertRaisesRegex(RuntimeError, "Finish core setup"):
+            MODULE.command_set_channel(selection)
+
+    def test_optional_channel_preserves_completed_core_steps(self) -> None:
+        args = self.init_args("workbuddy", "desktop")
+        with mock.patch.object(
+            MODULE, "detected", return_value=self.fake_detection("workbuddy")
+        ):
+            MODULE.command_init(args)
+        self.complete_core_steps()
+
+        selection = type("Args", (), {"channel": "wechat"})()
+        MODULE.command_set_channel(selection)
+        state = MODULE.read_json(MODULE.state_path())
+
+        self.assertEqual(state["channel"], "wechat")
+        for step in MODULE.CORE_STEPS:
+            self.assertEqual(state["steps"][step]["status"], "complete")
+        self.assertEqual(state["steps"]["channel_connected"]["status"], "pending")
+        self.assertEqual(state["steps"]["channel_test"]["status"], "pending")
+
+    def test_codex_wechat_is_rejected_after_core_setup(self) -> None:
+        args = self.init_args("codex", "desktop")
+        with mock.patch.object(
+            MODULE, "detected", return_value=self.fake_detection("codex")
+        ):
+            MODULE.command_init(args)
+        self.complete_core_steps()
+
+        selection = type("Args", (), {"channel": "wechat"})()
+        with self.assertRaisesRegex(ValueError, "only through WorkBuddy"):
+            MODULE.command_set_channel(selection)
 
 
 if __name__ == "__main__":

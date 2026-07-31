@@ -10,6 +10,7 @@ source_platform: web
 content_type: article
 captured_at: 2026-07-31T14:00:00+08:00
 capture_id: 20260731-a1b2c3d4
+note_mode: standard
 acquisition_method: public_page
 content_status: full_text
 media_status: not_requested
@@ -43,6 +44,7 @@ local assets. Never create a related-note link unless the linked note was read.
 
 Use these controlled values:
 
+- `note_mode`: `standard`, `cangjie`, or `detailed`.
 - `acquisition_method`: `public_page`, `authorized_browser`, `user_file`,
   `official_export`, or `rss`.
 - `content_status`: `full_text`, `partial`, `metadata_only`, or `unavailable`.

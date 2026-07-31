@@ -8,9 +8,11 @@
 1. 运行 `doctor`，只从 `software-links.md` 中的官方地址补装缺少的软件。
 2. 确认「赛博三味书屋」已经出现在 WorkBuddy 的已安装技能中并处于启用
    状态。
-3. 运行 `setup_state.py init --agent workbuddy --channel desktop`。用户
-   明确要接飞书或微信时，把 `desktop` 换成对应选项。
-4. 在 Obsidian 中打开配置好的笔记文件夹。
+3. 运行 `setup_state.py init --agent workbuddy --channel desktop`。此时不要
+   询问飞书或微信，也不要把 `desktop` 换成其他值。
+4. 新建书屋时使用 `~/Documents/cyber-sanwei`。按
+   [obsidian.md](obsidian.md) 在 Obsidian 中选择“打开文件夹作为仓库”；
+   不要用 `obsidian://open?path=...` 注册新仓库。
 5. 打开 `欢迎来到赛博三味书屋.md`，确认文字在 Obsidian 里可见。
 6. 用书屋路径作为证据，标记 `vault_registered`。
 7. 在电脑上的 WorkBuddy 中发送 `收进书屋：https://example.com`。
@@ -29,7 +31,17 @@
 官方说明：
 https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Practice-Cases/Practice-Six
 
-## 如果用户还要接飞书或微信
+## 基础测试通过后再选择入口
+
+只有 `vault_registered`、`desktop_test`、`mobile_connected` 和
+`mobile_test` 都完成后，才问：
+
+> 基础书屋已经装好。你要只用 WorkBuddy，还是再接飞书或微信？
+
+根据回答运行 `setup_state.py set-channel --channel desktop|feishu|wechat`。
+不要在安装开始时提这个问题。
+
+## 如果用户选择飞书或微信
 
 1. 打开 WorkBuddy 的助理设置，选择用户要用的入口。
 2. 微信按当前官方微信助理指南扫码绑定；飞书按当前官方指南完成授权。
@@ -40,6 +52,9 @@ https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Practice-C
 6. 从选定入口发送 `收进书屋：https://example.com`。
 7. 确认入口收到回复，而且笔记进入同一个 Obsidian 书屋，再标记
    `channel_test`。
+
+最后运行 `status`。全部完成后读取 [commands.md](commands.md)，把三种笔记
+命令直接发给用户。
 
 电脑关机、深度睡眠、断网或 WorkBuddy 没有运行时，手机和额外入口都无法
 继续调用这台电脑上的 WorkBuddy。

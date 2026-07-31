@@ -55,12 +55,18 @@ Codex 在 ChatGPT 手机端中逐步开放。更新桌面端和手机端后，�
 
 向导会依次做这几件事：
 
-1. 找到或新建一个 Obsidian 书屋。
-2. 确认你选择的是 Codex 还是 WorkBuddy。
+1. 找到或新建一个 Obsidian 书屋。新建时磁盘目录使用英文名
+   `~/Documents/cyber-sanwei`，中文“赛博三味书屋”用于欢迎页和提示。
+2. 识别当前运行 Skill 的桌面 Agent 是 Codex 还是 WorkBuddy。
 3. 帮你接好 ChatGPT 或 WorkBuddy 手机端。
-4. 如果你需要，再接飞书或微信。
-5. 从电脑和手机各发一次测试链接。
+4. 从电脑和手机各发一次测试链接。
+5. 基础测试完成后，再问你只用当前工具，还是增加飞书或微信。
 6. 在 Obsidian 里打开结果给你看。
+7. 告诉你“同步笔记、蒸馏笔记、详细拆解”三种日常命令。
+
+新建目录后，向导会先通过 Obsidian 的“打开文件夹作为仓库”完成注册，
+再打开欢迎笔记。注册前不会直接调用 `obsidian://open?path=...`，否则
+Obsidian 会提示 `Vault not found`。
 
 它不会让你把密码、Token、App Secret、Cookie 或私人文档贴进对话。
 需要登录、扫码或授权时，它只会把你带到对应软件自己的界面。
