@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Track and verify the local 赛博三味书屋 onboarding process."""
+"""Track and verify the local 赛博书屋 onboarding process."""
 
 from __future__ import annotations
 
@@ -16,7 +16,7 @@ from pathlib import Path
 from typing import Any
 
 
-VAULT_DISPLAY_NAME = "赛博三味书屋"
+VAULT_DISPLAY_NAME = "赛博书屋"
 DEFAULT_VAULT_DIRNAME = "cyber-sanwei"
 DEFAULT_DESTINATION = "obsidian"
 DESTINATIONS = ("obsidian", "obsidian-feishu")
@@ -344,7 +344,7 @@ def detected(
             "display_name": VAULT_DISPLAY_NAME,
             "directory_name": notes_root.name,
             "directory_exists": notes_root.is_dir(),
-            "welcome_note_exists": (notes_root / "欢迎来到赛博三味书屋.md").is_file(),
+            "welcome_note_exists": (notes_root / "欢迎来到赛博书屋.md").is_file(),
             "registered_in_obsidian": vault_registered(notes_root, registry_path),
         },
     }
@@ -380,7 +380,7 @@ def normalize_state(state: dict[str, Any]) -> dict[str, Any]:
 def welcome_text() -> str:
     return "\n".join(
         (
-            "# 欢迎来到赛博三味书屋",
+            "# 欢迎来到赛博书屋",
             "",
             "这里是电脑、手机和 Obsidian 共用的本地知识库。",
             "",
@@ -451,7 +451,7 @@ def command_init(args: argparse.Namespace) -> int:
     notes_root = Path(args.notes_root).expanduser() if args.notes_root else DEFAULT_NOTES
     notes_root.mkdir(parents=True, exist_ok=True)
     (notes_root / ".obsidian").mkdir(exist_ok=True)
-    welcome = notes_root / "欢迎来到赛博三味书屋.md"
+    welcome = notes_root / "欢迎来到赛博书屋.md"
     if not welcome.exists():
         welcome.write_text(welcome_text(), encoding="utf-8")
 

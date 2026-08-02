@@ -6,7 +6,7 @@
 ## 安装顺序
 
 1. 运行 `doctor`，只从 `software-links.md` 中的官方地址补装缺少的软件。
-2. 确认「赛博三味书屋」已经出现在 WorkBuddy 的已安装技能中并处于启用
+2. 确认「赛博书屋」已经出现在 WorkBuddy 的已安装技能中并处于启用
    状态。
 3. 运行 `setup_state.py init --agent workbuddy --channel desktop`。此时不要
    询问飞书或微信助理，也不要把 `desktop` 换成其他值。
@@ -14,7 +14,7 @@
    使用 `%USERPROFILE%\Documents\cyber-sanwei`。按
    [obsidian.md](obsidian.md) 在 Obsidian 中选择“打开文件夹作为仓库”；
    不要用 `obsidian://open?path=...` 注册新仓库。
-5. 打开 `欢迎来到赛博三味书屋.md`，确认文字在 Obsidian 里可见。
+5. 打开 `欢迎来到赛博书屋.md`，确认文字在 Obsidian 里可见。
 6. 用书屋路径作为证据，标记 `vault_registered`。
 7. 在电脑上的 WorkBuddy 中发送
    `同步笔记：<你自己的一条文章、视频或播客链接>`。

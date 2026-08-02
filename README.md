@@ -1,4 +1,4 @@
-# 赛博三味书屋
+# 赛博书屋
 
 刷到一段好视频、听到一期播客、看到一篇长文，把链接发给你平时用的
 ChatGPT / Codex 或 WorkBuddy。电脑读取它能合法获取的内容，整理成带
@@ -7,7 +7,7 @@ Obsidian。
 
 Codex 用户如果愿意授权，还可以同时生成一份飞书文档副本。
 
-![8 秒看懂赛博三味书屋：公开内容进入本机 Agent，最后写入真实 Obsidian 演示库](assets/demo/quick-demo.gif)
+![8 秒看懂赛博书屋：公开内容进入本机 Agent，最后写入真实 Obsidian 演示库](assets/demo/quick-demo.gif)
 
 > 动图由真实公开页面和单独建立的 Obsidian 脱敏演示库录制。
 > [观看 42 秒完整演示（VoiceBox 雷厉旁白）](assets/demo/cyber-sanwei-demo.mp4)。
@@ -27,7 +27,7 @@ Obsidian 本地原件 → 可选的飞书文档副本
 它不是新的笔记软件，也不是在线内容平台。它是一套交给桌面 Agent
 安装的 Skill，笔记原件仍然在你的电脑上。
 
-![赛博三味书屋项目总览](assets/screenshots/01-overview.png)
+![赛博书屋项目总览](assets/screenshots/01-overview.png)
 
 ## 最后会得到什么
 
@@ -154,13 +154,13 @@ Codex 默认把 Markdown 原件写入 Obsidian。完成飞书官方授权和真�
 4. 按[第一次安装](INSTALL.md)把 Skill 交给 Codex 或 WorkBuddy。
 5. 对它说：
 
-> 请用 sanwei Skill 帮我搭好赛博三味书屋。请识别当前是 Codex 还是
+> 请用 sanwei Skill 帮我搭好赛博书屋。请识别当前是 Codex 还是
 > WorkBuddy，先完成软件、Obsidian、电脑和手机真实测试，之后再问我
 > 要不要增加飞书入口、微信助理或飞书文档。每次只说一个操作，最后运行
 > 包内能力检查，告诉我哪些内容能直接处理。
 
 新建书屋时，macOS 的默认目录是 `~/Documents/cyber-sanwei`，Windows 是
-`%USERPROFILE%\Documents\cyber-sanwei`。对你仍然称为“赛博三味书屋”。
+`%USERPROFILE%\Documents\cyber-sanwei`。对你仍然称为“赛博书屋”。
 
 向导会先用 Obsidian 的“打开文件夹作为仓库”注册目录，再做电脑和手机
 真实写入测试。基础测试通过后，才会询问是否增加飞书、微信助理或飞书文档。

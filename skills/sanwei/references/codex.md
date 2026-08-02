@@ -16,7 +16,7 @@ ChatGPT 组成；飞书可以是额外入口，飞书文档也可以是授权后
    使用 `%USERPROFILE%\Documents\cyber-sanwei`。按
    [obsidian.md](obsidian.md) 在 Obsidian 中选择“打开文件夹作为仓库”；
    不要用 `obsidian://open?path=...` 注册新仓库。
-4. 打开 `欢迎来到赛博三味书屋.md`，确认文字在 Obsidian 里可见。
+4. 打开 `欢迎来到赛博书屋.md`，确认文字在 Obsidian 里可见。
 5. 用书屋路径作为证据，标记 `vault_registered`。
 6. 在电脑上的 Codex 中发送
    `同步笔记：<你自己的一条文章、视频或播客链接>`。

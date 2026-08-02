@@ -2,7 +2,7 @@
 
 ## 新建仓库
 
-- 对用户始终称为“赛博三味书屋”。
+- 对用户始终称为“赛博书屋”。
 - macOS 磁盘目录使用 `~/Documents/cyber-sanwei`；Windows 使用
   `%USERPROFILE%\Documents\cyber-sanwei`。不要在注册后改回中文目录名。
 - 已有 Obsidian 仓库不受此规则限制；用户选了已有仓库，就保留其原路径。
@@ -25,4 +25,4 @@
 2. 核对 `doctor` 输出中的 `notes_root`。
 3. 在 Obsidian 中用“打开文件夹作为仓库”选择该目录。
 4. 再次运行 `doctor`，确认 `registered_in_obsidian` 为 `true`。
-5. 从 Obsidian 文件列表中打开 `欢迎来到赛博三味书屋.md` 做可见性验收。
+5. 从 Obsidian 文件列表中打开 `欢迎来到赛博书屋.md` 做可见性验收。

@@ -35,8 +35,8 @@
 
 ```bash
 lark-cli docs +create --api-version v2 --as user \
-  --title "赛博三味书屋｜测试笔记" \
-  --markdown $'# 赛博三味书屋测试\n\n来源：https://example.com\n\n状态：测试写入'
+  --title "赛博书屋｜测试笔记" \
+  --markdown $'# 赛博书屋测试\n\n来源：https://example.com\n\n状态：测试写入'
 ```
 
 从命令结果取得文档 URL 或 token 后，立即读回：

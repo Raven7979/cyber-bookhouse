@@ -26,7 +26,7 @@ py -3 --version
 - 安装状态：`%LOCALAPPDATA%\cyber-sanwei\data\setup.json`
 - Obsidian 仓库登记：`%APPDATA%\obsidian\obsidian.json`
 
-新建目录继续使用英文 `cyber-sanwei`，中文名“赛博三味书屋”用在
+新建目录继续使用英文 `cyber-sanwei`，中文名“赛博书屋”用在
 欢迎页和对用户的提示中。
 
 ## 核心安装

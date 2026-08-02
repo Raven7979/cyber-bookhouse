@@ -290,8 +290,8 @@ def render_svg(spec: dict) -> str:
 </defs>
 <rect width="{width}" height="{height}" fill="{PAPER}"/><rect width="{width}" height="{height}" fill="url(#grid)"/>
 <rect x="18" y="18" width="{width - 36}" height="{height - 36}" fill="none" stroke="#bfb6a9" stroke-width="1"/>
-<rect x="64" y="48" width="48" height="48" fill="#cf4b31"/><text x="88" y="81" text-anchor="middle" font-size="28" font-weight="900" fill="white">三</text>
-<text x="126" y="82" font-size="22" font-weight="760" fill="{INK}">赛博三味书屋</text>
+<rect x="64" y="48" width="48" height="48" fill="#cf4b31"/><text x="88" y="81" text-anchor="middle" font-size="28" font-weight="900" fill="white">书</text>
+<text x="126" y="82" font-size="22" font-weight="760" fill="{INK}">赛博书屋</text>
 {svg_text(64, 137, spec["title"], size=50, weight=850, anchor="start", width=54, max_lines=2, line_height=56)}
 {subtitle}
 <g>{edges}</g><g>{cards}</g>{footer}

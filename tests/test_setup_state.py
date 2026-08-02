@@ -45,13 +45,13 @@ class SetupStateTests(unittest.TestCase):
 
     def test_atomic_json_round_trip(self) -> None:
         target = self.root / "nested" / "value.json"
-        MODULE.atomic_json(target, {"name": "赛博三味书屋"})
-        self.assertEqual(MODULE.read_json(target)["name"], "赛博三味书屋")
+        MODULE.atomic_json(target, {"name": "赛博书屋"})
+        self.assertEqual(MODULE.read_json(target)["name"], "赛博书屋")
 
     def test_default_new_vault_uses_ascii_directory_name(self) -> None:
         self.assertEqual(MODULE.DEFAULT_VAULT_DIRNAME, "cyber-sanwei")
         self.assertTrue(MODULE.DEFAULT_VAULT_DIRNAME.isascii())
-        self.assertEqual(MODULE.VAULT_DISPLAY_NAME, "赛博三味书屋")
+        self.assertEqual(MODULE.VAULT_DISPLAY_NAME, "赛博书屋")
 
     def test_windows_locations_use_appdata_and_ascii_vault(self) -> None:
         environment = {
@@ -132,8 +132,8 @@ class SetupStateTests(unittest.TestCase):
             MODULE.command_init(args)
         config = MODULE.read_json(MODULE.config_path())
         self.assertEqual(Path(config["notes_root"]), default_notes.resolve())
-        self.assertEqual(config["vault_display_name"], "赛博三味书屋")
-        self.assertTrue((default_notes / "欢迎来到赛博三味书屋.md").is_file())
+        self.assertEqual(config["vault_display_name"], "赛博书屋")
+        self.assertTrue((default_notes / "欢迎来到赛博书屋.md").is_file())
 
     def test_custom_existing_chinese_vault_path_is_preserved(self) -> None:
         args = self.init_args("workbuddy", "desktop", "已有中文仓库")

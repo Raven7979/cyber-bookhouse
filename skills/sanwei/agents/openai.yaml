@@ -1,4 +1,4 @@
 interface:
-  display_name: "赛博三味书屋"
+  display_name: "赛博书屋"
   short_description: "逐步安装、采集内容并写入自己的知识书屋"
   default_prompt: "Use $sanwei to set up my knowledge library, check the required capabilities, and verify one real link from input to readable Obsidian note."
