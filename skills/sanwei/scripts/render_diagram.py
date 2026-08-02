@@ -187,32 +187,39 @@ def layout(spec: dict) -> tuple[int, int, dict[str, tuple[float, float, float, f
                 for index, node in enumerate(row):
                     positions[node["id"]] = (start + index * (card_w + gap), 280 + row_index * 390, card_w, 220)
     elif kind == "branches":
-        width = 1600
-        height = max(900, 250 + (len(nodes) - 1) * 150)
-        positions[nodes[0]["id"]] = (110, height / 2 - 110, 360, 220)
-        total = (len(nodes) - 1) * 130 + (len(nodes) - 2) * 26
-        start = (height - total) / 2
+        width = 1700
+        branch_height, branch_gap = 190, 28
+        total = (len(nodes) - 1) * branch_height + (len(nodes) - 2) * branch_gap
+        start = 280
+        height = max(1000, start + total + 110)
+        positions[nodes[0]["id"]] = (110, start + total / 2 - 120, 400, 240)
         for index, node in enumerate(nodes[1:]):
-            positions[node["id"]] = (990, start + index * 156, 470, 130)
+            positions[node["id"]] = (
+                1090,
+                start + index * (branch_height + branch_gap),
+                500,
+                branch_height,
+            )
     elif kind == "framework":
-        width, height = 1600, 1000
-        positions[nodes[0]["id"]] = (590, 390, 420, 220)
+        width, height = 1800, 1450
+        canvas_center_x, canvas_center_y = width / 2, 750
+        positions[nodes[0]["id"]] = (canvas_center_x - 230, canvas_center_y - 120, 460, 240)
         satellites = nodes[1:]
-        radius_x, radius_y = 570, 320
+        radius_x, radius_y = 650, 400
         for index, node in enumerate(satellites):
             angle = -math.pi / 2 + index * (2 * math.pi / len(satellites))
-            center_x = 800 + math.cos(angle) * radius_x
-            center_y = 500 + math.sin(angle) * radius_y
-            positions[node["id"]] = (center_x - 180, center_y - 80, 360, 160)
+            center_x = canvas_center_x + math.cos(angle) * radius_x
+            center_y = canvas_center_y + math.sin(angle) * radius_y
+            positions[node["id"]] = (center_x - 200, center_y - 100, 400, 200)
     else:
         width = max(1600, 260 + len(nodes) * 230)
-        height = 900
+        height = 950
         start = 150
         gap = (width - 300) / max(1, len(nodes) - 1)
         for index, node in enumerate(nodes):
             x = start + index * gap - 115
             y = 220 if index % 2 == 0 else 540
-            positions[node["id"]] = (x, y, 230, 170)
+            positions[node["id"]] = (x, y, 230, 190)
     return width, height, positions
 
 
@@ -256,10 +263,19 @@ def edge_svg(edge: dict, positions: dict[str, tuple[float, float, float, float]]
 def card_svg(node: dict, box: tuple[float, float, float, float], index: int) -> str:
     x, y, width, height = box
     accent = ACCENTS[index % len(ACCENTS)]
-    title_y = y + 78 if height >= 190 else y + 55
-    description_y = title_y + 48
-    title_width = max(10, int(width / 15))
-    description_width = max(14, int(width / 13))
+    title_size = 26 if height >= 220 else 23
+    title_width = max(12, int(width / 14))
+    title_line_height = int(title_size * 1.3)
+    title_lines = wrap(node["title"], title_width, 2)
+    title_y = y + 84
+    description_y = title_y + max(0, len(title_lines) - 1) * title_line_height + 38
+    description_line_height = 26
+    description_width = max(16, int(width / 12))
+    description_bottom = y + height - 18
+    description_lines = max(
+        1,
+        min(3, 1 + int(max(0, description_bottom - description_y) / description_line_height)),
+    )
     return "".join(
         (
             f'<rect x="{x + 12:.1f}" y="{y + 14:.1f}" width="{width:.1f}" height="{height:.1f}" rx="20" fill="#c9c0b3" opacity=".34"/>',
@@ -267,8 +283,8 @@ def card_svg(node: dict, box: tuple[float, float, float, float], index: int) -> 
             f'<path d="M {x + 20:.1f} {y:.1f} H {x + width - 20:.1f}" stroke="{accent}" stroke-width="8" stroke-linecap="round"/>',
             f'<circle cx="{x + width / 2:.1f}" cy="{y + 38:.1f}" r="17" fill="{accent}" opacity=".14"/>',
             f'<text x="{x + width / 2:.1f}" y="{y + 45:.1f}" text-anchor="middle" font-size="18" font-weight="800" fill="{accent}">{index + 1:02d}</text>',
-            svg_text(x + width / 2, title_y, node["title"], size=26 if height >= 190 else 23, weight=780, width=title_width, max_lines=2),
-            svg_text(x + width / 2, description_y, node["description"], size=17, color=MUTED, width=description_width, max_lines=3, line_height=26),
+            svg_text(x + width / 2, title_y, node["title"], size=title_size, weight=780, width=title_width, max_lines=2, line_height=title_line_height),
+            svg_text(x + width / 2, description_y, node["description"], size=17, color=MUTED, width=description_width, max_lines=description_lines, line_height=description_line_height),
         )
     )
 
