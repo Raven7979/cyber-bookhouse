@@ -149,7 +149,7 @@ Codex 默认把 Markdown 原件写入 Obsidian。完成飞书官方授权和真�
 2. 安装你已经在用的桌面工具：
    [Codex](https://openai.com/index/introducing-the-codex-app/) 或
    [WorkBuddy](https://www.codebuddy.cn/work/)。
-3. 从 [Releases](https://github.com/Raven7979/cyber-sanwei/releases/latest)
+3. 从 [Releases](https://github.com/Raven7979/cyber-bookhouse/releases/latest)
    下载 `sanwei.zip`。
 4. 按[第一次安装](INSTALL.md)把 Skill 交给 Codex 或 WorkBuddy。
 5. 对它说：
