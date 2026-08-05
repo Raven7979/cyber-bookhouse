@@ -17,7 +17,9 @@ DEFAULT_OUTPUT = ROOT / "dist" / "cyber-bookhouse.zip"
 REQUIRED = (
     "LICENSE",
     "SKILL.md",
+    "release.json",
     "scripts/install_skill.py",
+    "scripts/update_skill.py",
     "scripts/setup_state.py",
     "references/codex.md",
     "references/claude.md",

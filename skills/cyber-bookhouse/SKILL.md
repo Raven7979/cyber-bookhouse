@@ -1,6 +1,6 @@
 ---
 name: cyber-bookhouse
-description: Set up and use 赛博书屋 as a local knowledge-capture workflow for Codex, Claude Code, or WorkBuddy with Obsidian, plus optional Feishu or WorkBuddy WeChat Assistant input and verified Feishu Docs copies after user authorization. Capture articles, videos, podcasts such as 小宇宙, and local files with explicit access limits. Use when the user asks to install, configure, repair, verify, or use 赛博书屋; says “收进书屋”, “同步笔记”, “蒸馏笔记”, “详细拆解”, “链接转笔记”, or “整理进 Obsidian”; or wants desktop and mobile messages to write into one local Obsidian vault.
+description: Set up, safely update, and use 赛博书屋 as a local knowledge-capture workflow for Codex, Claude Code, or WorkBuddy with Obsidian, plus optional Feishu or WorkBuddy WeChat Assistant input and verified Feishu Docs copies after user authorization. Capture articles, videos, podcasts such as 小宇宙, and local files with explicit access limits. Use when the user asks to install, update, configure, repair, verify, or use 赛博书屋; says “收进书屋”, “同步笔记”, “蒸馏笔记”, “详细拆解”, “链接转笔记”, or “整理进 Obsidian”; or wants desktop and mobile messages to write into one local Obsidian vault.
 ---
 
 # 赛博书屋
@@ -20,11 +20,14 @@ before onboarding or capture.
 
 ## Route
 
-1. Run `<python-command> "<skill-dir>/scripts/setup_state.py" doctor`.
-2. If setup is incomplete, follow **Onboarding**.
-3. Run `<python-command> "<skill-dir>/scripts/dependency_doctor.py"` before the first
+1. If the user asks to update, or this is the first onboarding run, read
+   [references/updates.md](references/updates.md) and check GitHub Latest Release.
+   Never silently apply an update; ask before replacing an installed version.
+2. Run `<python-command> "<skill-dir>/scripts/setup_state.py" doctor`.
+3. If setup is incomplete, follow **Onboarding**.
+4. Run `<python-command> "<skill-dir>/scripts/dependency_doctor.py"` before the first
    real capture and whenever a platform route fails.
-4. Otherwise, follow **Capture**.
+5. Otherwise, follow **Capture**.
 
 ## Onboarding
 

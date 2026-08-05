@@ -17,14 +17,17 @@ class SkillBundleTests(unittest.TestCase):
         required = (
             "LICENSE",
             "SKILL.md",
+            "release.json",
             "scripts/setup_state.py",
             "scripts/install_skill.py",
+            "scripts/update_skill.py",
             "scripts/dependency_doctor.py",
             "scripts/youtube_capture.py",
             "scripts/web_capture.py",
             "scripts/media_capture.py",
             "scripts/render_diagram.py",
             "references/capabilities.md",
+            "references/updates.md",
             "references/windows.md",
             "references/claude.md",
             "references/feishu-entry.md",
@@ -44,6 +47,7 @@ class SkillBundleTests(unittest.TestCase):
         text = (ROOT / "SKILL.md").read_text(encoding="utf-8")
         for target in (
             "references/capabilities.md",
+            "references/updates.md",
             "references/claude.md",
             "references/feishu-entry.md",
             "references/youtube.md",

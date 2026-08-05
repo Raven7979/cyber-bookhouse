@@ -193,18 +193,22 @@ Claude 手机入口：需要在手机上发链接时，接飞书，或让 WorkBu
 
 ## 已经安装了，怎样更新
 
-已安装的 Skill **不会自动更新**。发布新版本只会更新 GitHub 上的下载包，不会在
-后台改动你电脑里的 Skill。更新时重新下载最新的 `cyber-bookhouse.zip`，解压后按
-原来的目标再次运行安装器即可：
+新版内置自更新器。以后直接对赛博书屋说“检查最新版”或“更新赛博书屋”，它会读取
+GitHub Latest Release、比较版本和 build，并告诉你是否有更新。你确认后，它会自动
+下载、校验、备份旧版并原位升级，不需要再次手动下载 ZIP：
 
 ```bash
-python3 cyber-bookhouse/scripts/install_skill.py --target codex
-# Claude Code 用户把 codex 改成 claude；两边都装则改成 both
+python3 <skill-dir>/scripts/update_skill.py --check
+python3 <skill-dir>/scripts/update_skill.py --apply --target auto
 ```
 
-安装器会先把现有版本移动到 `~/.cyber-bookhouse-backups/`，再安装新版并逐文件
-回读校验；其他 Skills 不会被改动。完成后重启或新开一个 Agent 任务，再调用一次
-`cyber-bookhouse`。WorkBuddy 用户重新上传最新版 ZIP，并按界面确认更新或覆盖。
+它不会在后台静默覆盖：真正安装前仍会询问一次。更新器只接受本项目 GitHub Release，
+校验 GitHub 提供的 SHA-256，并检查压缩包路径、Skill ID、版本与 build；安装器会先把
+旧版移动到 `~/.cyber-bookhouse-backups/`。完成后重启或新开一个 Agent 任务。
+
+已经安装旧版 v0.2.2 的用户需要用新版 ZIP **完成最后一次手动覆盖**，从这次开始才有
+自更新器。WorkBuddy 暂无稳定接口让 Skill 安全覆盖自身，仍需在“技能”界面重新上传
+最新版 ZIP。
 
 ## 下载包里有什么
 
@@ -212,6 +216,7 @@ python3 cyber-bookhouse/scripts/install_skill.py --target codex
 
 - Codex、Claude Code 和 WorkBuddy 共用的一份开放标准 Skill；
 - 可恢复备份并回读验证的 Codex / Claude 用户级安装器；
+- 可检查 GitHub 最新版、校验附件并原位升级的自更新器；
 - 安装状态、输入通道和真实测试记录；
 - macOS 与 Windows 路径、应用和依赖检查；
 - 普通公开网页、YouTube 公开字幕和本地音视频处理；

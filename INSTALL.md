@@ -25,20 +25,23 @@ Windows 版会检查 `%LOCALAPPDATA%`、`%APPDATA%` 和常见应用目录。
 
 ## 已安装用户更新
 
-已经装进 Codex、Claude Code 或 WorkBuddy 的 Skill 不会自动更新。GitHub 发布新版后，
-需要重新下载最新的 `cyber-bookhouse.zip` 并再次安装。
+新版已经内置自更新器。以后直接对 Agent 说“检查最新版”或“更新赛博书屋”，它会
+比较 GitHub Latest Release 中的版本与 build。你确认后，它会自行下载、校验、备份
+旧版并完成原位升级。
 
-Codex 或 Claude Code 用户解压新版后，重新运行原安装命令：
+需要手动运行时使用：
 
 ```bash
-python3 cyber-bookhouse/scripts/install_skill.py --target codex
-# Claude Code：--target claude
-# 两边都更新：--target both
+python3 <skill-dir>/scripts/update_skill.py --check
+python3 <skill-dir>/scripts/update_skill.py --apply --target auto
 ```
 
-安装器发现同名旧版时，会先将它移动到 `~/.cyber-bookhouse-backups/`，再安装新版并
-逐文件回读校验；不会碰其他 Skills。更新后重启或新开一个 Agent 任务，再调用一次
-`cyber-bookhouse`。WorkBuddy 用户重新上传最新版 ZIP，并在界面中确认更新或覆盖。
+更新器不会静默覆盖。它只接受本项目 GitHub Release，校验 GitHub 返回的 SHA-256，
+并拒绝路径穿越、符号链接、错误 Skill ID 或版本不一致的压缩包。安装器发现同名旧版
+时，会先将它移动到 `~/.cyber-bookhouse-backups/`，不会碰其他 Skills。
+
+已经安装旧版 v0.2.2 的用户需要用新版 ZIP 完成最后一次手动覆盖；从这次开始才具备
+自更新能力。WorkBuddy 用户仍需在“技能”界面重新上传最新版 ZIP。
 
 ## 用 WorkBuddy 安装
 
