@@ -11,7 +11,8 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE = ROOT / "skills" / "sanwei"
+SKILL_NAME = "cyber-bookhouse"
+SOURCE = ROOT / "skills" / SKILL_NAME
 DEFAULT_OUTPUT = ROOT / "dist" / "cyber-bookhouse.zip"
 REQUIRED = (
     "LICENSE",
@@ -52,7 +53,7 @@ def build(output: Path) -> dict[str, object]:
     output.parent.mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(output, "w", zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
         for path in files:
-            relative = Path("sanwei") / path.relative_to(SOURCE)
+            relative = Path(SKILL_NAME) / path.relative_to(SOURCE)
             info = zipfile.ZipInfo(relative.as_posix(), ZIP_TIMESTAMP)
             info.compress_type = zipfile.ZIP_DEFLATED
             info.external_attr = 0o100644 << 16
@@ -63,7 +64,7 @@ def build(output: Path) -> dict[str, object]:
         "sha256": digest,
         "files": len(files),
         "bytes": output.stat().st_size,
-        "layout": "sanwei/SKILL.md",
+        "layout": f"{SKILL_NAME}/SKILL.md",
         "targets": ["Codex", "Claude Code", "WorkBuddy"],
     }
 

@@ -122,7 +122,9 @@ def obsidian_path(
 ) -> str | None:
     system = system or host_system()
     environment = os.environ if environment is None else environment
-    override = environment.get("CYBER_SANWEI_OBSIDIAN_APP")
+    override = environment.get("CYBER_BOOKHOUSE_OBSIDIAN_APP") or environment.get(
+        "CYBER_SANWEI_OBSIDIAN_APP"
+    )
     if override and Path(override).expanduser().exists():
         return str(Path(override).expanduser())
     if system == "Windows":

@@ -9,7 +9,7 @@ from pathlib import Path
 SCRIPT = (
     Path(__file__).resolve().parents[1]
     / "skills"
-    / "sanwei"
+    / "cyber-bookhouse"
     / "scripts"
     / "dependency_doctor.py"
 )
@@ -62,7 +62,7 @@ class DependencyDoctorTests(unittest.TestCase):
             application = Path(temporary) / "Obsidian.exe"
             application.write_bytes(b"")
             payload = MODULE.report(
-                "Windows", {"CYBER_SANWEI_OBSIDIAN_APP": str(application)}
+                "Windows", {"CYBER_BOOKHOUSE_OBSIDIAN_APP": str(application)}
             )
         self.assertEqual(payload["core"]["status"], "ready")
         self.assertEqual(payload["core"]["obsidian"], str(application))

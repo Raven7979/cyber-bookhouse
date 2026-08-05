@@ -9,7 +9,7 @@ from unittest import mock
 SCRIPT = (
     Path(__file__).resolve().parents[1]
     / "skills"
-    / "sanwei"
+    / "cyber-bookhouse"
     / "scripts"
     / "media_capture.py"
 )

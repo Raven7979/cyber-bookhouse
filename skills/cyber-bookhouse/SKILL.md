@@ -1,5 +1,5 @@
 ---
-name: sanwei
+name: cyber-bookhouse
 description: Set up and use 赛博书屋 as a local knowledge-capture workflow for Codex, Claude Code, or WorkBuddy with Obsidian, plus optional Feishu or WorkBuddy WeChat Assistant input and verified Feishu Docs copies after user authorization. Capture articles, videos, podcasts such as 小宇宙, and local files with explicit access limits. Use when the user asks to install, configure, repair, verify, or use 赛博书屋; says “收进书屋”, “同步笔记”, “蒸馏笔记”, “详细拆解”, “链接转笔记”, or “整理进 Obsidian”; or wants desktop and mobile messages to write into one local Obsidian vault.
 ---
 
@@ -72,8 +72,8 @@ Always start with `desktop`; do not ask about optional routes yet:
 ```
 
 The default new-vault directory is the ASCII-only path
-`~/Documents/cyber-sanwei` on macOS or
-`%USERPROFILE%\Documents\cyber-sanwei` on Windows; call it “赛博书屋”
+`~/Documents/cyber-bookhouse` on macOS or
+`%USERPROFILE%\Documents\cyber-bookhouse` on Windows; call it “赛博书屋”
 in all user-facing text.
 Respect an existing vault if the user chooses it, even when its path contains
 Chinese characters. Keep a newly created English directory name unchanged

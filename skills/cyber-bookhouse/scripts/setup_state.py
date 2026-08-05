@@ -17,7 +17,11 @@ from typing import Any
 
 
 VAULT_DISPLAY_NAME = "赛博书屋"
-DEFAULT_VAULT_DIRNAME = "cyber-sanwei"
+PRODUCT_DIRNAME = "cyber-bookhouse"
+DEFAULT_VAULT_DIRNAME = PRODUCT_DIRNAME
+# Read-only compatibility for installations created before the public rename.
+LEGACY_PRODUCT_DIRNAME = "cyber-sanwei"
+LEGACY_DEFAULT_VAULT_DIRNAME = LEGACY_PRODUCT_DIRNAME
 DEFAULT_DESTINATION = "obsidian"
 DESTINATIONS = ("obsidian", "obsidian-feishu")
 STEPS = (
@@ -48,6 +52,8 @@ def platform_locations(
     system: str | None = None,
     environment: dict[str, str] | os._Environ[str] | None = None,
     home: str | Path | None = None,
+    product_dirname: str = PRODUCT_DIRNAME,
+    vault_dirname: str = DEFAULT_VAULT_DIRNAME,
 ) -> dict[str, Any]:
     system = system or host_system()
     environment = os.environ if environment is None else environment
@@ -89,9 +95,9 @@ def platform_locations(
             ),
         }
         return {
-            "config": joined(system, local, "cyber-sanwei", "config.json"),
-            "data": joined(system, local, "cyber-sanwei", "data"),
-            "notes": joined(system, user_profile, "Documents", DEFAULT_VAULT_DIRNAME),
+            "config": joined(system, local, product_dirname, "config.json"),
+            "data": joined(system, local, product_dirname, "data"),
+            "notes": joined(system, user_profile, "Documents", vault_dirname),
             "obsidian_registry": joined(
                 system, roaming, "obsidian", "obsidian.json"
             ),
@@ -105,9 +111,9 @@ def platform_locations(
         "claude": (Path("/Applications/Claude.app"),),
     }
     return {
-        "config": home / ".config" / "cyber-sanwei" / "config.json",
-        "data": home / ".local" / "share" / "cyber-sanwei",
-        "notes": home / "Documents" / DEFAULT_VAULT_DIRNAME,
+        "config": home / ".config" / product_dirname / "config.json",
+        "data": home / ".local" / "share" / product_dirname,
+        "notes": home / "Documents" / vault_dirname,
         "obsidian_registry": home
         / "Library"
         / "Application Support"
@@ -118,11 +124,18 @@ def platform_locations(
 
 
 LOCATIONS = platform_locations()
+LEGACY_LOCATIONS = platform_locations(
+    product_dirname=LEGACY_PRODUCT_DIRNAME,
+    vault_dirname=LEGACY_DEFAULT_VAULT_DIRNAME,
+)
 DEFAULT_CONFIG = LOCATIONS["config"]
 DEFAULT_DATA = LOCATIONS["data"]
 DEFAULT_NOTES = LOCATIONS["notes"]
 OBSIDIAN_REGISTRY = LOCATIONS["obsidian_registry"]
 APPLICATIONS = LOCATIONS["applications"]
+LEGACY_DEFAULT_CONFIG = LEGACY_LOCATIONS["config"]
+LEGACY_DEFAULT_DATA = LEGACY_LOCATIONS["data"]
+LEGACY_DEFAULT_NOTES = LEGACY_LOCATIONS["notes"]
 MARKABLE_STEPS = (
     "vault_registered",
     "desktop_test",
@@ -161,17 +174,52 @@ def now() -> str:
     return datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds")
 
 
-def resolve_path(env_name: str, fallback: Path) -> Path:
-    value = os.environ.get(env_name)
-    return Path(value).expanduser() if value else fallback
+def compatible_path(
+    environment: dict[str, str] | os._Environ[str],
+    env_name: str,
+    legacy_env_name: str,
+    fallback: Path,
+    legacy_fallback: Path | None = None,
+) -> Path:
+    value = environment.get(env_name) or environment.get(legacy_env_name)
+    if value:
+        return Path(value).expanduser()
+    if legacy_fallback and not fallback.exists() and legacy_fallback.exists():
+        return legacy_fallback
+    return fallback
+
+
+def resolve_path(
+    env_name: str,
+    fallback: Path,
+    legacy_env_name: str | None = None,
+    legacy_fallback: Path | None = None,
+) -> Path:
+    return compatible_path(
+        os.environ,
+        env_name,
+        legacy_env_name or env_name,
+        fallback,
+        legacy_fallback,
+    )
 
 
 def config_path() -> Path:
-    return resolve_path("CYBER_SANWEI_CONFIG", DEFAULT_CONFIG)
+    return resolve_path(
+        "CYBER_BOOKHOUSE_CONFIG",
+        DEFAULT_CONFIG,
+        "CYBER_SANWEI_CONFIG",
+        LEGACY_DEFAULT_CONFIG,
+    )
 
 
 def data_root() -> Path:
-    return resolve_path("CYBER_SANWEI_DATA", DEFAULT_DATA)
+    return resolve_path(
+        "CYBER_BOOKHOUSE_DATA",
+        DEFAULT_DATA,
+        "CYBER_SANWEI_DATA",
+        LEGACY_DEFAULT_DATA,
+    )
 
 
 def state_path() -> Path:
@@ -232,11 +280,11 @@ def platform_support(system: str | None = None) -> str:
 
 
 APPLICATION_ENV = {
-    "obsidian": "CYBER_SANWEI_OBSIDIAN_APP",
-    "workbuddy": "CYBER_SANWEI_WORKBUDDY_APP",
-    "chatgpt": "CYBER_SANWEI_CHATGPT_APP",
-    "codex": "CYBER_SANWEI_CODEX_APP",
-    "claude": "CYBER_SANWEI_CLAUDE_APP",
+    "obsidian": ("CYBER_BOOKHOUSE_OBSIDIAN_APP", "CYBER_SANWEI_OBSIDIAN_APP"),
+    "workbuddy": ("CYBER_BOOKHOUSE_WORKBUDDY_APP", "CYBER_SANWEI_WORKBUDDY_APP"),
+    "chatgpt": ("CYBER_BOOKHOUSE_CHATGPT_APP", "CYBER_SANWEI_CHATGPT_APP"),
+    "codex": ("CYBER_BOOKHOUSE_CODEX_APP", "CYBER_SANWEI_CODEX_APP"),
+    "claude": ("CYBER_BOOKHOUSE_CLAUDE_APP", "CYBER_SANWEI_CLAUDE_APP"),
 }
 
 
@@ -248,7 +296,14 @@ def find_application(
 ) -> str | None:
     system = system or host_system()
     environment = os.environ if environment is None else environment
-    override = environment.get(APPLICATION_ENV[name])
+    override = next(
+        (
+            environment.get(env_name)
+            for env_name in APPLICATION_ENV[name]
+            if environment.get(env_name)
+        ),
+        None,
+    )
     if override:
         candidate = Path(override).expanduser()
         if candidate.exists():
@@ -268,8 +323,12 @@ def configured_notes_root(
     selected_config: Path | None = None,
 ) -> Path:
     environment = os.environ if environment is None else environment
-    selected_config = selected_config or Path(
-        environment.get("CYBER_SANWEI_CONFIG") or DEFAULT_CONFIG
+    selected_config = selected_config or compatible_path(
+        environment,
+        "CYBER_BOOKHOUSE_CONFIG",
+        "CYBER_SANWEI_CONFIG",
+        DEFAULT_CONFIG,
+        LEGACY_DEFAULT_CONFIG,
     )
     config = read_json(selected_config)
     value = config.get("notes_root")
@@ -278,7 +337,9 @@ def configured_notes_root(
 
 def vault_registered(notes_root: Path, registry_path: Path | None = None) -> bool:
     registry_path = registry_path or resolve_path(
-        "CYBER_SANWEI_OBSIDIAN_REGISTRY", OBSIDIAN_REGISTRY
+        "CYBER_BOOKHOUSE_OBSIDIAN_REGISTRY",
+        OBSIDIAN_REGISTRY,
+        "CYBER_SANWEI_OBSIDIAN_REGISTRY",
     )
     try:
         registry = read_json(registry_path)
@@ -304,19 +365,39 @@ def detected(
     system = system or host_system()
     environment = os.environ if environment is None else environment
     locations = platform_locations(system, environment, home)
-    selected_config = Path(
-        environment.get("CYBER_SANWEI_CONFIG") or locations["config"]
-    ).expanduser()
-    selected_data = Path(
-        environment.get("CYBER_SANWEI_DATA") or locations["data"]
-    ).expanduser()
-    notes_root = configured_notes_root(
-        locations["notes"], environment, selected_config
+    legacy_locations = platform_locations(
+        system,
+        environment,
+        home,
+        LEGACY_PRODUCT_DIRNAME,
+        LEGACY_DEFAULT_VAULT_DIRNAME,
     )
-    registry_path = Path(
-        environment.get("CYBER_SANWEI_OBSIDIAN_REGISTRY")
-        or locations["obsidian_registry"]
-    ).expanduser()
+    selected_config = compatible_path(
+        environment,
+        "CYBER_BOOKHOUSE_CONFIG",
+        "CYBER_SANWEI_CONFIG",
+        locations["config"],
+        legacy_locations["config"],
+    )
+    selected_data = compatible_path(
+        environment,
+        "CYBER_BOOKHOUSE_DATA",
+        "CYBER_SANWEI_DATA",
+        locations["data"],
+        legacy_locations["data"],
+    )
+    default_notes = locations["notes"]
+    if not default_notes.exists() and legacy_locations["notes"].exists():
+        default_notes = legacy_locations["notes"]
+    notes_root = configured_notes_root(
+        default_notes, environment, selected_config
+    )
+    registry_path = compatible_path(
+        environment,
+        "CYBER_BOOKHOUSE_OBSIDIAN_REGISTRY",
+        "CYBER_SANWEI_OBSIDIAN_REGISTRY",
+        locations["obsidian_registry"],
+    )
     codex_cli = executable("codex", system)
     claude_cli = executable("claude", system)
     chatgpt_app = find_application("chatgpt", system, environment, locations)
@@ -478,7 +559,15 @@ def command_init(args: argparse.Namespace) -> int:
             "Start with the desktop route. Select Feishu or WeChat Assistant "
             "only after core setup is complete."
         )
-    notes_root = Path(args.notes_root).expanduser() if args.notes_root else DEFAULT_NOTES
+    if args.notes_root:
+        notes_root = Path(args.notes_root).expanduser()
+    else:
+        default_notes = DEFAULT_NOTES
+        if not default_notes.exists() and LEGACY_DEFAULT_NOTES.exists():
+            default_notes = LEGACY_DEFAULT_NOTES
+        notes_root = configured_notes_root(
+            default_notes, selected_config=config_path()
+        )
     notes_root.mkdir(parents=True, exist_ok=True)
     (notes_root / ".obsidian").mkdir(exist_ok=True)
     welcome = notes_root / "欢迎来到赛博书屋.md"

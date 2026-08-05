@@ -13,7 +13,9 @@ from datetime import datetime
 from pathlib import Path
 
 
-SKILL_NAME = "sanwei"
+SKILL_NAME = "cyber-bookhouse"
+# Preserve an existing pre-rename install as a recoverable backup.
+LEGACY_SKILL_NAMES = ("sanwei",)
 TARGET_DIRS = {
     "codex": Path(".agents") / "skills" / SKILL_NAME,
     "claude": Path(".claude") / "skills" / SKILL_NAME,
@@ -47,8 +49,8 @@ def validate_source(source: Path) -> None:
     if not entrypoint.is_file():
         raise ValueError(f"SKILL.md not found in {source}")
     text = entrypoint.read_text(encoding="utf-8")
-    if "name: sanwei" not in text.split("---", 2)[1]:
-        raise ValueError("SKILL.md does not declare name: sanwei")
+    if f"name: {SKILL_NAME}" not in text.split("---", 2)[1]:
+        raise ValueError(f"SKILL.md does not declare name: {SKILL_NAME}")
 
 
 def copy_filter(_: str, names: list[str]) -> set[str]:
@@ -59,7 +61,9 @@ def copy_filter(_: str, names: list[str]) -> set[str]:
     }
 
 
-def install_one(source: Path, destination: Path) -> dict[str, object]:
+def install_one(
+    source: Path, destination: Path, backup_directory: Path
+) -> dict[str, object]:
     source = source.resolve()
     destination = destination.expanduser()
     if destination.exists() and destination.resolve() == source:
@@ -81,10 +85,11 @@ def install_one(source: Path, destination: Path) -> dict[str, object]:
     backup: Path | None = None
     if destination.exists():
         stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
-        backup = destination.with_name(f"{SKILL_NAME}.backup-{stamp}")
+        backup_directory.mkdir(parents=True, exist_ok=True)
+        backup = backup_directory / f"{SKILL_NAME}-{stamp}"
         counter = 1
         while backup.exists():
-            backup = destination.with_name(f"{SKILL_NAME}.backup-{stamp}-{counter}")
+            backup = backup_directory / f"{SKILL_NAME}-{stamp}-{counter}"
             counter += 1
         destination.replace(backup)
 
@@ -109,19 +114,49 @@ def install_one(source: Path, destination: Path) -> dict[str, object]:
     }
 
 
+def archive_legacy_installs(
+    source: Path, skills_directory: Path, backup_directory: Path
+) -> list[str]:
+    backups: list[str] = []
+    stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+    for legacy_name in LEGACY_SKILL_NAMES:
+        legacy = skills_directory / legacy_name
+        if not legacy.exists():
+            continue
+        if legacy.resolve() == source.resolve():
+            continue
+        backup_directory.mkdir(parents=True, exist_ok=True)
+        backup = backup_directory / f"{legacy_name}-{stamp}"
+        counter = 1
+        while backup.exists():
+            backup = backup_directory / f"{legacy_name}-{stamp}-{counter}"
+            counter += 1
+        legacy.replace(backup)
+        backups.append(str(backup))
+    return backups
+
+
 def install(target: str, home: Path | None = None) -> dict[str, object]:
     source = skill_root()
     validate_source(source)
     home = (home or Path.home()).expanduser()
     selected = tuple(TARGET_DIRS) if target == "both" else (target,)
-    results = {
-        name: install_one(source, home / TARGET_DIRS[name]) for name in selected
-    }
+    results = {}
+    for name in selected:
+        destination = home / TARGET_DIRS[name]
+        backup_directory = home / ".cyber-bookhouse-backups" / name
+        result = install_one(source, destination, backup_directory)
+        result["legacy_backups"] = archive_legacy_installs(
+            source,
+            destination.parent,
+            backup_directory,
+        )
+        results[name] = result
     return {
         "skill": SKILL_NAME,
         "source": str(source),
         "results": results,
-        "next_step": "Open a new task and invoke sanwei explicitly once.",
+        "next_step": f"Open a new task and invoke {SKILL_NAME} explicitly once.",
     }
 
 

@@ -3,8 +3,8 @@
 ## 新建仓库
 
 - 对用户始终称为“赛博书屋”。
-- macOS 磁盘目录使用 `~/Documents/cyber-sanwei`；Windows 使用
-  `%USERPROFILE%\Documents\cyber-sanwei`。不要在注册后改回中文目录名。
+- macOS 磁盘目录使用 `~/Documents/cyber-bookhouse`；Windows 使用
+  `%USERPROFILE%\Documents\cyber-bookhouse`。不要在注册后改回中文目录名。
 - 已有 Obsidian 仓库不受此规则限制；用户选了已有仓库，就保留其原路径。
 
 按这个顺序操作：

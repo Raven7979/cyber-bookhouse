@@ -9,7 +9,7 @@ import zipfile
 from pathlib import Path
 
 
-ROOT = Path(__file__).resolve().parents[1] / "skills" / "sanwei"
+ROOT = Path(__file__).resolve().parents[1] / "skills" / "cyber-bookhouse"
 
 
 class SkillBundleTests(unittest.TestCase):
@@ -65,7 +65,8 @@ class SkillBundleTests(unittest.TestCase):
             if ":" in line
         }
         self.assertEqual(keys, {"name", "description"})
-        self.assertIn("name: sanwei", frontmatter)
+        self.assertIn("name: cyber-bookhouse", frontmatter)
+        self.assertNotIn("sanwei", text.lower())
         description = next(
             line.split(":", 1)[1].strip()
             for line in frontmatter.splitlines()
@@ -93,8 +94,12 @@ class SkillBundleTests(unittest.TestCase):
             payload = json.loads(first.stdout)
             self.assertEqual(payload["results"]["codex"]["status"], "installed")
             self.assertEqual(payload["results"]["claude"]["status"], "installed")
-            self.assertTrue((home / ".agents/skills/sanwei/SKILL.md").is_file())
-            self.assertTrue((home / ".claude/skills/sanwei/SKILL.md").is_file())
+            self.assertTrue(
+                (home / ".agents/skills/cyber-bookhouse/SKILL.md").is_file()
+            )
+            self.assertTrue(
+                (home / ".claude/skills/cyber-bookhouse/SKILL.md").is_file()
+            )
 
             second = subprocess.run(
                 [
@@ -113,7 +118,7 @@ class SkillBundleTests(unittest.TestCase):
             self.assertEqual(payload["results"]["codex"]["status"], "already_current")
             self.assertEqual(payload["results"]["claude"]["status"], "already_current")
 
-            installed = home / ".claude/skills/sanwei/SKILL.md"
+            installed = home / ".claude/skills/cyber-bookhouse/SKILL.md"
             installed.write_text("local change", encoding="utf-8")
             third = subprocess.run(
                 [
@@ -132,7 +137,42 @@ class SkillBundleTests(unittest.TestCase):
             self.assertEqual(payload["results"]["claude"]["status"], "installed")
             backup = Path(payload["results"]["claude"]["backup"])
             self.assertTrue(backup.is_dir())
-            self.assertEqual((backup / "SKILL.md").read_text(encoding="utf-8"), "local change")
+            self.assertEqual(
+                (backup / "SKILL.md").read_text(encoding="utf-8"),
+                "local change",
+            )
+
+    def test_portable_installer_archives_legacy_id_outside_skill_scan_root(
+        self,
+    ) -> None:
+        script = ROOT / "scripts" / "install_skill.py"
+        with tempfile.TemporaryDirectory() as folder:
+            home = Path(folder)
+            legacy = home / ".agents/skills/sanwei"
+            legacy.mkdir(parents=True)
+            (legacy / "SKILL.md").write_text("legacy install", encoding="utf-8")
+            run = subprocess.run(
+                [
+                    sys.executable,
+                    str(script),
+                    "--target",
+                    "codex",
+                    "--home",
+                    str(home),
+                ],
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            payload = json.loads(run.stdout)
+            backups = payload["results"]["codex"]["legacy_backups"]
+            self.assertEqual(len(backups), 1)
+            self.assertFalse(legacy.exists())
+            self.assertTrue(Path(backups[0]).is_dir())
+            self.assertFalse(str(Path(backups[0])).startswith(str(legacy.parent)))
+            self.assertTrue(
+                (home / ".agents/skills/cyber-bookhouse/SKILL.md").is_file()
+            )
 
     def test_release_archive_has_one_portable_skill_root(self) -> None:
         builder = Path(__file__).resolve().parents[1] / "scripts" / "build_release.py"
@@ -145,13 +185,15 @@ class SkillBundleTests(unittest.TestCase):
                 text=True,
             )
             payload = json.loads(run.stdout)
-            self.assertEqual(payload["layout"], "sanwei/SKILL.md")
-            self.assertEqual(payload["targets"], ["Codex", "Claude Code", "WorkBuddy"])
+            self.assertEqual(payload["layout"], "cyber-bookhouse/SKILL.md")
+            self.assertEqual(
+                payload["targets"], ["Codex", "Claude Code", "WorkBuddy"]
+            )
             with zipfile.ZipFile(archive) as bundle:
                 names = bundle.namelist()
-            self.assertIn("sanwei/SKILL.md", names)
-            self.assertIn("sanwei/scripts/install_skill.py", names)
-            self.assertIn("sanwei/references/claude.md", names)
+            self.assertIn("cyber-bookhouse/SKILL.md", names)
+            self.assertIn("cyber-bookhouse/scripts/install_skill.py", names)
+            self.assertIn("cyber-bookhouse/references/claude.md", names)
             self.assertFalse(any("__pycache__" in name for name in names))
 
 

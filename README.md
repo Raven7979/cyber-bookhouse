@@ -10,7 +10,7 @@ Codex 或 Claude 用户如果愿意授权，还可以同时生成一份飞书文
 ![8 秒看懂赛博书屋：公开内容进入本机 Agent，最后写入真实 Obsidian 演示库](assets/demo/quick-demo.gif)
 
 > 动图由真实公开页面和单独建立的 Obsidian 脱敏演示库录制。
-> [观看 42 秒完整演示（VoiceBox 雷厉旁白）](assets/demo/cyber-sanwei-demo.mp4)。
+> [观看 42 秒完整演示（VoiceBox 雷厉旁白）](assets/demo/cyber-bookhouse-demo.mp4)。
 
 ## 30 秒看懂
 
@@ -162,13 +162,13 @@ Claude 手机入口：需要在手机上发链接时，接飞书，或让 WorkBu
 4. 按[第一次安装](INSTALL.md)把同一份 Skill 交给 Codex、Claude 或 WorkBuddy。
 5. 对它说：
 
-> 请用 sanwei Skill 帮我搭好赛博书屋。请识别当前是 Codex、Claude 还是
+> 请用 cyber-bookhouse Skill 帮我搭好赛博书屋。请识别当前是 Codex、Claude 还是
 > WorkBuddy，先完成软件、Obsidian 和当前路线要求的真实测试，之后再问我
 > 要不要增加飞书入口、微信助理或飞书文档。每次只说一个操作，最后运行
 > 包内能力检查，告诉我哪些内容能直接处理。
 
-新建书屋时，macOS 的默认目录是 `~/Documents/cyber-sanwei`，Windows 是
-`%USERPROFILE%\Documents\cyber-sanwei`。对你仍然称为“赛博书屋”。
+新建书屋时，macOS 的默认目录是 `~/Documents/cyber-bookhouse`，Windows 是
+`%USERPROFILE%\Documents\cyber-bookhouse`。对你仍然称为“赛博书屋”。
 
 向导会先用 Obsidian 的“打开文件夹作为仓库”注册目录，再做当前路线要求的
 真实写入测试。基础测试通过后，才会询问是否增加飞书、微信助理或飞书文档。

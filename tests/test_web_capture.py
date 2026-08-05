@@ -9,7 +9,7 @@ from pathlib import Path
 SCRIPT = (
     Path(__file__).resolve().parents[1]
     / "skills"
-    / "sanwei"
+    / "cyber-bookhouse"
     / "scripts"
     / "web_capture.py"
 )

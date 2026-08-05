@@ -8,8 +8,8 @@
 
 1. 运行 `doctor`，确认 `claude` 命令或 Claude 桌面应用与 Obsidian 可用。
 2. 运行 `setup_state.py init --agent claude --channel desktop`。
-3. 新建书屋时，macOS 使用 `~/Documents/cyber-sanwei`，Windows 使用
-   `%USERPROFILE%\Documents\cyber-sanwei`。按
+3. 新建书屋时，macOS 使用 `~/Documents/cyber-bookhouse`，Windows 使用
+   `%USERPROFILE%\Documents\cyber-bookhouse`。按
    [obsidian.md](obsidian.md) 在 Obsidian 中选择“打开文件夹作为仓库”。
 4. 打开 `欢迎来到赛博书屋.md`，确认文字在 Obsidian 中可见。
 5. 用书屋路径作为证据，标记 `vault_registered`。

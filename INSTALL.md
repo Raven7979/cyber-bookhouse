@@ -1,6 +1,6 @@
 # 第一次安装
 
-第一次只需要你亲手做一件事：把 `sanwei` Skill 交给 Codex、Claude 或
+第一次只需要你亲手做一件事：把 `cyber-bookhouse` Skill 交给 Codex、Claude 或
 WorkBuddy。它认得这套 Skill 以后，后面的软件检查、Obsidian 设置、入口
 连接和测试都会一项一项带你完成。
 
@@ -15,8 +15,8 @@ WorkBuddy。它认得这套 Skill 以后，后面的软件检查、Obsidian 设�
 
 | 系统 | 状态 | 安装时会有什么不同 |
 | --- | --- | --- |
-| macOS | 稳定 | 默认书屋在 `~/Documents/cyber-sanwei` |
-| Windows 10 / 11 | Beta | 默认书屋在 `%USERPROFILE%\Documents\cyber-sanwei`，脚本使用 PowerShell 和 `py -3` |
+| macOS | 稳定 | 默认书屋在 `~/Documents/cyber-bookhouse` |
+| Windows 10 / 11 | Beta | 默认书屋在 `%USERPROFILE%\Documents\cyber-bookhouse`，脚本使用 PowerShell 和 `py -3` |
 | Linux | 本版未支持 | 暂不提供自动安装向导 |
 
 Windows 版会检查 `%LOCALAPPDATA%`、`%APPDATA%` 和常见应用目录。
@@ -31,7 +31,7 @@ Windows 版会检查 `%LOCALAPPDATA%`、`%APPDATA%` 和常见应用目录。
 4. 确认「赛博书屋」已经出现在已安装技能中。
 5. 新建一个任务，发送：
 
-> 请使用 sanwei Skill，一步一步帮我搭好赛博书屋。每次只告诉我
+> 请使用 cyber-bookhouse Skill，一步一步帮我搭好赛博书屋。每次只告诉我
 > 一个操作，做完再继续。最后请从手机发一个测试链接，并确认笔记进入
 > Obsidian。基础测试通过后，再问我要不要增加飞书入口或微信助理。最后运行
 > 包内能力检查，告诉我哪些内容可以直接处理。
@@ -52,11 +52,11 @@ WorkBuddy 的官方说明：
 
 > 请解压这个 cyber-bookhouse.zip，运行包内 scripts/install_skill.py --target codex，
 > 把它安装成我的用户级 Skill。安装器如遇同名旧版，先做可恢复备份；完成后
-> 回读 SKILL.md，并确认 /skills 中能看到 sanwei。不要改动其他 Skills。
+> 回读 SKILL.md，并确认 /skills 中能看到 cyber-bookhouse。不要改动其他 Skills。
 
 3. 安装确认后发送：
 
-> 请使用 $sanwei，一步一步帮我搭好赛博书屋。每次只告诉我一个
+> 请使用 $cyber-bookhouse，一步一步帮我搭好赛博书屋。每次只告诉我一个
 > 操作，做完再继续。最后请从 ChatGPT 手机端发一个测试链接，并确认
 > 笔记进入 Obsidian。基础测试通过后，再问我要不要增加飞书入口、微信
 > 助理或飞书文档。如果我选择微信助理，请继续引导安装或打开 WorkBuddy，
@@ -78,13 +78,13 @@ Windows 上如果 `py -3` 和 `python` 都不可用，向导会只给你
    登录 Claude Code。
 2. 把发布页下载的 `cyber-bookhouse.zip` 放进当前任务可读的目录，解压后对 Claude 说：
 
-> 请运行 sanwei/scripts/install_skill.py --target claude，把它安装成我的用户级
+> 请运行 cyber-bookhouse/scripts/install_skill.py --target claude，把它安装成我的用户级
 > Skill。安装器如遇同名旧版，先做可恢复备份；完成后回读 SKILL.md，并确认
-> /sanwei 可以调用。不要改动其他 Skills。
+> /cyber-bookhouse 可以调用。不要改动其他 Skills。
 
 3. 安装确认后发送：
 
-> 请使用 /sanwei，一步一步帮我搭好赛博书屋。每次只告诉我一个操作，做完
+> 请使用 /cyber-bookhouse，一步一步帮我搭好赛博书屋。每次只告诉我一个操作，做完
 > 再继续。先完成 Claude 电脑端到 Obsidian 的真实写入测试，再问我要不要
 > 增加飞书入口、微信助理或飞书文档。若选择微信助理，请继续引导安装或打开
 > WorkBuddy，上传同一份 Skill，并写入同一个书屋。最后运行包内能力检查，

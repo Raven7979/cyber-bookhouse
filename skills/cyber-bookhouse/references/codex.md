@@ -12,8 +12,8 @@ ChatGPT 组成；飞书可以是额外入口，飞书文档也可以是授权后
    如果还要接飞书，需要已安装并登录 Codex CLI。
 2. 运行 `setup_state.py init --agent codex --channel desktop`。此时不要
    询问飞书，也不要把 `desktop` 换成其他值。
-3. 新建书屋时，macOS 使用 `~/Documents/cyber-sanwei`，Windows
-   使用 `%USERPROFILE%\Documents\cyber-sanwei`。按
+3. 新建书屋时，macOS 使用 `~/Documents/cyber-bookhouse`，Windows
+   使用 `%USERPROFILE%\Documents\cyber-bookhouse`。按
    [obsidian.md](obsidian.md) 在 Obsidian 中选择“打开文件夹作为仓库”；
    不要用 `obsidian://open?path=...` 注册新仓库。
 4. 打开 `欢迎来到赛博书屋.md`，确认文字在 Obsidian 里可见。

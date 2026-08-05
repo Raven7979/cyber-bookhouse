@@ -12,7 +12,7 @@ from unittest import mock
 SCRIPT = (
     Path(__file__).resolve().parents[1]
     / "skills"
-    / "sanwei"
+    / "cyber-bookhouse"
     / "scripts"
     / "setup_state.py"
 )
@@ -29,9 +29,9 @@ class SetupStateTests(unittest.TestCase):
         self.environment = mock.patch.dict(
             os.environ,
             {
-                "CYBER_SANWEI_CONFIG": str(self.root / "config.json"),
-                "CYBER_SANWEI_DATA": str(self.root / "data"),
-                "CYBER_SANWEI_OBSIDIAN_REGISTRY": str(
+                "CYBER_BOOKHOUSE_CONFIG": str(self.root / "config.json"),
+                "CYBER_BOOKHOUSE_DATA": str(self.root / "data"),
+                "CYBER_BOOKHOUSE_OBSIDIAN_REGISTRY": str(
                     self.root / "obsidian.json"
                 ),
             },
@@ -49,9 +49,23 @@ class SetupStateTests(unittest.TestCase):
         self.assertEqual(MODULE.read_json(target)["name"], "赛博书屋")
 
     def test_default_new_vault_uses_ascii_directory_name(self) -> None:
-        self.assertEqual(MODULE.DEFAULT_VAULT_DIRNAME, "cyber-sanwei")
+        self.assertEqual(MODULE.DEFAULT_VAULT_DIRNAME, "cyber-bookhouse")
         self.assertTrue(MODULE.DEFAULT_VAULT_DIRNAME.isascii())
         self.assertEqual(MODULE.VAULT_DISPLAY_NAME, "赛博书屋")
+
+    def test_legacy_path_is_used_only_when_new_path_is_absent(self) -> None:
+        primary = self.root / "cyber-bookhouse" / "config.json"
+        legacy = self.root / "legacy" / "config.json"
+        legacy.parent.mkdir(parents=True)
+        legacy.write_text("{}", encoding="utf-8")
+        selected = MODULE.compatible_path(
+            {},
+            "CYBER_BOOKHOUSE_CONFIG",
+            "CYBER_SANWEI_CONFIG",
+            primary,
+            legacy,
+        )
+        self.assertEqual(selected, legacy)
 
     def test_windows_locations_use_appdata_and_ascii_vault(self) -> None:
         environment = {
@@ -65,11 +79,11 @@ class SetupStateTests(unittest.TestCase):
         )
         self.assertEqual(
             str(locations["config"]),
-            r"C:\Users\Demo\AppData\Local\cyber-sanwei\config.json",
+            r"C:\Users\Demo\AppData\Local\cyber-bookhouse\config.json",
         )
         self.assertEqual(
             str(locations["notes"]),
-            r"C:\Users\Demo\Documents\cyber-sanwei",
+            r"C:\Users\Demo\Documents\cyber-bookhouse",
         )
         self.assertEqual(
             str(locations["obsidian_registry"]),
@@ -100,13 +114,13 @@ class SetupStateTests(unittest.TestCase):
         self.assertTrue(payload["platform"]["host_verification_required"])
         self.assertEqual(
             payload["paths"]["state"],
-            r"C:\Users\Demo\AppData\Local\cyber-sanwei\data\setup.json",
+            r"C:\Users\Demo\AppData\Local\cyber-bookhouse\data\setup.json",
         )
 
     def test_application_override_supports_non_default_install_path(self) -> None:
         application = self.root / "Obsidian.exe"
         application.write_bytes(b"")
-        environment = {"CYBER_SANWEI_OBSIDIAN_APP": str(application)}
+        environment = {"CYBER_BOOKHOUSE_OBSIDIAN_APP": str(application)}
         self.assertEqual(
             MODULE.find_application("obsidian", "Windows", environment),
             str(application),

@@ -21,17 +21,17 @@ py -3 --version
 
 ## 默认路径
 
-- 书屋目录：`%USERPROFILE%\Documents\cyber-sanwei`
-- 配置：`%LOCALAPPDATA%\cyber-sanwei\config.json`
-- 安装状态：`%LOCALAPPDATA%\cyber-sanwei\data\setup.json`
+- 书屋目录：`%USERPROFILE%\Documents\cyber-bookhouse`
+- 配置：`%LOCALAPPDATA%\cyber-bookhouse\config.json`
+- 安装状态：`%LOCALAPPDATA%\cyber-bookhouse\data\setup.json`
 - Obsidian 仓库登记：`%APPDATA%\obsidian\obsidian.json`
 
-新建目录继续使用英文 `cyber-sanwei`，中文名“赛博书屋”用在
+新建目录使用英文 `cyber-bookhouse`，中文名“赛博书屋”用在
 欢迎页和对用户的提示中。
 
 ## 核心安装
 
-把 `<skill-dir>` 替换为当前 `sanwei` Skill 的绝对路径：
+把 `<skill-dir>` 替换为当前 `cyber-bookhouse` Skill 的绝对路径：
 
 ```powershell
 py -3 "<skill-dir>\scripts\setup_state.py" doctor
@@ -44,7 +44,7 @@ Claude 或 WorkBuddy 路线把 `codex` 换成 `claude` 或 `workbuddy`。如果�
 初始化后：
 
 1. 在 Obsidian 中选择“打开文件夹作为仓库”。
-2. 选择 `%USERPROFILE%\Documents\cyber-sanwei`。
+2. 选择 `%USERPROFILE%\Documents\cyber-bookhouse`。
 3. 重新运行 `doctor`，确认 `registered_in_obsidian` 为 `true`。
 4. 在 Obsidian 中打开中文欢迎笔记做可见性验收。
 
@@ -69,11 +69,11 @@ py -3 "<skill-dir>\scripts\dependency_doctor.py"
 磁盘，只在当前 PowerShell 会话设置对应路径，不改动系统配置：
 
 ```powershell
-$env:CYBER_SANWEI_OBSIDIAN_APP = "D:\Apps\Obsidian\Obsidian.exe"
-$env:CYBER_SANWEI_WORKBUDDY_APP = "D:\Apps\WorkBuddy\WorkBuddy.exe"
-$env:CYBER_SANWEI_CHATGPT_APP = "D:\Apps\ChatGPT\ChatGPT.exe"
-$env:CYBER_SANWEI_CODEX_APP = "D:\Apps\Codex\Codex.exe"
-$env:CYBER_SANWEI_CLAUDE_APP = "D:\Apps\Claude\Claude.exe"
+$env:CYBER_BOOKHOUSE_OBSIDIAN_APP = "D:\Apps\Obsidian\Obsidian.exe"
+$env:CYBER_BOOKHOUSE_WORKBUDDY_APP = "D:\Apps\WorkBuddy\WorkBuddy.exe"
+$env:CYBER_BOOKHOUSE_CHATGPT_APP = "D:\Apps\ChatGPT\ChatGPT.exe"
+$env:CYBER_BOOKHOUSE_CODEX_APP = "D:\Apps\Codex\Codex.exe"
+$env:CYBER_BOOKHOUSE_CLAUDE_APP = "D:\Apps\Claude\Claude.exe"
 ```
 
 只设置实际需要的项，然后重新运行 `doctor`。

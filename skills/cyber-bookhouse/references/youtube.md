@@ -18,7 +18,7 @@
 
 ```bash
 <python-command> "<skill-dir>/scripts/youtube_capture.py" "YOUTUBE_URL" \
-  --output-dir "<temporary-dir>/sanwei-youtube-VIDEO_ID"
+  --output-dir "<temporary-dir>/cyber-bookhouse-youtube-VIDEO_ID"
 ```
 
 根据 `receipt.json` 处理：
@@ -49,7 +49,7 @@
 
 ```bash
 <python-command> "<skill-dir>/scripts/youtube_capture.py" "YOUTUBE_URL" \
-  --output-dir "<temporary-dir>/sanwei-youtube-VIDEO_ID" \
+  --output-dir "<temporary-dir>/cyber-bookhouse-youtube-VIDEO_ID" \
   --staged-transcript "<temporary-dir>/visible-youtube-transcript.txt"
 ```
 
