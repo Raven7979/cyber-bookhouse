@@ -137,7 +137,7 @@ class SkillBundleTests(unittest.TestCase):
     def test_release_archive_has_one_portable_skill_root(self) -> None:
         builder = Path(__file__).resolve().parents[1] / "scripts" / "build_release.py"
         with tempfile.TemporaryDirectory() as folder:
-            archive = Path(folder) / "sanwei.zip"
+            archive = Path(folder) / "cyber-bookhouse.zip"
             run = subprocess.run(
                 [sys.executable, str(builder), "--output", str(archive)],
                 check=True,

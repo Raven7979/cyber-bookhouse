@@ -12,7 +12,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "skills" / "sanwei"
-DEFAULT_OUTPUT = ROOT / "dist" / "sanwei.zip"
+DEFAULT_OUTPUT = ROOT / "dist" / "cyber-bookhouse.zip"
 REQUIRED = (
     "LICENSE",
     "SKILL.md",

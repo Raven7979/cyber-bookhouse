@@ -158,7 +158,7 @@ Claude 手机入口：需要在手机上发链接时，接飞书，或让 WorkBu
    [Claude Code](https://code.claude.com/docs/en/overview) 或
    [WorkBuddy](https://www.codebuddy.cn/work/)。
 3. 从 [Releases](https://github.com/Raven7979/cyber-bookhouse/releases/latest)
-   下载 `sanwei.zip`。
+   下载 `cyber-bookhouse.zip`。
 4. 按[第一次安装](INSTALL.md)把同一份 Skill 交给 Codex、Claude 或 WorkBuddy。
 5. 对它说：
 
@@ -175,7 +175,7 @@ Claude 手机入口：需要在手机上发链接时，接飞书，或让 WorkBu
 
 ## 下载包里有什么
 
-`sanwei.zip` 包含：
+`cyber-bookhouse.zip` 包含：
 
 - Codex、Claude Code 和 WorkBuddy 共用的一份开放标准 Skill；
 - 可恢复备份并回读验证的 Codex / Claude 用户级安装器；

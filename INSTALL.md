@@ -27,7 +27,7 @@ Windows 版会检查 `%LOCALAPPDATA%`、`%APPDATA%` 和常见应用目录。
 
 1. 安装并打开 [WorkBuddy](https://www.codebuddy.cn/work/)。
 2. 打开「技能」，点击「添加技能」→「上传技能」。
-3. 选择发布页下载的 `sanwei.zip`。
+3. 选择发布页下载的 `cyber-bookhouse.zip`。
 4. 确认「赛博书屋」已经出现在已安装技能中。
 5. 新建一个任务，发送：
 
@@ -48,9 +48,9 @@ WorkBuddy 的官方说明：
 1. 安装并打开
    [Codex 桌面应用](https://openai.com/index/introducing-the-codex-app/)；已经在用
    Codex CLI 的人也可以继续使用。
-2. 把发布页下载的 `sanwei.zip` 拖进 Codex 对话，并发送：
+2. 把发布页下载的 `cyber-bookhouse.zip` 拖进 Codex 对话，并发送：
 
-> 请解压这个 sanwei.zip，运行包内 scripts/install_skill.py --target codex，
+> 请解压这个 cyber-bookhouse.zip，运行包内 scripts/install_skill.py --target codex，
 > 把它安装成我的用户级 Skill。安装器如遇同名旧版，先做可恢复备份；完成后
 > 回读 SKILL.md，并确认 /skills 中能看到 sanwei。不要改动其他 Skills。
 
@@ -76,7 +76,7 @@ Windows 上如果 `py -3` 和 `python` 都不可用，向导会只给你
 
 1. 按 [Claude Code 官方文档](https://code.claude.com/docs/en/overview) 安装并
    登录 Claude Code。
-2. 把发布页下载的 `sanwei.zip` 放进当前任务可读的目录，解压后对 Claude 说：
+2. 把发布页下载的 `cyber-bookhouse.zip` 放进当前任务可读的目录，解压后对 Claude 说：
 
 > 请运行 sanwei/scripts/install_skill.py --target claude，把它安装成我的用户级
 > Skill。安装器如遇同名旧版，先做可恢复备份；完成后回读 SKILL.md，并确认

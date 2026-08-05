@@ -84,7 +84,7 @@ https://openai.com/index/work-with-codex-from-anywhere/
 读取 [wechat-assistant.md](wechat-assistant.md)，由 Codex 一步一步完成：
 
 1. 缺少 WorkBuddy 时从官方地址安装。
-2. 在 WorkBuddy 上传同一份 `sanwei.zip`，读取现有书屋路径，不重新建库。
+2. 在 WorkBuddy 上传同一份 `cyber-bookhouse.zip`，读取现有书屋路径，不重新建库。
 3. 打开“微信助理集成”，让用户在官方界面扫码，确认显示“已绑定”。
 4. 从微信发送真实测试链接，确认微信收到回复，而且笔记进入当前同一个
    Obsidian 书屋。

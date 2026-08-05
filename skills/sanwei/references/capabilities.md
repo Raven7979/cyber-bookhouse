@@ -34,7 +34,7 @@
 
 按任务只处理对应的缺项。下载地址统一读取
 [software-links.md](software-links.md)。不得把安装程序、账号 Cookie、Token
-或用户浏览器配置放进 `sanwei.zip`。
+或用户浏览器配置放进 `cyber-bookhouse.zip`。
 
 ## 支持等级
 

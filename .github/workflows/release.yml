@@ -24,6 +24,6 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: >-
-          gh release create "$GITHUB_REF_NAME" dist/sanwei.zip
+          gh release create "$GITHUB_REF_NAME" dist/cyber-bookhouse.zip
           --title "赛博书屋 $GITHUB_REF_NAME"
           --generate-notes

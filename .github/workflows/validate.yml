@@ -18,4 +18,4 @@ jobs:
       - name: Build portable skill archive
         run: python scripts/build_release.py
       - name: Inspect archive
-        run: unzip -l dist/sanwei.zip
+        run: unzip -l dist/cyber-bookhouse.zip

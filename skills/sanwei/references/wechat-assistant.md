@@ -20,7 +20,7 @@ https://www.codebuddy.cn/docs/workbuddy/WeixinBot-Guide
 
 1. 如果电脑没有 WorkBuddy，只从
    [software-links.md](software-links.md) 的官方地址安装。
-2. 在 WorkBuddy 的“技能”里上传同一份 `sanwei.zip`，确认“赛博书屋”
+2. 在 WorkBuddy 的“技能”里上传同一份 `cyber-bookhouse.zip`，确认“赛博书屋”
    已启用。
 3. 让 WorkBuddy 读取现有配置和书屋路径；不要再次运行 `init`，不要新建
    第二个 Obsidian 仓库，也不要改变当前宿主已完成的基础测试记录。
