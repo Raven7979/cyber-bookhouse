@@ -215,6 +215,6 @@ Claude 手机入口：需要在手机上发链接时，接飞书，或让 WorkBu
 
 隐私细节见 [PRIVACY.md](PRIVACY.md)，安全问题见 [SECURITY.md](SECURITY.md)。
 
-`v0.2.0` 是当前公开版本，新增 Claude Code 与三端通用安装包；macOS 稳定，
+`v0.2.1` 是当前公开版本，统一使用 `cyber-bookhouse` 作为 Skill ID；macOS 稳定，
 Windows 10 / 11 仍为 Beta。不同内容
 平台仍需要继续拿真实样本逐个测试。
