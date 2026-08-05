@@ -20,10 +20,36 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Build universal Agent Skill
         run: python scripts/build_release.py
-      - name: Create GitHub release
+      - name: Publish or update GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: >-
-          gh release create "$GITHUB_REF_NAME" dist/cyber-bookhouse.zip
-          --title "赛博书屋 $GITHUB_REF_NAME"
-          --generate-notes
+        run: |
+          BUILD="$(python -c 'import json; print(json.load(open("skills/cyber-bookhouse/release.json"))["build"])')"
+          MARKER="<!-- cyber-bookhouse-build: $BUILD -->"
+
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            gh release view "$GITHUB_REF_NAME" --json body --jq .body > release-notes.md
+            python - "$BUILD" <<'PY'
+          import re
+          import sys
+          from pathlib import Path
+
+          path = Path("release-notes.md")
+          body = path.read_text(encoding="utf-8")
+          body = re.sub(
+              r"\A<!--\s*cyber-bookhouse-build:\s*\d+\s*-->\s*",
+              "",
+              body,
+          )
+          marker = f"<!-- cyber-bookhouse-build: {sys.argv[1]} -->"
+          path.write_text(f"{marker}\n\n{body.lstrip()}", encoding="utf-8")
+          PY
+            gh release upload "$GITHUB_REF_NAME" dist/cyber-bookhouse.zip --clobber
+            gh release edit "$GITHUB_REF_NAME" --notes-file release-notes.md
+          else
+            gh release create "$GITHUB_REF_NAME" dist/cyber-bookhouse.zip \
+              --verify-tag \
+              --title "赛博书屋 $GITHUB_REF_NAME" \
+              --generate-notes \
+              --notes "$MARKER"
+          fi
