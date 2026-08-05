@@ -139,6 +139,24 @@ Claude 手机入口：需要在手机上发链接时，接飞书，或让 WorkBu
 
 ![从飞书发送链接，经 Codex 或 WorkBuddy 写入 Obsidian](assets/screenshots/07-feishu-route.png)
 
+### 飞书 Bot 怎么接
+
+基础 Obsidian 路线验收后，赛博书屋会询问是否增加飞书入口，并把“没有 Bot”和
+“已有 Bot”分开处理：
+
+- **没有 Bot**：安装 `lark-channel-bridge`，运行前台向导，扫码创建或选择一个
+  PersonalAgent 应用；先用 `/status` 验收连接，再发送真实的“同步笔记：链接”。
+- **已有 Bot 已在线**：不重复绑定同一个应用；把 Skill 安装到现有 Bot 背后的 Agent，
+  用 `/status`、“检查书屋”和真实链接完成验收。
+- **已有应用但未连接**：只有飞书开放平台中的 PersonalAgent 应用可以直接绑定。
+  向导只读取 App ID，App Secret 由用户在本机终端隐藏输入；普通 Webhook 群机器人
+  不能代替。
+- **通过标准**：Bot 有回复、同一 Obsidian 书屋出现可读笔记、来源和获取状态可回读；
+  前台通过后再改成后台常驻。
+
+默认只有应用创建者可用。需要给同事或群开放时，再用 `/invite user @某人` 或
+`/invite group` 做最小范围授权。完整步骤见[第一次安装](INSTALL.md)。
+
 ![从微信助理发送链接，经 WorkBuddy 写入 Obsidian](assets/screenshots/08-wechat-route.png)
 
 ## 一分钟体验
@@ -172,6 +190,21 @@ Claude 手机入口：需要在手机上发链接时，接飞书，或让 WorkBu
 
 向导会先用 Obsidian 的“打开文件夹作为仓库”注册目录，再做当前路线要求的
 真实写入测试。基础测试通过后，才会询问是否增加飞书、微信助理或飞书文档。
+
+## 已经安装了，怎样更新
+
+已安装的 Skill **不会自动更新**。发布新版本只会更新 GitHub 上的下载包，不会在
+后台改动你电脑里的 Skill。更新时重新下载最新的 `cyber-bookhouse.zip`，解压后按
+原来的目标再次运行安装器即可：
+
+```bash
+python3 cyber-bookhouse/scripts/install_skill.py --target codex
+# Claude Code 用户把 codex 改成 claude；两边都装则改成 both
+```
+
+安装器会先把现有版本移动到 `~/.cyber-bookhouse-backups/`，再安装新版并逐文件
+回读校验；其他 Skills 不会被改动。完成后重启或新开一个 Agent 任务，再调用一次
+`cyber-bookhouse`。WorkBuddy 用户重新上传最新版 ZIP，并按界面确认更新或覆盖。
 
 ## 下载包里有什么
 
@@ -215,6 +248,6 @@ Claude 手机入口：需要在手机上发链接时，接飞书，或让 WorkBu
 
 隐私细节见 [PRIVACY.md](PRIVACY.md)，安全问题见 [SECURITY.md](SECURITY.md)。
 
-`v0.2.1` 是当前公开版本，统一使用 `cyber-bookhouse` 作为 Skill ID；macOS 稳定，
+`v0.2.2` 是当前公开版本，统一使用 `cyber-bookhouse` 作为 Skill ID；macOS 稳定，
 Windows 10 / 11 仍为 Beta。不同内容
 平台仍需要继续拿真实样本逐个测试。

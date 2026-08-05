@@ -27,6 +27,7 @@ class SkillBundleTests(unittest.TestCase):
             "references/capabilities.md",
             "references/windows.md",
             "references/claude.md",
+            "references/feishu-entry.md",
             "references/wechat-assistant.md",
             "references/youtube.md",
             "references/web.md",
@@ -44,6 +45,7 @@ class SkillBundleTests(unittest.TestCase):
         for target in (
             "references/capabilities.md",
             "references/claude.md",
+            "references/feishu-entry.md",
             "references/youtube.md",
             "references/distillation.md",
             "references/visualizations.md",

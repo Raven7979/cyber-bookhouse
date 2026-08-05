@@ -57,6 +57,11 @@ before onboarding or capture.
   [references/wechat-assistant.md](references/wechat-assistant.md). Codex or Claude may
   guide this route too; it installs or opens WorkBuddy as the WeChat connector
   and keeps the same Obsidian vault.
+- If the user selects Feishu input, read
+  [references/feishu-entry.md](references/feishu-entry.md). The guide must first
+  distinguish a new PersonalAgent bot from an existing PersonalAgent app, then
+  connect it with `lark-channel-bridge` and test a real link all the way to the
+  same Obsidian vault. A generic incoming-webhook group bot is not equivalent.
 - Do not bundle, mirror, or silently replace third-party applications.
 - Do not request App Secret, token, password, cookie, or webhook in chat.
 - Pause only for installation UI, login, QR scanning, authorization, or a

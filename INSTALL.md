@@ -23,6 +23,23 @@ Windows 版会检查 `%LOCALAPPDATA%`、`%APPDATA%` 和常见应用目录。
 因为目前是 Beta，只有当前路线要求的入口和 Obsidian 真实写入测试都通过，
 向导才会告诉你“安装完成”。
 
+## 已安装用户更新
+
+已经装进 Codex、Claude Code 或 WorkBuddy 的 Skill 不会自动更新。GitHub 发布新版后，
+需要重新下载最新的 `cyber-bookhouse.zip` 并再次安装。
+
+Codex 或 Claude Code 用户解压新版后，重新运行原安装命令：
+
+```bash
+python3 cyber-bookhouse/scripts/install_skill.py --target codex
+# Claude Code：--target claude
+# 两边都更新：--target both
+```
+
+安装器发现同名旧版时，会先将它移动到 `~/.cyber-bookhouse-backups/`，再安装新版并
+逐文件回读校验；不会碰其他 Skills。更新后重启或新开一个 Agent 任务，再调用一次
+`cyber-bookhouse`。WorkBuddy 用户重新上传最新版 ZIP，并在界面中确认更新或覆盖。
+
 ## 用 WorkBuddy 安装
 
 1. 安装并打开 [WorkBuddy](https://www.codebuddy.cn/work/)。
@@ -93,6 +110,70 @@ Windows 上如果 `py -3` 和 `python` 都不可用，向导会只给你
 Claude 的基础路线不声称已经接通手机。需要手机入口时，飞书由
 `lark-channel-bridge` 连接本机 Claude Code；微信由 WorkBuddy 微信助理接收，
 两者都必须用真实链接回测到同一个 Obsidian 书屋。
+
+## 把飞书 Bot 接进赛博书屋
+
+这一步只在基础 Obsidian 路线已经真实写入成功后进行。Skill 会先问你用新 Bot，还是
+复用已有 Bot；不会要求你把 App Secret、Token 或 Cookie 发进对话。
+
+### 没有 Bot：扫码创建
+
+1. 向导检查 Node.js 20.12+，并安装 `lark-channel-bridge`。
+2. 向导用当前 Agent 和已验收的书屋目录运行：
+
+```bash
+lark-channel-bridge run \
+  --profile cyber-bookhouse \
+  --agent codex \
+  --workspace "<你的书屋目录>"
+```
+
+3. 终端出现二维码后，用飞书扫码，在官方页面选择或创建 PersonalAgent 应用。
+4. 看到“已连接”后，在飞书里找到新 Bot，私聊发送 `/status`。
+5. 再发一条真实的 `同步笔记：链接`，确认同一个 Obsidian 书屋出现可读笔记，且 Bot
+   返回结果。
+6. 前台测试通过后，向导将它改为后台常驻，并再次检查状态。
+
+### 已经有 Bot：先看它是否已经在线
+
+如果 Bot 已经通过 `lark-channel-bridge` 连着一台电脑，不要在另一处再次绑定相同应用。
+先在飞书私聊发送 `/status`，找到它背后的 Agent 和 profile；把 `cyber-bookhouse` Skill
+安装到那个 Agent，再发送“检查书屋”和一条真实的“同步笔记：链接”。现有 Bot 还承担
+其他工作时，不必把默认工作目录改成 Obsidian 仓库。
+
+### 已有应用但尚未连接：绑定 PersonalAgent
+
+普通 Webhook 群机器人不能直接复用。现有 Bot 必须是飞书开放平台中的 PersonalAgent
+应用，并且你有权查看它的 App ID 和 App Secret。
+
+1. 在飞书开放平台“凭证与基础信息”中复制 App ID。
+2. 向导运行：
+
+```bash
+lark-channel-bridge run \
+  --profile cyber-bookhouse \
+  --agent codex \
+  --workspace "<你的书屋目录>" \
+  --app-id cli_xxx
+```
+
+3. 只在本机终端的隐藏输入提示里填写 App Secret；不要把它写进命令或聊天。
+4. 如果连接失败，按命令给出的官方页面检查 Bot 能力、发布/启用状态、可用范围及缺失
+   权限，不手填猜测的 scope。
+5. 仍然必须完成 `/status` 和真实 `同步笔记：链接` 两次验收。
+
+前台验证后使用：
+
+```bash
+lark-channel-bridge start --profile cyber-bookhouse
+lark-channel-bridge status --profile cyber-bookhouse
+```
+
+默认只有应用创建者可用。需要给同事私聊使用时发送 `/invite user @某人`；需要开放
+当前群时，在群里发送 `/invite group`。群聊默认必须真正 @Bot。
+
+飞书 Bot 只是输入入口。若还要把笔记生成飞书文档副本，需要另做 `lark-cli` 用户授权
+和测试文档读回；接好 Bot 不等于已经取得个人云盘或文档权限。
 
 ## 接下来会发生什么
 
