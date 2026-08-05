@@ -1,6 +1,6 @@
 # 飞书文档输出
 
-飞书文档是 Codex 路线的可选发布副本，不替代 Obsidian 中的本地 Markdown
+飞书文档是 Codex 或 Claude 路线的可选发布副本，不替代 Obsidian 中的本地 Markdown
 原件。只有用户主动选择，并在飞书官方页面完成授权后，才配置这条路线。
 
 ## 先说明边界

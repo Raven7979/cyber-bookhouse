@@ -30,7 +30,7 @@ SOFTWARE = {
         "url": "https://github.com/larksuite/cli",
     },
     "feishu_input": {
-        "label": "Optional Feishu message input for Codex",
+        "label": "Optional Feishu message input for Codex or Claude",
         "commands": ("lark-channel-bridge",),
         "url": "https://github.com/zarazhangrui/lark-coding-agent-bridge",
     },
@@ -160,7 +160,7 @@ def report(
         "label": "Read content visibly rendered in an authorized browser",
         "status": "host_check_required",
         "note": (
-            "This is a Codex or WorkBuddy host capability. Never replace it "
+            "This is a Codex, Claude, or WorkBuddy host capability. Never replace it "
             "with automatic cookie export."
         ),
     }

@@ -300,6 +300,62 @@ class SetupStateTests(unittest.TestCase):
         self.assertEqual(state["steps"]["channel_connected"]["status"], "pending")
         self.assertEqual(state["steps"]["channel_test"]["status"], "pending")
 
+    def test_claude_base_route_does_not_claim_a_mobile_connection(self) -> None:
+        args = self.init_args("claude", "desktop")
+        with mock.patch.object(
+            MODULE, "detected", return_value=self.fake_detection("claude")
+        ):
+            MODULE.command_init(args)
+        state = MODULE.read_json(MODULE.state_path())
+        for step in ("mobile_connected", "mobile_test"):
+            self.assertEqual(state["steps"][step]["status"], "complete")
+            self.assertIn("not required", state["steps"][step]["evidence"])
+        self.assertEqual(state["steps"]["desktop_test"]["status"], "pending")
+
+    def test_claude_can_select_feishu_after_desktop_setup(self) -> None:
+        args = self.init_args("claude", "desktop")
+        with mock.patch.object(
+            MODULE, "detected", return_value=self.fake_detection("claude")
+        ):
+            MODULE.command_init(args)
+        state = MODULE.read_json(MODULE.state_path())
+        for step in ("vault_registered", "desktop_test"):
+            state["steps"][step] = {
+                "status": "complete",
+                "evidence": f"verified:{step}",
+                "updated_at": MODULE.now(),
+            }
+        MODULE.atomic_json(MODULE.state_path(), MODULE.normalize_state(state))
+
+        MODULE.command_set_channel(type("Args", (), {"channel": "feishu"})())
+        state = MODULE.read_json(MODULE.state_path())
+        self.assertEqual(state["agent"], "claude")
+        self.assertEqual(state["channel"], "feishu")
+        self.assertEqual(state["steps"]["channel_test"]["status"], "pending")
+
+    def test_claude_can_select_verified_feishu_docs(self) -> None:
+        args = self.init_args("claude", "desktop")
+        with mock.patch.object(
+            MODULE, "detected", return_value=self.fake_detection("claude")
+        ):
+            MODULE.command_init(args)
+        state = MODULE.read_json(MODULE.state_path())
+        for step in MODULE.CORE_STEPS:
+            state["steps"][step] = {
+                "status": "complete",
+                "evidence": f"verified:{step}",
+                "updated_at": MODULE.now(),
+            }
+        MODULE.atomic_json(MODULE.state_path(), MODULE.normalize_state(state))
+        selection = type(
+            "Args",
+            (),
+            {"destination": "obsidian-feishu", "evidence": "test doc read back"},
+        )()
+        MODULE.command_set_destination(selection)
+        state = MODULE.read_json(MODULE.state_path())
+        self.assertEqual(state["destination"], "obsidian-feishu")
+
     def test_feishu_docs_destination_requires_core_setup(self) -> None:
         args = self.init_args("codex", "desktop")
         with mock.patch.object(
@@ -360,7 +416,7 @@ class SetupStateTests(unittest.TestCase):
             (),
             {"destination": "obsidian-feishu", "evidence": "test doc read back"},
         )()
-        with self.assertRaisesRegex(ValueError, "Codex only"):
+        with self.assertRaisesRegex(ValueError, "Codex and Claude only"):
             MODULE.command_set_destination(selection)
 
 

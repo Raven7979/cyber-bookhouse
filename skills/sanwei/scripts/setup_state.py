@@ -82,6 +82,11 @@ def platform_locations(
                 joined(system, local, "Programs", "Codex", "Codex.exe"),
                 joined(system, program_files, "Codex", "Codex.exe"),
             ),
+            "claude": (
+                joined(system, windows_apps, "Claude.exe"),
+                joined(system, local, "Programs", "Claude", "Claude.exe"),
+                joined(system, program_files, "Claude", "Claude.exe"),
+            ),
         }
         return {
             "config": joined(system, local, "cyber-sanwei", "config.json"),
@@ -97,6 +102,7 @@ def platform_locations(
         "workbuddy": (Path("/Applications/WorkBuddy.app"),),
         "chatgpt": (Path("/Applications/ChatGPT.app"),),
         "codex": (Path("/Applications/Codex.app"),),
+        "claude": (Path("/Applications/Claude.app"),),
     }
     return {
         "config": home / ".config" / "cyber-sanwei" / "config.json",
@@ -230,6 +236,7 @@ APPLICATION_ENV = {
     "workbuddy": "CYBER_SANWEI_WORKBUDDY_APP",
     "chatgpt": "CYBER_SANWEI_CHATGPT_APP",
     "codex": "CYBER_SANWEI_CODEX_APP",
+    "claude": "CYBER_SANWEI_CLAUDE_APP",
 }
 
 
@@ -311,8 +318,10 @@ def detected(
         or locations["obsidian_registry"]
     ).expanduser()
     codex_cli = executable("codex", system)
+    claude_cli = executable("claude", system)
     chatgpt_app = find_application("chatgpt", system, environment, locations)
     codex_app = find_application("codex", system, environment, locations)
+    claude_app = find_application("claude", system, environment, locations)
     codex_desktop = chatgpt_app or codex_app
     obsidian_app = find_application("obsidian", system, environment, locations)
     workbuddy_app = find_application("workbuddy", system, environment, locations)
@@ -330,6 +339,9 @@ def detected(
             "codex": codex_desktop or codex_cli,
             "codex_desktop": codex_desktop,
             "codex_cli": codex_cli,
+            "claude": claude_app or claude_cli,
+            "claude_desktop": claude_app,
+            "claude_cli": claude_cli,
             "workbuddy": workbuddy_app,
             "node": executable("node", system),
             "npm": executable("npm", system),
@@ -384,7 +396,7 @@ def welcome_text() -> str:
             "",
             "这里是电脑、手机和 Obsidian 共用的本地知识库。",
             "",
-            "试着对 Codex、ChatGPT 手机端或 WorkBuddy 说：",
+            "试着对 Codex、Claude 或 WorkBuddy 说：",
             "",
             "> 同步笔记：<文章、视频或播客链接>",
             "",
@@ -401,7 +413,7 @@ def welcome_text() -> str:
 
 
 def validate_agent_channel(agent: str, channel: str) -> None:
-    if agent not in {"codex", "workbuddy"}:
+    if agent not in {"codex", "claude", "workbuddy"}:
         raise ValueError(f"Unsupported desktop agent: {agent}")
     if channel not in {"desktop", "feishu", "wechat"}:
         raise ValueError(f"Unsupported input channel: {channel}")
@@ -431,6 +443,24 @@ def apply_channel_state(
                 "evidence": "",
                 "updated_at": "",
             }
+    return state
+
+
+def apply_agent_requirements(
+    state: dict[str, Any], agent: str
+) -> dict[str, Any]:
+    if agent != "claude":
+        return state
+    evidence = (
+        "not required for the Claude desktop base route; "
+        "test Feishu or WorkBuddy WeChat Assistant when selected"
+    )
+    for step in ("mobile_connected", "mobile_test"):
+        state["steps"][step] = {
+            "status": "complete",
+            "evidence": evidence,
+            "updated_at": now(),
+        }
     return state
 
 
@@ -502,6 +532,7 @@ def command_init(args: argparse.Namespace) -> int:
         "updated_at": now(),
     }
     state = apply_channel_state(state, args.channel)
+    state = apply_agent_requirements(state, args.agent)
     state["steps"]["software"] = {
         "status": "complete" if selected_present and bool(software["obsidian"]) else "pending",
         "evidence": "desktop agent and Obsidian detected"
@@ -564,9 +595,9 @@ def command_set_destination(args: argparse.Namespace) -> int:
     agent = str(state.get("agent") or config.get("agent") or "")
     if not agent:
         raise RuntimeError("Run init before selecting an output destination.")
-    if args.destination == "obsidian-feishu" and agent != "codex":
+    if args.destination == "obsidian-feishu" and agent not in {"codex", "claude"}:
         raise ValueError(
-            "Feishu Docs output is documented for Codex only in this release."
+            "Feishu Docs output is documented for Codex and Claude only in this release."
         )
 
     incomplete = [
@@ -665,7 +696,9 @@ def parser() -> argparse.ArgumentParser:
     doctor.set_defaults(func=command_doctor)
 
     init = subcommands.add_parser("init", help="Create config and local vault.")
-    init.add_argument("--agent", choices=("codex", "workbuddy"), required=True)
+    init.add_argument(
+        "--agent", choices=("codex", "claude", "workbuddy"), required=True
+    )
     init.add_argument("--channel", choices=("desktop",), required=True)
     init.add_argument("--notes-root")
     init.set_defaults(func=command_init)

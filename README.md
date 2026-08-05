@@ -1,11 +1,11 @@
 # 赛博书屋
 
 刷到一段好视频、听到一期播客、看到一篇长文，把链接发给你平时用的
-ChatGPT / Codex 或 WorkBuddy。电脑读取它能合法获取的内容，整理成带
+ChatGPT / Codex、Claude 或 WorkBuddy。电脑读取它能合法获取的内容，整理成带
 来源、摘要、逐字稿、截图和结构图的 Markdown 笔记，放进你自己的
 Obsidian。
 
-Codex 用户如果愿意授权，还可以同时生成一份飞书文档副本。
+Codex 或 Claude 用户如果愿意授权，还可以同时生成一份飞书文档副本。
 
 ![8 秒看懂赛博书屋：公开内容进入本机 Agent，最后写入真实 Obsidian 演示库](assets/demo/quick-demo.gif)
 
@@ -17,14 +17,15 @@ Codex 用户如果愿意授权，还可以同时生成一份飞书文档副本�
 ```text
 文章、视频、播客或本地文件
             ↓
-ChatGPT / Codex 或 WorkBuddy（电脑、手机、飞书、微信助理）
+Codex / Claude / WorkBuddy（电脑、手机、飞书、微信助理）
             ↓
    同步笔记 / 蒸馏笔记 / 详细拆解
             ↓
 Obsidian 本地原件 → 可选的飞书文档副本
 ```
 
-它不是新的笔记软件，也不是在线内容平台。它是一套交给桌面 Agent
+它不是新的笔记软件，也不是在线内容平台。它是一套符合
+[Agent Skills 开放规范](https://agentskills.io/specification)、交给桌面 Agent
 安装的 Skill，笔记原件仍然在你的电脑上。
 
 ![赛博书屋项目总览](assets/screenshots/01-overview.png)
@@ -113,18 +114,24 @@ Windows 10+ 安装指南。详细的 Windows 路径和验收见
 | 你平时用什么 | 电脑上 | 手机上 | 还可以接 |
 | --- | --- | --- | --- |
 | ChatGPT / Codex | Codex | ChatGPT 手机端 | 飞书入口、微信助理（通过 WorkBuddy）、飞书文档 |
+| Claude | Claude Code | 飞书或微信助理 | 飞书入口、微信助理（通过 WorkBuddy）、飞书文档 |
 | WorkBuddy | WorkBuddy | WorkBuddy 手机端 | 飞书、微信助理 |
 
-已经在用 ChatGPT，就走 Codex 这条路；已经在用 WorkBuddy，就走 WorkBuddy。
+已经在用 ChatGPT，就走 Codex 这条路；已经在用 Claude，就走 Claude；已经
+在用 WorkBuddy，就走 WorkBuddy。
 不选择微信助理时，不用为了书屋把两边都装一遍；Codex 用户主动选择微信
 助理后，Codex 会继续引导安装或打开 WorkBuddy，并让它写入同一个书屋。
 手机远程入口依赖电脑保持在线。
 
 ![Codex 从电脑、手机或飞书接收内容；选择微信助理时继续引导 WorkBuddy 接入同一个书屋](assets/screenshots/02-codex-route.png)
 
-Codex 默认把 Markdown 原件写入 Obsidian。完成飞书官方授权和真实读回测试后，
+Codex 和 Claude 默认把 Markdown 原件写入 Obsidian。完成飞书官方授权和真实读回测试后，
 也可以同时生成飞书文档副本。飞书入口负责“从哪里发”，飞书文档负责
 “整理后放到哪里”，是两件事。
+
+Claude 使用同一份 Skill 和同一个 Obsidian 书屋。它不虚构一个未经核实的
+Claude 手机入口：需要在手机上发链接时，接飞书，或让 WorkBuddy 微信助理
+把微信消息送进同一个书屋。
 
 ![WorkBuddy 电脑端、手机端、飞书和微信助理进入 Obsidian 书屋的路线](assets/screenshots/03-workbuddy-route.png)
 
@@ -147,28 +154,31 @@ Codex 默认把 Markdown 原件写入 Obsidian。完成飞书官方授权和真�
 
 1. 安装 [Obsidian](https://obsidian.md/download)。
 2. 安装你已经在用的桌面工具：
-   [Codex](https://openai.com/index/introducing-the-codex-app/) 或
+   [Codex](https://openai.com/index/introducing-the-codex-app/)、
+   [Claude Code](https://code.claude.com/docs/en/overview) 或
    [WorkBuddy](https://www.codebuddy.cn/work/)。
 3. 从 [Releases](https://github.com/Raven7979/cyber-bookhouse/releases/latest)
    下载 `sanwei.zip`。
-4. 按[第一次安装](INSTALL.md)把 Skill 交给 Codex 或 WorkBuddy。
+4. 按[第一次安装](INSTALL.md)把同一份 Skill 交给 Codex、Claude 或 WorkBuddy。
 5. 对它说：
 
-> 请用 sanwei Skill 帮我搭好赛博书屋。请识别当前是 Codex 还是
-> WorkBuddy，先完成软件、Obsidian、电脑和手机真实测试，之后再问我
+> 请用 sanwei Skill 帮我搭好赛博书屋。请识别当前是 Codex、Claude 还是
+> WorkBuddy，先完成软件、Obsidian 和当前路线要求的真实测试，之后再问我
 > 要不要增加飞书入口、微信助理或飞书文档。每次只说一个操作，最后运行
 > 包内能力检查，告诉我哪些内容能直接处理。
 
 新建书屋时，macOS 的默认目录是 `~/Documents/cyber-sanwei`，Windows 是
 `%USERPROFILE%\Documents\cyber-sanwei`。对你仍然称为“赛博书屋”。
 
-向导会先用 Obsidian 的“打开文件夹作为仓库”注册目录，再做电脑和手机
+向导会先用 Obsidian 的“打开文件夹作为仓库”注册目录，再做当前路线要求的
 真实写入测试。基础测试通过后，才会询问是否增加飞书、微信助理或飞书文档。
 
 ## 下载包里有什么
 
 `sanwei.zip` 包含：
 
+- Codex、Claude Code 和 WorkBuddy 共用的一份开放标准 Skill；
+- 可恢复备份并回读验证的 Codex / Claude 用户级安装器；
 - 安装状态、输入通道和真实测试记录；
 - macOS 与 Windows 路径、应用和依赖检查；
 - 普通公开网页、YouTube 公开字幕和本地音视频处理；
@@ -181,7 +191,7 @@ Codex 默认把 Markdown 原件写入 Obsidian。完成飞书官方授权和真�
 ## 怎样才算真的装好了
 
 - 电脑端发一个测试链接，Obsidian 里出现可读笔记。
-- 手机端也能继续同一个工作，并收到处理结果。
+- 选择了手机入口时，它能继续同一个工作，并收到处理结果。
 - 如果另外接了飞书或微信助理，它们写入的是同一个书屋。
 - 如果选了飞书文档，测试文档能创建、能读回、能由用户打开。
 - 包内能力检查已运行，缺少的外部工具和受限平台被如实报告。
@@ -205,5 +215,6 @@ Codex 默认把 Markdown 原件写入 Obsidian。完成飞书官方授权和真�
 
 隐私细节见 [PRIVACY.md](PRIVACY.md)，安全问题见 [SECURITY.md](SECURITY.md)。
 
-`v0.1.2` 是当前公开版本，macOS 稳定，Windows 10 / 11 进入 Beta。不同内容
+`v0.2.0` 是当前公开版本，新增 Claude Code 与三端通用安装包；macOS 稳定，
+Windows 10 / 11 仍为 Beta。不同内容
 平台仍需要继续拿真实样本逐个测试。

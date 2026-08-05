@@ -9,6 +9,8 @@ Use these sources. Do not bundle third-party installers in the project.
 | Codex app | https://openai.com/index/introducing-the-codex-app/ | Codex desktop route on macOS or Windows |
 | ChatGPT | https://chatgpt.com/download/ | ChatGPT mobile connection |
 | Codex CLI | https://developers.openai.com/codex/cli | Codex-to-Feishu route |
+| Claude Code | https://code.claude.com/docs/en/overview | Claude route and Claude-to-Feishu route |
+| Claude Skills | https://code.claude.com/docs/en/slash-commands | Installing this Skill in Claude Code |
 | WorkBuddy | https://www.codebuddy.cn/work/ | WorkBuddy route |
 | WorkBuddy Windows guide | https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Installation-Win-Guide | WorkBuddy on Windows 10+ |
 | WorkBuddy Skill help | https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Skills-Market | Installing this Skill in WorkBuddy |
@@ -16,9 +18,9 @@ Use these sources. Do not bundle third-party installers in the project.
 | WorkBuddy WeChat guide | https://www.codebuddy.cn/docs/workbuddy/WeixinBot-Guide | WorkBuddy-to-WeChat route |
 | WorkBuddy Feishu guide | https://www.codebuddy.cn/docs/workbuddy/Feishu-Guide | WorkBuddy-to-Feishu route |
 | Feishu | https://www.feishu.cn/download | Feishu input |
-| Node.js 20.12.0+ | https://nodejs.org/en/download | Codex-to-Feishu bridge |
-| Lark Channel Bridge | https://github.com/zarazhangrui/lark-coding-agent-bridge | Codex-to-Feishu bridge |
-| Lark / Feishu CLI | https://github.com/larksuite/cli | Optional Codex-to-Feishu-Docs output |
+| Node.js 20.12.0+ | https://nodejs.org/en/download | Codex/Claude-to-Feishu bridge |
+| Lark Channel Bridge | https://github.com/zarazhangrui/lark-coding-agent-bridge | Codex/Claude-to-Feishu bridge |
+| Lark / Feishu CLI | https://github.com/larksuite/cli | Optional Codex/Claude-to-Feishu-Docs output |
 | yt-dlp | https://github.com/yt-dlp/yt-dlp#installation | YouTube public metadata and subtitles |
 | FFmpeg | https://ffmpeg.org/download.html | Local audio/video processing and validation |
 | Whisper | https://github.com/openai/whisper | Optional local speech transcription |

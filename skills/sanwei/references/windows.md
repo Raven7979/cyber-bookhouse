@@ -7,7 +7,7 @@ Windows 路线使用 PowerShell，支持等级为 `beta`。这表示包内的路
 ## 开始前
 
 1. 确认系统是 Windows 10 或 Windows 11。
-2. 使用当前已打开的 Codex 或 WorkBuddy，不要在安装开始时询问
+2. 使用当前已打开的 Codex、Claude 或 WorkBuddy，不要在安装开始时询问
    飞书或微信助理。
 3. 在 PowerShell 中确定 Python 命令：
 
@@ -38,7 +38,7 @@ py -3 "<skill-dir>\scripts\setup_state.py" doctor
 py -3 "<skill-dir>\scripts\setup_state.py" init --agent codex --channel desktop
 ```
 
-WorkBuddy 路线把 `codex` 换成 `workbuddy`。如果本机只能使用 `python`，
+Claude 或 WorkBuddy 路线把 `codex` 换成 `claude` 或 `workbuddy`。如果本机只能使用 `python`，
 就把命令开头的 `py -3` 换成 `python`。
 
 初始化后：
@@ -73,6 +73,7 @@ $env:CYBER_SANWEI_OBSIDIAN_APP = "D:\Apps\Obsidian\Obsidian.exe"
 $env:CYBER_SANWEI_WORKBUDDY_APP = "D:\Apps\WorkBuddy\WorkBuddy.exe"
 $env:CYBER_SANWEI_CHATGPT_APP = "D:\Apps\ChatGPT\ChatGPT.exe"
 $env:CYBER_SANWEI_CODEX_APP = "D:\Apps\Codex\Codex.exe"
+$env:CYBER_SANWEI_CLAUDE_APP = "D:\Apps\Claude\Claude.exe"
 ```
 
 只设置实际需要的项，然后重新运行 `doctor`。
@@ -83,10 +84,11 @@ Windows 上的安装不能用“文件已创建”代替真实测试，必须完
 
 1. `doctor` 识别到当前桌面 Agent 和 Obsidian。
 2. 电脑端发送一条测试链接，笔记在 Obsidian 中可见。
-3. ChatGPT 或 WorkBuddy 手机端发送一条测试链接，写入同一书屋并
-   收到回复。
-4. 核心测试通过后，再询问是否增加飞书或微信助理；Codex 用户选择微信
-   时也按 [wechat-assistant.md](wechat-assistant.md) 引导安装或打开 WorkBuddy。
+3. Codex 与 WorkBuddy 路线还要从匹配的手机端发送一条测试链接，写入同一
+   书屋并收到回复。Claude 基础路线不伪造手机测试，选择飞书或微信后再从
+   该入口回测。
+4. 核心测试通过后，再询问是否增加飞书或微信助理；Codex 或 Claude 用户
+   选择微信时也按 [wechat-assistant.md](wechat-assistant.md) 引导安装或打开 WorkBuddy。
 5. 如果选了额外入口，从该入口再做一次同书屋写入和回复测试。
 6. 运行 `status`，只有全部必要步骤都有验收证据时，才告诉用户
    安装完成并发送三种日常命令。

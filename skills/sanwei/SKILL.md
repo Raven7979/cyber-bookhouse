@@ -1,6 +1,6 @@
 ---
 name: sanwei
-description: Set up and use 赛博书屋 as a local knowledge-capture workflow connecting Codex with ChatGPT mobile, or WorkBuddy with its mobile client, plus optional Feishu or WeChat input and Obsidian; Codex can also publish a verified copy to Feishu Docs after user authorization. Capture articles, videos, podcasts such as 小宇宙, and local files with explicit access limits. Use when the user asks to install, configure, repair, verify, or use 赛博书屋; says “收进书屋”, “同步笔记”, “蒸馏笔记”, “详细拆解”, “链接转笔记”, or “整理进 Obsidian”; or wants desktop and mobile messages to write into one local Obsidian vault.
+description: Set up and use 赛博书屋 as a local knowledge-capture workflow for Codex, Claude Code, or WorkBuddy with Obsidian, plus optional Feishu or WorkBuddy WeChat Assistant input and verified Feishu Docs copies after user authorization. Capture articles, videos, podcasts such as 小宇宙, and local files with explicit access limits. Use when the user asks to install, configure, repair, verify, or use 赛博书屋; says “收进书屋”, “同步笔记”, “蒸馏笔记”, “详细拆解”, “链接转笔记”, or “整理进 Obsidian”; or wants desktop and mobile messages to write into one local Obsidian vault.
 ---
 
 # 赛博书屋
@@ -34,15 +34,19 @@ before onboarding or capture.
   on that computer. If it reports another non-macOS system, stop automatic
   onboarding and do not claim support.
 - Use the desktop agent currently running this Skill. Do not ask the user to
-  choose Codex or WorkBuddy at the beginning. Ask only if the current host
+  choose Codex, Claude, or WorkBuddy at the beginning. Ask only if the current host
   cannot be determined.
-- Finish software installation, vault registration, the desktop test, and the
-  matching phone-client test before mentioning Feishu or WeChat Assistant.
+- Finish software installation, vault registration, and the desktop test before
+  mentioning Feishu or WeChat Assistant. Codex and WorkBuddy must also finish
+  their matching phone-client test; Claude uses the selected connector as its
+  optional mobile-input test.
 - After those core tests pass, ask exactly one route question:
   - WorkBuddy: “基础书屋已经装好。你要只用 WorkBuddy，还是再接飞书或微信助理？”
   - Codex: “基础书屋已经装好。你要只用 Codex，还是再接飞书入口、微信助理或飞书文档？”
+  - Claude: “基础书屋已经装好。你要只用 Claude，还是再接飞书入口、微信助理或飞书文档？”
 - Read only the matching guide:
   - Codex: [references/codex.md](references/codex.md)
+  - Claude: [references/claude.md](references/claude.md)
   - WorkBuddy: [references/workbuddy.md](references/workbuddy.md)
 - Use [references/software-links.md](references/software-links.md) for downloads.
 - Read [references/capabilities.md](references/capabilities.md) before claiming
@@ -50,7 +54,7 @@ before onboarding or capture.
 - Read [references/obsidian.md](references/obsidian.md) before creating or
   registering a new vault.
 - If the user selects WeChat, read
-  [references/wechat-assistant.md](references/wechat-assistant.md). Codex may
+  [references/wechat-assistant.md](references/wechat-assistant.md). Codex or Claude may
   guide this route too; it installs or opens WorkBuddy as the WeChat connector
   and keeps the same Obsidian vault.
 - Do not bundle, mirror, or silently replace third-party applications.
@@ -64,7 +68,7 @@ Always start with `desktop`; do not ask about optional routes yet:
 ```bash
 <python-command> "<skill-dir>/scripts/setup_state.py" init \
   --agent codex --channel desktop
-# Or: --agent workbuddy --channel desktop
+# Or: --agent claude|workbuddy --channel desktop
 ```
 
 The default new-vault directory is the ASCII-only path
@@ -84,13 +88,14 @@ Verify the welcome note in the app before marking `vault_registered`.
 Setup is complete only after the required tests pass:
 
 1. A desktop-agent request creates a readable note in Obsidian.
-2. The matching phone client creates a readable note in the same vault and
-   receives a reply.
+2. Codex and WorkBuddy also test their matching phone client in the same vault.
+   Claude's base route is desktop-only; if mobile input is selected, test it as
+   the Feishu or WorkBuddy WeChat Assistant connector below.
 3. Only now ask whether to keep the desktop-agent route or add Feishu / WeChat
    Assistant.
 4. If Feishu or WeChat Assistant was selected, that connector also creates a
    readable note in the same vault and receives a reply.
-5. If Codex Feishu Docs output was selected, follow
+5. If Codex or Claude Feishu Docs output was selected, follow
    [references/feishu-docs.md](references/feishu-docs.md). Create and read back
    a test document before recording that destination. Obsidian remains the
    local source of truth.
@@ -101,11 +106,11 @@ completed core tests:
 ```bash
 <python-command> "<skill-dir>/scripts/setup_state.py" set-channel --channel desktop
 # WorkBuddy may instead select: feishu or wechat
-# Codex may instead select: feishu or wechat
-# Codex + wechat means Codex guides the WorkBuddy WeChat Assistant setup.
+# Codex or Claude may instead select: feishu or wechat
+# Codex/Claude + wechat means the host guides WorkBuddy WeChat Assistant setup.
 ```
 
-After a successful Feishu Docs test, record the optional Codex destination.
+After a successful Feishu Docs test, record the optional Codex or Claude destination.
 Never record it from installation or authorization alone:
 
 ```bash

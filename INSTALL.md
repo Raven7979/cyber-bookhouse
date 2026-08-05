@@ -1,14 +1,15 @@
 # 第一次安装
 
-第一次只需要你亲手做一件事：把 `sanwei` Skill 交给 Codex 或
-WorkBuddy。它认得这套 Skill 以后，后面的软件检查、Obsidian 设置、手机
+第一次只需要你亲手做一件事：把 `sanwei` Skill 交给 Codex、Claude 或
+WorkBuddy。它认得这套 Skill 以后，后面的软件检查、Obsidian 设置、入口
 连接和测试都会一项一项带你完成。
 
 不知道选哪个也没关系：
 
 - 平时用 ChatGPT，选 Codex。
+- 平时用 Claude，选 Claude Code。
 - 平时用 WorkBuddy，选 WorkBuddy。
-- 两个都没用过，先选一个，不必同时安装。
+- 这些都没用过，先选一个，不必同时安装。
 
 ## 先看系统
 
@@ -19,7 +20,7 @@ WorkBuddy。它认得这套 Skill 以后，后面的软件检查、Obsidian 设�
 | Linux | 本版未支持 | 暂不提供自动安装向导 |
 
 Windows 版会检查 `%LOCALAPPDATA%`、`%APPDATA%` 和常见应用目录。
-因为目前是 Beta，只有电脑、手机和 Obsidian 的真实写入测试都通过，
+因为目前是 Beta，只有当前路线要求的入口和 Obsidian 真实写入测试都通过，
 向导才会告诉你“安装完成”。
 
 ## 用 WorkBuddy 安装
@@ -47,15 +48,13 @@ WorkBuddy 的官方说明：
 1. 安装并打开
    [Codex 桌面应用](https://openai.com/index/introducing-the-codex-app/)；已经在用
    Codex CLI 的人也可以继续使用。
-2. 解压发布页下载的 `sanwei.zip`。
-3. 把解压后的 `sanwei` 文件夹拖进 Codex 对话，并发送：
+2. 把发布页下载的 `sanwei.zip` 拖进 Codex 对话，并发送：
 
-> 请把这个 sanwei 文件夹安装为我的用户级 Skill。macOS 安装到
-> ~/.agents/skills/sanwei，Windows 安装到
-> %USERPROFILE%\.agents\skills\sanwei。回读 SKILL.md 并确认 /skills 中能看到
-> sanwei；不要改动我已有的其他 Skills。
+> 请解压这个 sanwei.zip，运行包内 scripts/install_skill.py --target codex，
+> 把它安装成我的用户级 Skill。安装器如遇同名旧版，先做可恢复备份；完成后
+> 回读 SKILL.md，并确认 /skills 中能看到 sanwei。不要改动其他 Skills。
 
-4. 安装确认后发送：
+3. 安装确认后发送：
 
 > 请使用 $sanwei，一步一步帮我搭好赛博书屋。每次只告诉我一个
 > 操作，做完再继续。最后请从 ChatGPT 手机端发一个测试链接，并确认
@@ -73,17 +72,39 @@ Codex 在 ChatGPT 手机端中逐步开放。更新桌面端和手机端后，�
 Windows 上如果 `py -3` 和 `python` 都不可用，向导会只给你
 [Python 官方 Windows 下载](https://www.python.org/downloads/windows/)，等你安装完再继续。
 
+## 用 Claude Code 安装
+
+1. 按 [Claude Code 官方文档](https://code.claude.com/docs/en/overview) 安装并
+   登录 Claude Code。
+2. 把发布页下载的 `sanwei.zip` 放进当前任务可读的目录，解压后对 Claude 说：
+
+> 请运行 sanwei/scripts/install_skill.py --target claude，把它安装成我的用户级
+> Skill。安装器如遇同名旧版，先做可恢复备份；完成后回读 SKILL.md，并确认
+> /sanwei 可以调用。不要改动其他 Skills。
+
+3. 安装确认后发送：
+
+> 请使用 /sanwei，一步一步帮我搭好赛博书屋。每次只告诉我一个操作，做完
+> 再继续。先完成 Claude 电脑端到 Obsidian 的真实写入测试，再问我要不要
+> 增加飞书入口、微信助理或飞书文档。若选择微信助理，请继续引导安装或打开
+> WorkBuddy，上传同一份 Skill，并写入同一个书屋。最后运行包内能力检查，
+> 告诉我哪些内容可以直接处理。
+
+Claude 的基础路线不声称已经接通手机。需要手机入口时，飞书由
+`lark-channel-bridge` 连接本机 Claude Code；微信由 WorkBuddy 微信助理接收，
+两者都必须用真实链接回测到同一个 Obsidian 书屋。
+
 ## 接下来会发生什么
 
 向导会依次做这几件事：
 
 1. 找到或新建一个 Obsidian 书屋。新建时使用上表对应的英文磁盘目录，
    中文“赛博书屋”用于欢迎页和提示。
-2. 识别当前运行 Skill 的桌面 Agent 是 Codex 还是 WorkBuddy。
-3. 帮你接好 ChatGPT 或 WorkBuddy 手机端。
-4. 从电脑和手机各发一次测试链接。
+2. 识别当前运行 Skill 的桌面 Agent 是 Codex、Claude 还是 WorkBuddy。
+3. Codex 与 WorkBuddy 接好各自手机端；Claude 需要手机入口时再接飞书或微信助理。
+4. 从当前路线要求的每个入口各发一次测试链接。
 5. 基础测试完成后，再问你只用当前工具，还是增加飞书入口或微信助理；
-   Codex 用户也能由 Codex 引导微信助理绑定，还可以选择飞书文档输出。
+   Codex 与 Claude 用户也能由当前 Agent 引导微信助理绑定，还可以选择飞书文档输出。
 6. 在 Obsidian 里打开结果给你看。
 7. 如果选择飞书文档，再创建并读回一份测试文档；只创建成功不算接通。
 8. 运行包内能力检查，区分可直接处理、需要浏览器和需要用户文件的内容。

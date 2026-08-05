@@ -39,7 +39,7 @@
 ## 支持等级
 
 - `direct`：包内有明确脚本或稳定公开接口，并经过真实样本验收。
-- `host`：需要 Codex / WorkBuddy 的可见浏览器或文档能力。
+- `host`：需要 Codex / Claude / WorkBuddy 的可见浏览器或文档能力。
 - `file`：需要用户提供本地媒体、字幕或官方导出。
 - `metadata`：只能可靠保留标题、作者、链接和限制。
 

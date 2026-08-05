@@ -1,8 +1,8 @@
 # WorkBuddy 微信助理绑定
 
 微信入口使用的是 WorkBuddy 的“微信助理”，不是普通微信 App 图标，也
-不是 Codex 自己直接接收微信消息。无论安装向导当前运行在 WorkBuddy 还是
-Codex，只要用户在基础测试完成后主动选择微信，就按本页继续引导。
+不是 Codex 或 Claude 自己直接接收微信消息。无论安装向导当前运行在
+WorkBuddy、Codex 还是 Claude，只要用户在基础测试完成后主动选择微信，就按本页继续引导。
 
 官方指南：
 https://www.codebuddy.cn/docs/workbuddy/WeixinBot-Guide
@@ -16,16 +16,15 @@ https://www.codebuddy.cn/docs/workbuddy/WeixinBot-Guide
 4. 登录、扫码和账号确认由用户在 WorkBuddy 与微信的官方界面完成。不要
    让用户把二维码、手机号、账号名或凭据贴进对话。
 
-## 如果当前向导运行在 Codex
+## 如果当前向导运行在 Codex 或 Claude
 
 1. 如果电脑没有 WorkBuddy，只从
    [software-links.md](software-links.md) 的官方地址安装。
 2. 在 WorkBuddy 的“技能”里上传同一份 `sanwei.zip`，确认“赛博书屋”
    已启用。
 3. 让 WorkBuddy 读取现有配置和书屋路径；不要再次运行 `init`，不要新建
-   第二个 Obsidian 仓库，也不要改变当前 Codex 与 ChatGPT 手机端的基础
-   测试记录。
-4. 明确告诉用户：Codex 正在负责引导；微信消息真正进入的是 WorkBuddy
+   第二个 Obsidian 仓库，也不要改变当前宿主已完成的基础测试记录。
+4. 明确告诉用户：Codex 或 Claude 正在负责引导；微信消息真正进入的是 WorkBuddy
    微信助理，二者最后写入同一个 Obsidian 书屋。
 
 ## 一步一步绑定
