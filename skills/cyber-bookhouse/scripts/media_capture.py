@@ -99,13 +99,21 @@ def extract_frames(path: Path, output: Path, count: int, seconds: float) -> list
                 "scale='min(1600,iw)':-2",
                 "-q:v",
                 "2",
+                "-pix_fmt",
+                "yuvj420p",
                 "-y",
                 str(target),
             ],
             timeout=300,
         )
-        if result.returncode or not target.is_file():
-            raise RuntimeError((result.stderr or "A representative frame could not be extracted.").strip())
+        complete_jpeg = (
+            target.is_file()
+            and target.stat().st_size > 4
+            and target.read_bytes().endswith(b"\xff\xd9")
+        )
+        if result.returncode or not complete_jpeg:
+            message = result.stderr or "A representative frame could not be extracted."
+            raise RuntimeError(message.strip())
         created.append(str(target))
     return created
 

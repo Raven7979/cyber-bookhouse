@@ -27,6 +27,8 @@ class SkillBundleTests(unittest.TestCase):
             "scripts/media_capture.py",
             "scripts/render_diagram.py",
             "references/capabilities.md",
+            "references/runtime-models.md",
+            "references/wechat-channels.md",
             "references/updates.md",
             "references/windows.md",
             "references/claude.md",
@@ -47,6 +49,8 @@ class SkillBundleTests(unittest.TestCase):
         text = (ROOT / "SKILL.md").read_text(encoding="utf-8")
         for target in (
             "references/capabilities.md",
+            "references/runtime-models.md",
+            "references/wechat-channels.md",
             "references/updates.md",
             "references/claude.md",
             "references/feishu-entry.md",

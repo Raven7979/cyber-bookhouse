@@ -147,6 +147,34 @@ def obsidian_path(
     return None
 
 
+def wechat_channels_skill_path(
+    system: str | None = None,
+    environment: dict[str, str] | os._Environ[str] | None = None,
+) -> str | None:
+    system = system or host_system()
+    environment = os.environ if environment is None else environment
+    override = environment.get("CYBER_BOOKHOUSE_WECHAT_CHANNELS_SKILL")
+    if override:
+        candidate = Path(override).expanduser()
+        if candidate.is_dir() and (candidate / "SKILL.md").is_file():
+            return str(candidate)
+    home_value = (
+        environment.get("USERPROFILE")
+        if system == "Windows"
+        else environment.get("HOME")
+    )
+    home = Path(home_value).expanduser() if home_value else Path.home()
+    candidates = (
+        home / ".codex" / "skills" / "download-wechat-channels",
+        home / ".agents" / "skills" / "download-wechat-channels",
+        home / ".claude" / "skills" / "download-wechat-channels",
+    )
+    for candidate in candidates:
+        if candidate.is_dir() and (candidate / "SKILL.md").is_file():
+            return str(candidate)
+    return None
+
+
 def report(
     system: str | None = None,
     environment: dict[str, str] | os._Environ[str] | None = None,
@@ -164,6 +192,33 @@ def report(
         "note": (
             "This is a Codex, Claude, or WorkBuddy host capability. Never replace it "
             "with automatic cookie export."
+        ),
+    }
+    capabilities["vision_model"] = {
+        "label": "Inspect real PNG or JPEG frames in the current host",
+        "status": "host_check_required",
+        "official_source": "https://learn.chatgpt.com/docs/image-inputs",
+        "note": (
+            "Test one real image in the active model and surface. Video processing "
+            "uses extracted frames plus local transcription; native MP4 input is not required."
+        ),
+    }
+    channels_skill = wechat_channels_skill_path(system, environment)
+    capabilities["wechat_channels"] = {
+        "label": "Authorized WeChat Channels download through Tencent Yuanbao",
+        "status": "host_check_required",
+        "component_status": "ready" if channels_skill else "missing",
+        "component_path": channels_skill,
+        "official_source": "https://yuanbao.tencent.com/",
+        "requirements": [
+            "Codex desktop Browser plugin",
+            "user-approved full CDP access",
+            "user QR login to Tencent Yuanbao",
+            "one authorized real-link download test",
+        ],
+        "note": (
+            "The public package does not rebundle a separate downloader. If the component "
+            "is absent or the host checks fail, ask for an authorized local MP4."
         ),
     }
     capabilities["public_web"] = {
@@ -193,7 +248,15 @@ def report(
 def parser() -> argparse.ArgumentParser:
     value = argparse.ArgumentParser(description=__doc__)
     value.add_argument(
-        "--require", choices=tuple(SOFTWARE) + ("local_asr", "public_web")
+        "--require",
+        choices=tuple(SOFTWARE)
+        + (
+            "local_asr",
+            "visible_browser",
+            "vision_model",
+            "wechat_channels",
+            "public_web",
+        ),
     )
     return value
 

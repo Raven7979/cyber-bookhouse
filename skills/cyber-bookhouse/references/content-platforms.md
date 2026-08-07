@@ -44,7 +44,7 @@
 | B站 | `host` / `file` | 公开信息、可见字幕或用户文件 | 可见字幕或真实本地转写 |
 | YouTube | `direct` / `host` / `file` | 公开信息/字幕、可见浏览器或用户文件 | 按 [youtube.md](youtube.md) 验收每条 URL |
 | 抖音 | `host` / `file` | 分享页、授权浏览器或用户文件 | 不承诺直接下载 |
-| 微信视频号 | `host` / `file` / `metadata` | 分享页或用户文件 | 只有链接时可能只保存来源 |
+| 微信视频号 | `host` / `file` / `metadata` | 已验收的腾讯元宝独立 Skill 或用户文件 | 见 [wechat-channels.md](wechat-channels.md)；只有链接时可能只保存来源 |
 | 小红书视频 | `host` / `file` | 授权浏览器或用户文件 | 不用配文猜视频对白 |
 | 快手 | `host` / `file` | 分享页、授权浏览器或用户文件 | 不承诺直接下载 |
 | 微博视频 | `host` / `file` | 公开微博或用户文件 | 正文和视频对白分开记录 |

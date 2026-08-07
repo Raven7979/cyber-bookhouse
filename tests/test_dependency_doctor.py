@@ -31,6 +31,8 @@ class DependencyDoctorTests(unittest.TestCase):
                 "feishu_input",
                 "local_asr",
                 "visible_browser",
+                "vision_model",
+                "wechat_channels",
                 "public_web",
             },
         )
@@ -38,7 +40,12 @@ class DependencyDoctorTests(unittest.TestCase):
     def test_external_software_has_official_source(self) -> None:
         payload = MODULE.report()
         for name, item in payload["capabilities"].items():
-            if name in {"visible_browser", "public_web"}:
+            if name in {
+                "visible_browser",
+                "vision_model",
+                "wechat_channels",
+                "public_web",
+            }:
                 continue
             sources = item.get("official_sources") or [item.get("official_source")]
             self.assertTrue(all(source.startswith("https://") for source in sources))
@@ -66,6 +73,18 @@ class DependencyDoctorTests(unittest.TestCase):
             )
         self.assertEqual(payload["core"]["status"], "ready")
         self.assertEqual(payload["core"]["obsidian"], str(application))
+
+    def test_wechat_channels_component_is_detected_but_requires_host_check(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            skill = Path(temporary) / "download-wechat-channels"
+            skill.mkdir()
+            (skill / "SKILL.md").write_text("test", encoding="utf-8")
+            payload = MODULE.report(
+                "Darwin", {"CYBER_BOOKHOUSE_WECHAT_CHANNELS_SKILL": str(skill)}
+            )
+        capability = payload["capabilities"]["wechat_channels"]
+        self.assertEqual(capability["component_status"], "ready")
+        self.assertEqual(capability["status"], "host_check_required")
 
 
 if __name__ == "__main__":

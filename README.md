@@ -61,6 +61,15 @@ Obsidian 本地原件 → 可选的飞书文档副本
 例如 YouTube 要求“确认你不是机器人”时，书屋会停止重复抓取，只询问
 是否读取已登录页面上可见的字幕；不自动导出浏览器 Cookie。
 
+处理图片或视频时，当前模型必须真的能读取图片。Codex 当前推荐 GPT-5.6
+Sol、Terra 和 Luna，默认优先 Sol，但安装后仍要用一张真实 PNG/JPEG 验收。
+流程不要求模型原生接收 MP4：本机先用 FFmpeg 抽取代表帧、Whisper 转写，
+再由模型合并成笔记。
+
+微信视频号只有在独立下载组件、Codex 桌面 Browser、用户批准的完整 CDP、
+腾讯元宝本人扫码和一条授权真实链接全部验收后，才算可自动下载。缺任一项
+就改为用户提供本地 MP4，不把“脚本存在”写成“已经可用”。
+
 ## 一条链接，三种笔记
 
 ![同一条内容链接可选择同步笔记、蒸馏笔记或详细拆解](assets/screenshots/05-note-modes.png)
@@ -183,7 +192,8 @@ Claude 手机入口：需要在手机上发链接时，接飞书，或让 WorkBu
 > 请用 cyber-bookhouse Skill 帮我搭好赛博书屋。请识别当前是 Codex、Claude 还是
 > WorkBuddy，先完成软件、Obsidian 和当前路线要求的真实测试，之后再问我
 > 要不要增加飞书入口、微信助理或飞书文档。每次只说一个操作，最后运行
-> 包内能力检查，告诉我哪些内容能直接处理。
+> 包内能力检查，并用一张真实图片验证当前模型。告诉我哪些内容能直接处理，
+> 哪些需要 Browser/CDP、腾讯元宝登录、独立组件或本地文件。
 
 新建书屋时，macOS 的默认目录是 `~/Documents/cyber-bookhouse`，Windows 是
 `%USERPROFILE%\Documents\cyber-bookhouse`。对你仍然称为“赛博书屋”。
@@ -206,9 +216,9 @@ python3 <skill-dir>/scripts/update_skill.py --apply --target auto
 校验 GitHub 提供的 SHA-256，并检查压缩包路径、Skill ID、版本与 build；安装器会先把
 旧版移动到 `~/.cyber-bookhouse-backups/`。完成后重启或新开一个 Agent 任务。
 
-已经安装旧版 v0.2.2 的用户需要用新版 ZIP **完成最后一次手动覆盖**，从这次开始才有
-自更新器。WorkBuddy 暂无稳定接口让 Skill 安全覆盖自身，仍需在“技能”界面重新上传
-最新版 ZIP。
+已安装 v0.2.2 的 Codex / Claude 用户可以直接运行自更新器升级到 v0.2.3；
+更早版本需要手动覆盖一次。WorkBuddy 暂无稳定接口让 Skill 安全覆盖自身，
+仍需在“技能”界面重新上传最新版 ZIP。
 
 ## 下载包里有什么
 
@@ -220,11 +230,14 @@ python3 <skill-dir>/scripts/update_skill.py --apply --target auto
 - 安装状态、输入通道和真实测试记录；
 - macOS 与 Windows 路径、应用和依赖检查；
 - 普通公开网页、YouTube 公开字幕和本地音视频处理；
+- GPT-5.6 Sol / Terra / Luna 的选择建议、真实图片验收和视频证据边界；
+- 微信视频号的腾讯元宝接入检查、Browser/CDP 风险说明和本地 MP4 降级路线；
 - 同步笔记、蒸馏笔记、详细拆解和结构图生成规则；
 - Obsidian、飞书文档及各入口的写入和读回验收。
 
 它不依赖维护者电脑上的私人 Skill。`yt-dlp`、FFmpeg、Whisper、Obsidian 和
 飞书工具仍从各自官方来源安装，仓库不重新打包第三方程序。
+公共 ZIP 也不重新打包来源和再分发许可不明确的视频号下载组件。
 
 ## 怎样才算真的装好了
 
@@ -233,6 +246,7 @@ python3 <skill-dir>/scripts/update_skill.py --apply --target auto
 - 如果另外接了飞书或微信助理，它们写入的是同一个书屋。
 - 如果选了飞书文档，测试文档能创建、能读回、能由用户打开。
 - 包内能力检查已运行，缺少的外部工具和受限平台被如实报告。
+- 当前模型用一张真实图片通过识别；视频号没有真实授权链接时只能写“待实测”。
 
 电脑关机、深度睡眠或断网时，本机 Agent 无法继续处理新内容。
 
@@ -253,6 +267,6 @@ python3 <skill-dir>/scripts/update_skill.py --apply --target auto
 
 隐私细节见 [PRIVACY.md](PRIVACY.md)，安全问题见 [SECURITY.md](SECURITY.md)。
 
-`v0.2.2` 是当前公开版本，统一使用 `cyber-bookhouse` 作为 Skill ID；macOS 稳定，
+`v0.2.3` 是当前公开版本，统一使用 `cyber-bookhouse` 作为 Skill ID；macOS 稳定，
 Windows 10 / 11 仍为 Beta。不同内容
 平台仍需要继续拿真实样本逐个测试。

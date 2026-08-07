@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import importlib.util
+import subprocess
+import tempfile
 import unittest
 from pathlib import Path
 from unittest import mock
@@ -49,6 +51,45 @@ class MediaCaptureTests(unittest.TestCase):
         with mock.patch.object(MODULE.shutil, "which", return_value=None):
             with self.assertRaisesRegex(RuntimeError, "ffmpeg.org/download"):
                 MODULE.probe(Path("/tmp/sample.mp4"))
+
+    def test_frame_extraction_writes_complete_compatible_jpeg(self) -> None:
+        commands = []
+
+        def fake_run(
+            command: list[str], timeout: int = 1800
+        ) -> subprocess.CompletedProcess:
+            commands.append(command)
+            Path(command[-1]).write_bytes(b"\xff\xd8frame\xff\xd9")
+            return subprocess.CompletedProcess(command, 0, "", "")
+
+        with tempfile.TemporaryDirectory() as temporary:
+            with (
+                mock.patch.object(MODULE.shutil, "which", return_value="ffmpeg"),
+                mock.patch.object(MODULE, "run", side_effect=fake_run),
+            ):
+                frames = MODULE.extract_frames(
+                    Path("/tmp/sample.mp4"), Path(temporary), 1, 3.0
+                )
+        self.assertEqual(len(frames), 1)
+        self.assertIn("-pix_fmt", commands[0])
+        self.assertIn("yuvj420p", commands[0])
+
+    def test_frame_extraction_rejects_truncated_jpeg(self) -> None:
+        def fake_run(
+            command: list[str], timeout: int = 1800
+        ) -> subprocess.CompletedProcess:
+            Path(command[-1]).write_bytes(b"\xff\xd8truncated")
+            return subprocess.CompletedProcess(command, 0, "", "")
+
+        with tempfile.TemporaryDirectory() as temporary:
+            with (
+                mock.patch.object(MODULE.shutil, "which", return_value="ffmpeg"),
+                mock.patch.object(MODULE, "run", side_effect=fake_run),
+            ):
+                with self.assertRaisesRegex(RuntimeError, "representative frame"):
+                    MODULE.extract_frames(
+                        Path("/tmp/sample.mp4"), Path(temporary), 1, 3.0
+                    )
 
 
 if __name__ == "__main__":

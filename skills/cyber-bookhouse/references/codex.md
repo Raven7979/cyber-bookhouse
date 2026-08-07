@@ -6,6 +6,10 @@ ChatGPT 组成；飞书可以是额外入口，飞书文档也可以是授权后
 助理接收，二者写入同一个 Obsidian 书屋。
 本地 Obsidian 始终保留一份可迁移的 Markdown 原件。
 
+第一次处理图片或视频前读取 [runtime-models.md](runtime-models.md)。当前推荐
+模型为 GPT-5.6 Sol、Terra 和 Luna；默认优先 Sol，但必须用真实图片验收，
+不要把模型名称或“原生视频输入”当作通过证明。
+
 ## 安装顺序
 
 1. 运行 `doctor`。只用电脑和手机时，Codex 桌面应用或 Codex CLI 均可。
@@ -95,6 +99,10 @@ https://openai.com/index/work-with-codex-from-anywhere/
 最后运行 `status`。全部完成后读取 [commands.md](commands.md)，把三种笔记
 命令直接发给用户。第一次真实采集前再运行 `dependency_doctor.py`，按
 [capabilities.md](capabilities.md) 报告当前电脑真正具备的能力。
+
+遇到视频号分享链接时再读取 [wechat-channels.md](wechat-channels.md)。只有
+Codex 桌面应用能走 Browser/CDP + 腾讯元宝路线；CLI 和 IDE 扩展直接改用
+用户提供的本地 MP4。完整 CDP 必须由用户在明确风险和站点范围后确认。
 
 电脑关机、深度睡眠或断网时，手机、飞书入口和飞书文档写入都无法继续
 调用这台电脑上的 Codex。接了飞书入口时，后台桥接必须能在电脑重新登录

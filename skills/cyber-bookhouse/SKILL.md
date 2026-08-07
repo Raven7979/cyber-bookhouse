@@ -27,7 +27,11 @@ before onboarding or capture.
 3. If setup is incomplete, follow **Onboarding**.
 4. Run `<python-command> "<skill-dir>/scripts/dependency_doctor.py"` before the first
    real capture and whenever a platform route fails.
-5. Otherwise, follow **Capture**.
+5. Before image or video work, read
+   [references/runtime-models.md](references/runtime-models.md) and verify the
+   current host with one real image. Do not infer vision support from a model
+   name alone.
+6. Otherwise, follow **Capture**.
 
 ## Onboarding
 
@@ -179,26 +183,30 @@ For each source:
    and use `scripts/web_capture.py`. For user-provided audio or video, read
    [references/media.md](references/media.md) and use
    `scripts/media_capture.py` when the required external tools are ready.
-7. Acquire only evidence the current agent can actually access. If the selected
+7. For a WeChat Channels `weixin.qq.com/sph/` link, read
+   [references/wechat-channels.md](references/wechat-channels.md). Use the
+   separately installed downloader only after its local, Browser/CDP, login,
+   and real-link checks pass; otherwise ask for an authorized local MP4.
+8. Acquire only evidence the current agent can actually access. If the selected
    mode is `distilled` or `detailed`, read
    [references/distillation.md](references/distillation.md) and enforce its
    evidence gate.
-8. Read [references/visualizations.md](references/visualizations.md). When the
+9. Read [references/visualizations.md](references/visualizations.md). When the
    evidence contains a real SOP, branching decision, framework, or narrative
    timeline, create only the useful diagrams allowed for the selected mode by
    using `scripts/render_diagram.py`. Do not add decorative diagrams.
-9. Read [references/note-schema.md](references/note-schema.md).
-10. Write one Markdown note under
+10. Read [references/note-schema.md](references/note-schema.md).
+11. Write one Markdown note under
    `<vault>/链接采集/YYYY-MM-DD/` and meaningful local assets under
    `<vault>/链接采集/_assets/<capture-id>/`.
-11. If `status` reports `destination: obsidian-feishu`, read
+12. If `status` reports `destination: obsidian-feishu`, read
    [references/feishu-docs.md](references/feishu-docs.md), create a Feishu Doc
    copy, and read it back. Do not mark the Feishu destination when creation or
    readback fails.
-12. Preserve source URL, author when known, capture time, access limits, and
+13. Preserve source URL, author when known, capture time, access limits, and
    uncertainty. Do not invent inaccessible content or transcripts.
-13. Open the note in Obsidian and verify visible text, diagrams, and assets.
-14. Return the local note path, selected mode, content status, acquisition
+14. Open the note in Obsidian and verify visible text, diagrams, and assets.
+15. Return the local note path, selected mode, content status, acquisition
     method, any limitation, and the verified Feishu Doc URL when one was
     created.
 
