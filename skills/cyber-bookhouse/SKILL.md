@@ -199,14 +199,18 @@ For each source:
 11. Write one Markdown note under
    `<vault>/链接采集/YYYY-MM-DD/` and meaningful local assets under
    `<vault>/链接采集/_assets/<capture-id>/`.
-12. If `status` reports `destination: obsidian-feishu`, read
+12. Run `<python-command> "<skill-dir>/scripts/validate_note.py" "<note-path>"`.
+    A non-zero exit is a hard stop: correct the same file and rerun it. Do not
+    rename, reorder, duplicate, merge or add peer headings beyond the exact
+    mode/content contract in `note-schema.md`.
+13. If `status` reports `destination: obsidian-feishu`, read
    [references/feishu-docs.md](references/feishu-docs.md), create a Feishu Doc
    copy, and read it back. Do not mark the Feishu destination when creation or
    readback fails.
-13. Preserve source URL, author when known, capture time, access limits, and
+14. Preserve source URL, author when known, capture time, access limits, and
    uncertainty. Do not invent inaccessible content or transcripts.
-14. Open the note in Obsidian and verify visible text, diagrams, and assets.
-15. Return the local note path, selected mode, content status, acquisition
+15. Open the note in Obsidian and verify visible text, diagrams, and assets.
+16. Return the local note path, selected mode, content status, acquisition
     method, any limitation, and the verified Feishu Doc URL when one was
     created.
 

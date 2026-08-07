@@ -26,6 +26,7 @@ class SkillBundleTests(unittest.TestCase):
             "scripts/web_capture.py",
             "scripts/media_capture.py",
             "scripts/render_diagram.py",
+            "scripts/validate_note.py",
             "references/capabilities.md",
             "references/runtime-models.md",
             "references/wechat-channels.md",
@@ -62,6 +63,7 @@ class SkillBundleTests(unittest.TestCase):
             "scripts/web_capture.py",
             "scripts/media_capture.py",
             "scripts/render_diagram.py",
+            "scripts/validate_note.py",
         ):
             self.assertIn(target, text)
             self.assertTrue((ROOT / target).is_file())

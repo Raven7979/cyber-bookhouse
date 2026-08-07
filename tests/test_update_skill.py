@@ -78,6 +78,9 @@ class UpdateSkillTests(unittest.TestCase):
     def test_apply_update_replaces_installed_skill_and_keeps_backup(self) -> None:
         with tempfile.TemporaryDirectory() as folder:
             temp = Path(folder)
+            current_identity = json.loads(
+                (ROOT / "release.json").read_text(encoding="utf-8")
+            )
             home = temp / "home"
             installed = home / ".agents" / "skills" / "cyber-bookhouse"
             shutil.copytree(ROOT, installed, ignore=shutil.ignore_patterns("__pycache__"))
@@ -88,12 +91,12 @@ class UpdateSkillTests(unittest.TestCase):
             archive = temp / "cyber-bookhouse.zip"
             make_archive(ROOT, archive)
             release = {
-                "version": "0.2.3",
-                "build": 1,
-                "tag": "v0.2.3",
-                "download_url": "https://github.com/Raven7979/cyber-bookhouse/releases/download/v0.2.3/cyber-bookhouse.zip",
+                "version": current_identity["version"],
+                "build": current_identity["build"],
+                "tag": f"v{current_identity['version']}",
+                "download_url": f"https://github.com/Raven7979/cyber-bookhouse/releases/download/v{current_identity['version']}/cyber-bookhouse.zip",
                 "sha256": "unused-by-mocked-download",
-                "release_url": "https://github.com/Raven7979/cyber-bookhouse/releases/tag/v0.2.3",
+                "release_url": f"https://github.com/Raven7979/cyber-bookhouse/releases/tag/v{current_identity['version']}",
             }
 
             def copy_download(_: dict[str, object], destination: Path) -> None:
@@ -108,7 +111,7 @@ class UpdateSkillTests(unittest.TestCase):
 
             self.assertEqual(result["status"], "updated")
             identity = json.loads((installed / "release.json").read_text(encoding="utf-8"))
-            self.assertEqual(identity, {"version": "0.2.3", "build": 1})
+            self.assertEqual(identity, current_identity)
             backup = Path(result["install"]["results"]["codex"]["backup"])
             self.assertTrue(backup.is_dir())
             old_identity = json.loads((backup / "release.json").read_text(encoding="utf-8"))

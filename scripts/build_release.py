@@ -21,6 +21,7 @@ REQUIRED = (
     "scripts/install_skill.py",
     "scripts/update_skill.py",
     "scripts/setup_state.py",
+    "scripts/validate_note.py",
     "references/codex.md",
     "references/claude.md",
     "references/workbuddy.md",
