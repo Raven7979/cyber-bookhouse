@@ -407,7 +407,9 @@ def x_article_reference(tweet: dict) -> dict | None:
 
 def x_main_script_url(page: str, page_url: str) -> str:
     for match in re.finditer(
-        r"<script\b[^>]*\bsrc\s*=\s*(['\"])(.*?)\1", page, re.IGNORECASE
+        r"<(?:script|link)\b[^>]*\b(?:src|href)\s*=\s*(['\"])(.*?)\1",
+        page,
+        re.IGNORECASE,
     ):
         source = html.unescape(match.group(2)).replace("\\/", "/")
         candidate = urljoin(page_url, source)
