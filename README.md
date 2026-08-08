@@ -88,6 +88,8 @@ Sol、Terra 和 Luna，默认优先 Sol，但安装后仍要用一张真实 PNG/
 时必须完成几何检查和图片复核；没有真实结构时不添加装饰图。
 从 v0.2.6 起，完整视频笔记还必须有本地原媒体、真实逐字稿、封面和
 至少 3 张不同的关键画面。处理中不再播报工具流水，完成回执最多两个短段落。
+从 v0.2.7 起，公开 X Article 可以匿名取得完整正文和原图，不需要 X 账号、
+Cookie 或浏览器登录；只拿到预览、短链或身份不匹配时会明确失败，不冒充全文。
 
 ### 三种模式实际长什么样
 
@@ -223,7 +225,7 @@ python3 <skill-dir>/scripts/update_skill.py --apply --target auto
 校验 GitHub 提供的 SHA-256，并检查压缩包路径、Skill ID、版本与 build；安装器会先把
 旧版移动到 `~/.cyber-bookhouse-backups/`。完成后重启或新开一个 Agent 任务。
 
-已安装旧版的 Codex / Claude 用户可以直接运行自更新器升级到 v0.2.6；
+已安装旧版的 Codex / Claude 用户可以直接运行自更新器升级到 v0.2.7；
 更早版本需要手动覆盖一次。WorkBuddy 暂无稳定接口让 Skill 安全覆盖自身，
 仍需在“技能”界面重新上传最新版 ZIP。
 
@@ -236,7 +238,7 @@ python3 <skill-dir>/scripts/update_skill.py --apply --target auto
 - 可检查 GitHub 最新版、校验附件并原位升级的自更新器；
 - 安装状态、输入通道和真实测试记录；
 - macOS 与 Windows 路径、应用和依赖检查；
-- 普通公开网页、YouTube 公开字幕和本地音视频处理；
+- 普通公开网页、X 公开帖子与 X Article、YouTube 公开字幕和本地音视频处理；
 - GPT-5.6 Sol / Terra / Luna 的选择建议、真实图片验收和视频证据边界；
 - 微信视频号的腾讯元宝接入检查、Browser/CDP 风险说明和本地 MP4 降级路线；
 - 同步笔记、蒸馏笔记、详细拆解和结构图生成规则；
@@ -275,6 +277,6 @@ python3 <skill-dir>/scripts/update_skill.py --apply --target auto
 
 隐私细节见 [PRIVACY.md](PRIVACY.md)，安全问题见 [SECURITY.md](SECURITY.md)。
 
-`v0.2.6` 是当前公开版本，统一使用 `cyber-bookhouse` 作为 Skill ID；macOS 稳定，
+`v0.2.7` 是当前公开版本，统一使用 `cyber-bookhouse` 作为 Skill ID；macOS 稳定，
 Windows 10 / 11 仍为 Beta。不同内容
 平台仍需要继续拿真实样本逐个测试。

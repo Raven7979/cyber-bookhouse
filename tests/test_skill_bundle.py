@@ -13,6 +13,22 @@ ROOT = Path(__file__).resolve().parents[1] / "skills" / "cyber-bookhouse"
 
 
 class SkillBundleTests(unittest.TestCase):
+    def test_release_identity_is_consistent(self) -> None:
+        identity = json.loads((ROOT / "release.json").read_text(encoding="utf-8"))
+        version = identity["version"]
+        repository = ROOT.parents[1]
+        readme = (repository / "README.md").read_text(encoding="utf-8")
+        install = (repository / "INSTALL.md").read_text(encoding="utf-8")
+        web = (ROOT / "scripts/web_capture.py").read_text(encoding="utf-8")
+        youtube = (ROOT / "scripts/youtube_capture.py").read_text(encoding="utf-8")
+        x_capture = (ROOT / "scripts/x_capture.py").read_text(encoding="utf-8")
+        self.assertIn(f"`v{version}` 是当前公开版本", readme)
+        self.assertIn(f"升级到 v{version}", readme)
+        self.assertIn(f"升级到 v{version}", install)
+        self.assertIn(f"cyber-bookhouse/{version}", web)
+        self.assertIn(f"cyber-bookhouse/{version}", youtube)
+        self.assertIn(f'VERSION = "{version}"', x_capture)
+
     def test_runtime_resources_are_bundled(self) -> None:
         required = (
             "LICENSE",
@@ -24,6 +40,7 @@ class SkillBundleTests(unittest.TestCase):
             "scripts/dependency_doctor.py",
             "scripts/youtube_capture.py",
             "scripts/web_capture.py",
+            "scripts/x_capture.py",
             "scripts/media_capture.py",
             "scripts/render_diagram.py",
             "scripts/validate_note.py",
@@ -38,6 +55,7 @@ class SkillBundleTests(unittest.TestCase):
             "references/wechat-assistant.md",
             "references/youtube.md",
             "references/web.md",
+            "references/x.md",
             "references/media.md",
             "references/visualizations.md",
             "references/distillation.md",
@@ -58,12 +76,14 @@ class SkillBundleTests(unittest.TestCase):
             "references/claude.md",
             "references/feishu-entry.md",
             "references/youtube.md",
+            "references/x.md",
             "references/distillation.md",
             "references/visualizations.md",
             "references/response-style.md",
             "scripts/dependency_doctor.py",
             "scripts/youtube_capture.py",
             "scripts/web_capture.py",
+            "scripts/x_capture.py",
             "scripts/media_capture.py",
             "scripts/render_diagram.py",
             "scripts/validate_note.py",

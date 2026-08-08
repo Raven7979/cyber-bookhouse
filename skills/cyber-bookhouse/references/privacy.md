@@ -11,6 +11,10 @@
 - Use official APIs, exports, and user-provided files before browser automation.
 - Do not bypass authentication, CAPTCHA, paywalls, DRM, rate limits, or platform
   access controls.
+- The bundled X route may obtain X's current public web-client configuration and
+  a short-lived anonymous guest token from official X endpoints. Keep these
+  values in memory only; never print, persist, return, or reuse them as user
+  credentials. It never reads the user's X account, cookies, or browser state.
 
 ## New connectors
 

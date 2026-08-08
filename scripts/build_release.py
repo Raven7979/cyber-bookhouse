@@ -21,6 +21,7 @@ REQUIRED = (
     "scripts/install_skill.py",
     "scripts/update_skill.py",
     "scripts/setup_state.py",
+    "scripts/x_capture.py",
     "scripts/validate_note.py",
     "scripts/visual_gate.py",
     "references/codex.md",
@@ -29,6 +30,7 @@ REQUIRED = (
     "references/obsidian.md",
     "references/note-modes.md",
     "references/response-style.md",
+    "references/x.md",
 )
 IGNORED_NAMES = {".DS_Store", "__pycache__"}
 IGNORED_SUFFIXES = {".pyc", ".pyo"}
