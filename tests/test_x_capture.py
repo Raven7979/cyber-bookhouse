@@ -412,14 +412,18 @@ class XCaptureTests(unittest.TestCase):
             X.x_article_reference(tweet)
 
     def test_main_bundle_and_credentials_are_strict(self) -> None:
-        page = (
-            '<script src="https://abs.twimg.com/responsive-web/client-web/'
-            'main.27ea3f4a.js"></script>'
+        expected = (
+            "https://abs.twimg.com/responsive-web/client-web/main.27ea3f4a.js"
         )
-        self.assertEqual(
-            X.x_main_script_url(page, "https://x.com/home"),
-            "https://abs.twimg.com/responsive-web/client-web/main.27ea3f4a.js",
+        pages = (
+            f'<script src="{expected}"></script>',
+            f'<link rel="preload" as="script" href="{expected}">',
         )
+        for page in pages:
+            with self.subTest(page=page):
+                self.assertEqual(
+                    X.x_main_script_url(page, "https://x.com/home"), expected
+                )
         with self.assertRaises(ValueError):
             X.x_main_script_url(
                 '<script src="https://example.com/main.bad.js"></script>',
