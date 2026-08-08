@@ -388,6 +388,36 @@ class XCaptureTests(unittest.TestCase):
         self.assertIn("X_ARTICLE_BODY_UNAVAILABLE", str(raised.exception))
         self.assertNotIn(secret, str(raised.exception))
 
+    def test_x_json_request_retries_a_truncated_success_response(self) -> None:
+        responses = [
+            (b'{"data":', "https://x.com/", {}),
+            (b'{"data": {"ok": true}}', "https://x.com/", {}),
+        ]
+        with mock.patch.object(
+            X, "x_request_bytes", side_effect=responses
+        ) as request, mock.patch.object(X.time, "sleep") as sleep:
+            payload = X.x_request_json("https://x.com/i/api/graphql/example")
+        self.assertEqual(payload, {"data": {"ok": True}})
+        self.assertEqual(request.call_count, 2)
+        self.assertTrue(
+            all(call.kwargs["attempts"] == 1 for call in request.call_args_list)
+        )
+        sleep.assert_called_once_with(1)
+
+    def test_x_json_request_has_one_total_three_attempt_budget(self) -> None:
+        with mock.patch.object(
+            X,
+            "x_request_bytes",
+            return_value=(b"", "https://x.com/", {}),
+        ) as request, mock.patch.object(X.time, "sleep") as sleep:
+            with self.assertRaisesRegex(ValueError, "remained incomplete"):
+                X.x_request_json("https://x.com/i/api/graphql/example")
+        self.assertEqual(request.call_count, 3)
+        self.assertTrue(
+            all(call.kwargs["attempts"] == 1 for call in request.call_args_list)
+        )
+        self.assertEqual(sleep.call_args_list, [mock.call(1), mock.call(3)])
+
     def test_graphql_status_identity_is_required(self) -> None:
         article = {
             "article": {
