@@ -179,8 +179,12 @@ For each source:
 5. For YouTube, read [references/youtube.md](references/youtube.md) and use the
    bundled `scripts/youtube_capture.py`. Do not improvise repeated extractor
    retries or parse the initial HTML for dynamically rendered subtitles.
-6. For ordinary public articles, read [references/web.md](references/web.md)
-   and use `scripts/web_capture.py`. For user-provided audio or video, read
+6. For a public X status URL, read [references/x.md](references/x.md) and use
+   `scripts/x_capture.py`. This route handles ordinary public posts and X
+   Articles without an account or browser cookies; an X Article is complete
+   only when the full body identity matches the status. For ordinary public
+   articles, read [references/web.md](references/web.md) and use
+   `scripts/web_capture.py`. For user-provided audio or video, read
    [references/media.md](references/media.md) and use
    `scripts/media_capture.py` when the required external tools are ready.
 7. For a WeChat Channels `weixin.qq.com/sph/` link, read

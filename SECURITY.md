@@ -9,6 +9,7 @@ Issue。先撤销或更换凭据，再只保留能够说明问题的脱敏步骤
 - Token、密码、App Secret、Webhook；
 - 私人路径、Vault 内容、聊天 ID、文档 Token；
 - 浏览器 Cookie、Agent 记忆、私有 Skill、运行日志；
+- X 公开 Web 客户端配置或短时匿名 guest token；
 - 未经授权的文章、图片、音视频或完整逐字稿。
 
 公开复现时，请使用演示账号、示例链接和虚构数据。
