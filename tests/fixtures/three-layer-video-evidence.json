@@ -1,0 +1,24 @@
+{
+  "source_url": "https://example.com/video/three-layers",
+  "video_summary": "内容将 AI 原生转型拆成相互递进的三层模型。",
+  "timeline": [
+    {
+      "start_seconds": 0,
+      "end_seconds": 34,
+      "spoken_text": "第一层是工具层，用模型和编程工具提高个人执行效率。"
+    },
+    {
+      "start_seconds": 34,
+      "end_seconds": 76,
+      "spoken_text": "第二层是组织层，围绕业务目标重新安排角色与协作关系。"
+    },
+    {
+      "start_seconds": 76,
+      "end_seconds": 118,
+      "spoken_text": "第三层是商业层，目标不是只提高效率，而是找到新增收入和利润。"
+    }
+  ],
+  "uncertainties": [
+    "三层之间的递进关系是来源中的观点，不代表已经独立验证。"
+  ]
+}

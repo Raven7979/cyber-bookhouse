@@ -18,6 +18,7 @@ content_status: full_text
 media_status: not_requested
 transcript_status: unavailable
 status: captured
+visual_status: not_required
 visual_assets: []
 destinations:
   - obsidian
@@ -36,6 +37,7 @@ tags:
 - `content_status`：`full_text`、`partial`、`metadata_only`、`unavailable`。
 - `media_status`：`local`、`remote_only`、`not_requested`、`unavailable`。
 - `transcript_status`：`official`、`asr_raw`、`asr_proofread`、`unavailable`、`not_requested`。
+- `visual_status`：只能照 `visual-report.json` 填 `required` 或 `not_required`，不得由模型自行降级。
 
 ## 同步笔记唯一结构
 
@@ -115,12 +117,14 @@ tags:
 - 原链接必须出现在“来源”栏目内。
 - 视频画面紧跟它所证明的时间码段，不集中堆成文末图库。
 - 没有真实证据时写明 `metadata_only`、`partial` 或 `unavailable`，不得补写摘要、逐字稿、镜头或事实。
-- 结构图的相对 SVG 路径写入 `visual_assets`，文件存在并成功打开后再嵌入相应正文位置。
+- `visual-report.json` 判定 `required` 时，`visual_status` 必须为 `required`，把通过检查的 PNG 相对路径写入 `visual_assets`，并嵌入“核心内容”或“蒸馏笔记”；不得新增“架构图”等二级栏目。
+- `visual-report.json` 判定 `not_required` 时，`visual_status` 必须为 `not_required` 且 `visual_assets` 为空。
 
 写完后必须运行：
 
 ```bash
-<python-command> "<skill-dir>/scripts/validate_note.py" "<note-path>"
+<python-command> "<skill-dir>/scripts/validate_note.py" "<note-path>" \
+  --visual-report "<visual-report-path>"
 ```
 
 返回 `ready: false` 时修正同一文件并重跑；不得把模型自检当作格式验收。

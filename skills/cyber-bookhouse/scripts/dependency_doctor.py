@@ -24,6 +24,11 @@ SOFTWARE = {
         "commands": ("ffmpeg", "ffprobe"),
         "url": "https://ffmpeg.org/download.html",
     },
+    "diagram_render": {
+        "label": "Deterministic Mermaid geometry check and PNG rendering",
+        "commands": ("node", "npx"),
+        "url": "https://nodejs.org/en/download",
+    },
     "feishu_docs": {
         "label": "Optional Feishu Docs output",
         "commands": ("lark-cli",),

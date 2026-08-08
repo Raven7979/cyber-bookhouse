@@ -191,15 +191,21 @@ For each source:
    mode is `distilled` or `detailed`, read
    [references/distillation.md](references/distillation.md) and enforce its
    evidence gate.
-9. Read [references/visualizations.md](references/visualizations.md). When the
-   evidence contains a real SOP, branching decision, framework, or narrative
-   timeline, create only the useful diagrams allowed for the selected mode by
-   using `scripts/render_diagram.py`. Do not add decorative diagrams.
+9. Read [references/visualizations.md](references/visualizations.md) and run its
+   `scripts/visual_gate.py` detector for every capture. The generated
+   `visual-report.json` is a
+   hard gate, not a writing suggestion. When it marks a diagram required,
+   render and visually review the diagram, finalize the report, and embed the
+   verified preview inside the nearest fixed section. When it marks
+   `not_required`, do not add a decorative diagram. The existing
+   `scripts/render_diagram.py` remains available for compatible SVG/HTML
+   outputs, but it never replaces the visual report, geometry check or image review.
 10. Read [references/note-schema.md](references/note-schema.md).
 11. Write one Markdown note under
    `<vault>/链接采集/YYYY-MM-DD/` and meaningful local assets under
    `<vault>/链接采集/_assets/<capture-id>/`.
-12. Run `<python-command> "<skill-dir>/scripts/validate_note.py" "<note-path>"`.
+12. Run `<python-command> "<skill-dir>/scripts/validate_note.py" "<note-path>"
+    --visual-report "<visual-report-path>"`.
     A non-zero exit is a hard stop: correct the same file and rerun it. Do not
     rename, reorder, duplicate, merge or add peer headings beyond the exact
     mode/content contract in `note-schema.md`.

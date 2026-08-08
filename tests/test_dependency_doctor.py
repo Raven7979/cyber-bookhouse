@@ -27,6 +27,7 @@ class DependencyDoctorTests(unittest.TestCase):
             {
                 "youtube",
                 "media",
+                "diagram_render",
                 "feishu_docs",
                 "feishu_input",
                 "local_asr",
