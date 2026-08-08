@@ -56,10 +56,10 @@ lark-cli docs +fetch --api-version v2 --as user --doc "CREATED_DOC_URL_OR_TOKEN"
 ## 日常写入
 
 1. 先按 [note-schema.md](note-schema.md) 写入并验证 Obsidian 原件。
-2. 用相同标题、来源、一句话摘要、核心内容和访问限制创建飞书文档副本。
-3. 读回飞书文档，确认主要字段可见。
+2. 保留 `note-schema.md` 规定的全部栏目、顺序、原链接和图文对应关系，不改写成另一套飞书摘要。
+3. 读回飞书文档，确认标题顺序、原链接和主要正文可见。完整视频还要读回逐字稿、封面和至少 3 张不同的关键画面。
 4. 验收成功后，在本地原件中加入 `feishu_doc` 和 `feishu_doc_url`。
-5. 向用户同时返回 Obsidian 文件路径和飞书文档链接。
+5. 按 [response-style.md](response-style.md) 回复：飞书链接优先，最多两个短段落；不复述创建、插图、授权和校验过程。
 
 不要把本地绝对路径、Cookie、授权信息或隐藏配置写进飞书文档。用户没有
 要求公开分享时，不修改飞书文档的分享范围。

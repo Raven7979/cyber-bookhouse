@@ -42,6 +42,7 @@ class SkillBundleTests(unittest.TestCase):
             "references/visualizations.md",
             "references/distillation.md",
             "references/note-schema.md",
+            "references/response-style.md",
             "examples/structured-sop.json",
         )
         missing = [name for name in required if not (ROOT / name).is_file()]
@@ -59,6 +60,7 @@ class SkillBundleTests(unittest.TestCase):
             "references/youtube.md",
             "references/distillation.md",
             "references/visualizations.md",
+            "references/response-style.md",
             "scripts/dependency_doctor.py",
             "scripts/youtube_capture.py",
             "scripts/web_capture.py",
