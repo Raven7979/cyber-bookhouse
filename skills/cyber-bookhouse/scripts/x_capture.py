@@ -235,8 +235,11 @@ def x_request_bytes(
     data: bytes | None = None,
     limit: int = MAX_PAGE_BYTES,
     referer: str | None = None,
+    attempts: int = 3,
 ) -> tuple[bytes, str, dict[str, str]]:
     """Make a bounded X request without forwarding guest headers on redirects."""
+    if attempts not in {1, 2, 3}:
+        raise ValueError("X request attempts must be between one and three.")
     validate_https_url(url)
     public_headers = request_headers(referer)
     sensitive: dict[str, str] = {}
@@ -245,7 +248,8 @@ def x_request_bytes(
             sensitive[key] = value
         else:
             public_headers[key] = value
-    for attempt, delay in enumerate((0, 1, 3), start=1):
+    delays = (0, 1, 3)[:attempts]
+    for attempt, delay in enumerate(delays, start=1):
         if delay:
             time.sleep(delay)
         request = Request(url, data=data, headers=public_headers, method=method)
@@ -254,16 +258,56 @@ def x_request_bytes(
         try:
             with OPENER.open(request, timeout=40) as response:
                 payload = bounded_read(response, limit)
-                if not payload and attempt < 3:
+                if not payload and attempt < attempts:
                     continue
                 response_headers = {
                     key.lower(): value for key, value in response.headers.items()
                 }
                 return payload, response.geturl(), response_headers
         except HTTPError as exc:
-            if exc.code not in {429, 503, 504} or attempt == 3:
+            if exc.code not in {429, 503, 504} or attempt == attempts:
                 raise
     raise ValueError("X request retry budget exhausted.")
+
+
+def x_request_json(
+    url: str,
+    *,
+    method: str = "GET",
+    headers: dict[str, str] | None = None,
+    data: bytes | None = None,
+    limit: int = MAX_PAGE_BYTES,
+    referer: str | None = None,
+) -> dict:
+    """Retry a bounded X response when a proxy returns truncated JSON."""
+    for attempt, delay in enumerate((0, 1, 3), start=1):
+        if delay:
+            time.sleep(delay)
+        try:
+            raw, _, _ = x_request_bytes(
+                url,
+                method=method,
+                headers=headers,
+                data=data,
+                limit=limit,
+                referer=referer,
+                attempts=1,
+            )
+        except HTTPError as exc:
+            if exc.code in {429, 503, 504} and attempt < 3:
+                continue
+            raise
+        try:
+            payload = json.loads(raw.decode("utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError):
+            if attempt < 3:
+                continue
+            raise ValueError("X JSON response remained incomplete.") from None
+        if isinstance(payload, dict):
+            return payload
+        if attempt == 3:
+            raise ValueError("X JSON response was not an object.")
+    raise ValueError("X JSON response retry budget exhausted.")
 
 
 def base36(value: float) -> str:
@@ -534,7 +578,7 @@ def x_article_result_from_graphql(payload: dict, status_id: str) -> dict:
 def fetch_x_article_public(status_id: str, article_url: str) -> dict:
     try:
         bearer, query_id = x_public_web_credentials(article_url)
-        activation, _, _ = x_request_bytes(
+        activation = x_request_json(
             "https://api.x.com/1.1/guest/activate.json",
             method="POST",
             headers={
@@ -546,7 +590,7 @@ def fetch_x_article_public(status_id: str, article_url: str) -> dict:
             referer="https://x.com/home",
         )
         guest_token = str(
-            json.loads(activation.decode("utf-8")).get("guest_token") or ""
+            activation.get("guest_token") or ""
         ).strip()
         if not guest_token:
             raise ValueError("X guest activation returned no token.")
@@ -571,7 +615,7 @@ def fetch_x_article_public(status_id: str, article_url: str) -> dict:
                 }
             )
         )
-        graph, _, _ = x_request_bytes(
+        graph = x_request_json(
             endpoint,
             headers={
                 "Authorization": f"Bearer {bearer}",
@@ -582,9 +626,7 @@ def fetch_x_article_public(status_id: str, article_url: str) -> dict:
             limit=MAX_PAGE_BYTES,
             referer=article_url,
         )
-        article = x_article_result_from_graphql(
-            json.loads(graph.decode("utf-8")), status_id
-        )
+        article = x_article_result_from_graphql(graph, status_id)
         if not str(article.get("plain_text") or "").strip() and not x_article_blocks(
             article.get("content_state")
         ):
