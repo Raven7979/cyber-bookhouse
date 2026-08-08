@@ -177,7 +177,7 @@ def fetch(url: str) -> tuple[str, str, str]:
     request = Request(
         url,
         headers={
-            "User-Agent": "Mozilla/5.0 (compatible; cyber-bookhouse/0.2.1; public-page-reader)",
+            "User-Agent": "Mozilla/5.0 (compatible; cyber-bookhouse/0.2.6; public-page-reader)",
             "Accept": "text/html,application/xhtml+xml,text/plain;q=0.9,*/*;q=0.1",
         },
     )

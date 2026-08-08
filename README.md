@@ -86,6 +86,8 @@ Sol、Terra 和 Luna，默认优先 Sol，但安装后仍要用一张真实 PNG/
 错序、重复、漏项或模型自创平级栏目都会被拒绝，因此更换模型不会改变笔记骨架。
 从 v0.2.5 起，结构图也使用条件性门禁：命中架构、流程、决策、分层、因果或时间线
 时必须完成几何检查和图片复核；没有真实结构时不添加装饰图。
+从 v0.2.6 起，完整视频笔记还必须有本地原媒体、真实逐字稿、封面和
+至少 3 张不同的关键画面。处理中不再播报工具流水，完成回执最多两个短段落。
 
 ### 三种模式实际长什么样
 
@@ -221,7 +223,7 @@ python3 <skill-dir>/scripts/update_skill.py --apply --target auto
 校验 GitHub 提供的 SHA-256，并检查压缩包路径、Skill ID、版本与 build；安装器会先把
 旧版移动到 `~/.cyber-bookhouse-backups/`。完成后重启或新开一个 Agent 任务。
 
-已安装旧版的 Codex / Claude 用户可以直接运行自更新器升级到 v0.2.5；
+已安装旧版的 Codex / Claude 用户可以直接运行自更新器升级到 v0.2.6；
 更早版本需要手动覆盖一次。WorkBuddy 暂无稳定接口让 Skill 安全覆盖自身，
 仍需在“技能”界面重新上传最新版 ZIP。
 
@@ -273,6 +275,6 @@ python3 <skill-dir>/scripts/update_skill.py --apply --target auto
 
 隐私细节见 [PRIVACY.md](PRIVACY.md)，安全问题见 [SECURITY.md](SECURITY.md)。
 
-`v0.2.5` 是当前公开版本，统一使用 `cyber-bookhouse` 作为 Skill ID；macOS 稳定，
+`v0.2.6` 是当前公开版本，统一使用 `cyber-bookhouse` 作为 Skill ID；macOS 稳定，
 Windows 10 / 11 仍为 Beta。不同内容
 平台仍需要继续拿真实样本逐个测试。

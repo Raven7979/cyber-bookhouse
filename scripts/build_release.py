@@ -28,6 +28,7 @@ REQUIRED = (
     "references/workbuddy.md",
     "references/obsidian.md",
     "references/note-modes.md",
+    "references/response-style.md",
 )
 IGNORED_NAMES = {".DS_Store", "__pycache__"}
 IGNORED_SUFFIXES = {".pyc", ".pyo"}

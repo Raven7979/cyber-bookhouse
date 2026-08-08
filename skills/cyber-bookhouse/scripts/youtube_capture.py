@@ -73,7 +73,7 @@ def oembed_metadata(url: str) -> dict:
         "https://www.youtube.com/oembed?format=json&url="
         + quote(url, safe="")
     )
-    request = Request(endpoint, headers={"User-Agent": "cyber-bookhouse/0.2.1"})
+    request = Request(endpoint, headers={"User-Agent": "cyber-bookhouse/0.2.6"})
     try:
         with urlopen(request, timeout=20) as response:
             payload = json.loads(response.read(2 * 1024 * 1024).decode("utf-8"))

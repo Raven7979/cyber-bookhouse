@@ -58,7 +58,19 @@ visual_assets: []
         if heading == "来源":
             body = f"原链接：{URL}"
         elif heading == "逐字稿与画面证据":
-            body = "**00:00–00:30** 完整语义段。"
+            body = """![封面](../assets/cover.jpg)
+
+**00:00–00:30** 完整语义段。
+
+![开场](../assets/frame-01.jpg)
+
+**00:30–01:00** 第二个完整语义段。
+
+![中段](../assets/frame-02.jpg)
+
+**01:00–01:30** 第三个完整语义段。
+
+![结尾](../assets/frame-03.jpg)"""
         else:
             body = heading + "的有效正文。"
         parts.append(f"## {heading}\n\n{body}")
@@ -70,7 +82,26 @@ class ValidateNoteTest(unittest.TestCase):
         self.assertTrue(checked(note())["ready"])
 
     def test_accepts_standard_video_with_evidence(self) -> None:
-        self.assertTrue(checked(note(content_type="video", media=True))["ready"])
+        report = checked(note(content_type="video", media=True))
+        self.assertTrue(report["complete_video_ready"])
+        self.assertTrue(report["ready"])
+
+    def test_rejects_full_video_without_cover_and_three_evidence_frames(self) -> None:
+        value = note(content_type="video", media=True).replace(
+            "![结尾](../assets/frame-03.jpg)", ""
+        )
+        report = checked(value)
+        self.assertFalse(report["video_images_ok"])
+        self.assertFalse(report["complete_video_ready"])
+        self.assertFalse(report["ready"])
+
+    def test_remote_images_do_not_satisfy_complete_video_evidence(self) -> None:
+        value = note(content_type="video", media=True).replace(
+            "../assets/frame-03.jpg", "https://example.com/frame-03.jpg"
+        )
+        report = checked(value)
+        self.assertEqual(len(report["video_evidence_images"]), 2)
+        self.assertFalse(report["ready"])
 
     def test_accepts_distilled_article_and_detailed_video(self) -> None:
         self.assertTrue(checked(note(mode="distilled"))["ready"])
@@ -100,7 +131,7 @@ class ValidateNoteTest(unittest.TestCase):
 
     def test_rejects_placeholder_and_missing_timecode(self) -> None:
         value = note(content_type="video", media=True).replace("核心内容的有效正文。", "{{待填写}}")
-        value = value.replace("**00:00–00:30** 完整语义段。", "没有时间码。")
+        value = value.replace("00:", "零时").replace("01:", "一时")
         report = checked(value)
         self.assertIn("核心内容", report["placeholder_sections"])
         self.assertFalse(report["transcript_timecode_ok"])

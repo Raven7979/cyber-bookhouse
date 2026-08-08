@@ -40,7 +40,7 @@ python3 <skill-dir>/scripts/update_skill.py --apply --target auto
 并拒绝路径穿越、符号链接、错误 Skill ID 或版本不一致的压缩包。安装器发现同名旧版
 时，会先将它移动到 `~/.cyber-bookhouse-backups/`，不会碰其他 Skills。
 
-已安装旧版的 Codex / Claude 用户可直接运行自更新器升级到 v0.2.5；
+已安装旧版的 Codex / Claude 用户可直接运行自更新器升级到 v0.2.6；
 更早版本需要手动覆盖一次。WorkBuddy 用户仍需在“技能”界面重新上传最新版 ZIP。
 
 ## 用 WorkBuddy 安装

@@ -26,6 +26,9 @@ MEDIA_TYPES = {"video", "audio", "podcast"}
 TRANSCRIPT_READY = {"official", "asr_raw", "asr_proofread"}
 PLACEHOLDER_RE = re.compile(r"\{\{.*?\}\}|TODO|TBD|待填写|示例内容", re.IGNORECASE | re.DOTALL)
 HEADING_RE = re.compile(r"^(#{1,6})[ \t]+(.+?)\s*$", re.MULTILINE)
+MARKDOWN_IMAGE_RE = re.compile(r"!\[[^\]]*\]\(([^)]+)\)")
+OBSIDIAN_IMAGE_RE = re.compile(r"!\[\[([^|\]]+)(?:\|[^\]]*)?\]\]")
+REMOTE_IMAGE_RE = re.compile(r"^(?:https?:|data:)", re.IGNORECASE)
 
 
 def _frontmatter(note: str) -> tuple[str, str]:
@@ -72,6 +75,20 @@ def _section(body: str, headings: list[dict[str, object]], heading: dict[str, ob
     index = headings.index(heading)
     end = headings[index + 1]["start"] if index + 1 < len(headings) else len(body)
     return body[int(heading["end"]) : int(end)].strip()
+
+
+def _local_image_references(section: str) -> list[tuple[int, str]]:
+    references: list[tuple[int, str]] = []
+    for pattern in (MARKDOWN_IMAGE_RE, OBSIDIAN_IMAGE_RE):
+        for match in pattern.finditer(section):
+            raw_target = match.group(1).strip()
+            if pattern is MARKDOWN_IMAGE_RE and raw_target.startswith("<") and ">" in raw_target:
+                target = raw_target[1 : raw_target.index(">")]
+            else:
+                target = raw_target.split(" ", 1)[0]
+            if target and not REMOTE_IMAGE_RE.match(target):
+                references.append((match.start(), target))
+    return sorted(references)
 
 
 def expected_headings(metadata: dict[str, str]) -> tuple[list[str], list[str]]:
@@ -157,11 +174,41 @@ def validate(
         source_url_ok = metadata["source_url"] in _section(body, headings, source_matches[0])
 
     transcript_timecode_ok = True
+    transcript_section = ""
     if "逐字稿与画面证据" in expected:
         matches = [heading for heading in level_two if heading["text"] == "逐字稿与画面证据"]
-        transcript_timecode_ok = len(matches) == 1 and bool(
-            re.search(r"\b\d{1,2}:\d{2}(?::\d{2})?\b", _section(body, headings, matches[0]))
+        if len(matches) == 1:
+            transcript_section = _section(body, headings, matches[0])
+        transcript_timecode_ok = bool(
+            re.search(r"\b\d{1,2}:\d{2}(?::\d{2})?\b", transcript_section)
         )
+
+    complete_video_declared = (
+        metadata["content_type"] == "video" and metadata["content_status"] == "full_text"
+    )
+    video_media_ok = metadata["media_status"] == "local"
+    video_transcript_ok = metadata["transcript_status"] in TRANSCRIPT_READY
+    video_images = _local_image_references(transcript_section)
+    first_timecode = re.search(r"\b\d{1,2}:\d{2}(?::\d{2})?\b", transcript_section)
+    cover_images = {
+        target
+        for position, target in video_images
+        if first_timecode is not None and position < first_timecode.start()
+    }
+    evidence_images = {
+        target
+        for position, target in video_images
+        if first_timecode is not None and position > first_timecode.start()
+    }
+    video_images_ok = len(cover_images) >= 1 and len(evidence_images) >= 3
+    complete_video_ready = all(
+        (
+            video_media_ok,
+            video_transcript_ok,
+            transcript_timecode_ok,
+            video_images_ok,
+        )
+    )
 
     visual_errors = (
         ["visual_report_missing"]
@@ -217,6 +264,7 @@ def validate(
             not placeholder_sections,
             source_url_ok,
             transcript_timecode_ok,
+            not complete_video_declared or complete_video_ready,
             not visual_errors,
             visual_status_ok,
             visual_assets_ok,
@@ -241,6 +289,13 @@ def validate(
         "placeholder_sections": placeholder_sections,
         "source_url_ok": source_url_ok,
         "transcript_timecode_ok": transcript_timecode_ok,
+        "complete_video_declared": complete_video_declared,
+        "complete_video_ready": complete_video_ready,
+        "video_media_ok": video_media_ok,
+        "video_transcript_ok": video_transcript_ok,
+        "video_cover_images": sorted(cover_images),
+        "video_evidence_images": sorted(evidence_images),
+        "video_images_ok": video_images_ok,
         "visual_required": visual_required,
         "visual_errors": visual_errors,
         "visual_status_ok": visual_status_ok,
